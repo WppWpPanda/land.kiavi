@@ -135,5 +135,234 @@ class WPP_MultiStepFormBuilder
         return $output;
     }
 
-    // ... (остальные методы из предыдущего примера остаются без изменений)
+    /**
+     * Добавляет шаг в форму
+     * @param string $title Заголовок шага
+     * @param array $fields Массив полей
+     * @param string|null $step_key Ключ шага (опционально)
+     * @return $this
+     */
+    public function wpp_add_step($title, $fields, $step_key = null) {
+        $step = [
+            'title' => sanitize_text_field($title),
+            'fields' => $this->wpp_sanitize_fields($fields),
+            'key' => $step_key ? sanitize_key($step_key) : 'step-' . count($this->steps)
+        ];
+
+        $this->steps[] = $step;
+        return $this;
+    }
+
+    /**
+     * Устанавливает зависимости между полями
+     * @param string $field_name Имя поля
+     * @param array $conditions Условия (значение => шаг)
+     * @return $this
+     */
+    public function wpp_set_dependency($field_name, $conditions) {
+        $this->dependencies[sanitize_key($field_name)] = $conditions;
+        return $this;
+    }
+
+    /**
+     * Рендерит текущий шаг формы
+     * @return string HTML код формы
+     */
+    public function wpp_render() {
+        if (empty($this->steps)) {
+            return '<div class="wpp-error">Нет шагов для отображения</div>';
+        }
+
+        $step = $this->steps[$this->current_step];
+        $output = '<div class="wpp-form-step" data-step="' . esc_attr($step['key']) . '">';
+        $output .= '<h1>' . esc_html($step['title']) . '</h1>';
+
+        foreach ($step['fields'] as $field) {
+            $output .= $this->wpp_render_field($field);
+        }
+
+        $output .= $this->wpp_render_navigation();
+        $output .= '</div>';
+
+        return $output;
+    }
+
+    /**
+     * Обрабатывает отправку формы
+     * @param array $data Данные формы
+     * @return array|bool Результат обработки
+     */
+    public function wpp_process($data) {
+        if (!isset($data['wpp_current_step'])) {
+            return false;
+        }
+
+        $this->current_step = intval($data['wpp_current_step']);
+        $this->form_data = array_merge($this->form_data, $data);
+
+        // Проверяем зависимости для определения следующего шага
+        if (isset($data['wpp_next'])) {
+            $next_step = $this->wpp_get_next_step();
+            if ($next_step !== false) {
+                $this->current_step = $next_step;
+            }
+        } elseif (isset($data['wpp_back'])) {
+            $this->current_step = max(0, $this->current_step - 1);
+        }
+
+        return $this->form_data;
+    }
+
+    /**
+     * Рендерит навигацию формы
+     * @return string HTML код навигации
+     */
+    private function wpp_render_navigation() {
+        $output = '<div class="wpp-form-navigation">';
+
+        if ($this->current_step > 0) {
+            $output .= '<button type="submit" name="wpp_back" class="wpp-button-back">Go Back</button>';
+        }
+
+        if ($this->current_step < count($this->steps) - 1) {
+            $output .= '<button type="submit" name="wpp_next" class="wpp-button-next">Next</button>';
+        } else {
+            $output .= '<button type="submit" name="wpp_submit" class="wpp-button-submit">Submit</button>';
+        }
+
+        $output .= '<input type="hidden" name="wpp_current_step" value="' . esc_attr($this->current_step) . '">';
+        $output .= '</div>';
+
+        return $output;
+    }
+
+    /**
+     * Рендерит поле формы
+     * @param array $field Параметры поля
+     * @return string HTML код поля
+     */
+    private function wpp_render_field($field) {
+        $output = '';
+        $value = isset($this->form_data[$field['name']]) ? $this->form_data[$field['name']] : '';
+
+        switch ($field['type']) {
+            case 'text':
+            case 'number':
+                $output .= '<div class="wpp-field-group">';
+                $output .= '<label>' . esc_html($field['label']) . '</label>';
+                $output .= '<input type="' . esc_attr($field['type']) . '" name="' . esc_attr($field['name']) . '" value="' . esc_attr($value) . '">';
+                $output .= '</div>';
+                break;
+
+            case 'select':
+                $output .= '<div class="wpp-field-group">';
+                $output .= '<label>' . esc_html($field['label']) . '</label>';
+                $output .= '<select name="' . esc_attr($field['name']) . '">';
+                foreach ($field['options'] as $option) {
+                    $selected = $value == $option['value'] ? ' selected' : '';
+                    $output .= '<option value="' . esc_attr($option['value']) . '"' . $selected . '>' . esc_html($option['label']) . '</option>';
+                }
+                $output .= '</select>';
+                $output .= '</div>';
+                break;
+
+            case 'radio':
+            case 'checkbox':
+                $output .= '<div class="wpp-field-group">';
+                $output .= '<fieldset>';
+                $output .= '<legend>' . esc_html($field['label']) . '</legend>';
+                foreach ($field['options'] as $option) {
+                    $checked = is_array($value) ? in_array($option['value'], $value) : $value == $option['value'];
+                    $output .= '<label>';
+                    $output .= '<input type="' . esc_attr($field['type']) . '" name="' . esc_attr($field['name']) . ($field['type'] == 'checkbox' ? '[]' : '') . '" value="' . esc_attr($option['value']) . '"' . ($checked ? ' checked' : '') . '>';
+                    $output .= esc_html($option['label']);
+                    $output .= '</label><br>';
+                }
+                $output .= '</fieldset>';
+                $output .= '</div>';
+                break;
+
+            case 'section':
+                $output .= '<div class="wpp-section">';
+                $output .= '<h2>' . esc_html($field['title']) . '</h2>';
+                if (!empty($field['description'])) {
+                    $output .= '<p>' . esc_html($field['description']) . '</p>';
+                }
+                $output .= '</div>';
+                break;
+        }
+
+        return $output;
+    }
+
+    /**
+     * Определяет следующий шаг на основе зависимостей
+     * @return int|false Номер следующего шага или false
+     */
+    private function wpp_get_next_step() {
+        foreach ($this->dependencies as $field_name => $conditions) {
+            if (isset($this->form_data[$field_name])) {
+                $field_value = $this->form_data[$field_name];
+                if (isset($conditions[$field_value])) {
+                    $target_step = $this->wpp_find_step_by_key($conditions[$field_value]);
+                    if ($target_step !== false) {
+                        return $target_step;
+                    }
+                }
+            }
+        }
+
+        // По умолчанию переходим на следующий шаг
+        return $this->current_step < count($this->steps) - 1 ? $this->current_step + 1 : false;
+    }
+
+    /**
+     * Находит шаг по ключу
+     * @param string $step_key Ключ шага
+     * @return int|false Номер шага или false
+     */
+    private function wpp_find_step_by_key($step_key) {
+        foreach ($this->steps as $index => $step) {
+            if ($step['key'] === $step_key) {
+                return $index;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Санитизирует массив полей
+     * @param array $fields Массив полей
+     * @return array Санитизированный массив
+     */
+    private function wpp_sanitize_fields($fields) {
+        $sanitized = [];
+        foreach ($fields as $field) {
+            $sanitized_field = [
+                'type' => sanitize_key($field['type']),
+                'name' => sanitize_key($field['name']),
+                'label' => sanitize_text_field($field['label']),
+            ];
+
+            if (isset($field['options'])) {
+                $sanitized_field['options'] = array_map(function($option) {
+                    return [
+                        'value' => sanitize_text_field($option['value']),
+                        'label' => sanitize_text_field($option['label'])
+                    ];
+                }, $field['options']);
+            }
+
+            if (isset($field['title'])) {
+                $sanitized_field['title'] = sanitize_text_field($field['title']);
+            }
+
+            if (isset($field['description'])) {
+                $sanitized_field['description'] = sanitize_text_field($field['description']);
+            }
+
+            $sanitized[] = $sanitized_field;
+        }
+        return $sanitized;
+    }
 }
