@@ -1,0 +1,60 @@
+.radio-button-field {
+    margin-bottom: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.radio-button-title {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.radio-button-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.radio-button-option {
+    position: relative;
+}
+
+.radio-button-input {
+    position: absolute;
+    opacity: 0;
+}
+
+.radio-button-label {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #f5f5f5;
+    border: 2px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    user-select: none;
+}
+
+.radio-button-input:focus + .radio-button-label {
+    box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.3);
+}
+
+/* Default Style */
+.radio-button-style-default .radio-button-input:checked + .radio-button-label {
+    color: white;
+}
+
+/* Pill Style */
+.radio-button-style-pill .radio-button-label {
+    border-radius: 50px;
+}
+
+/* Outline Style */
+.radio-button-style-outline .radio-button-label {
+    background-color: transparent;
+}
+
+.required {
+    color: #ff0000;
+    margin-left: 3px;
+}

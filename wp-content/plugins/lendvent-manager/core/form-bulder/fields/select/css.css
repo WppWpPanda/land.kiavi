@@ -1,0 +1,23 @@
+.select-field {
+    margin-bottom: 15px;
+}
+
+.select-field label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.select-field select {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+.select-field select:focus {
+    border-color: #0073aa;
+    outline: none;
+    box-shadow: 0 0 0 1px #0073aa;
+}
