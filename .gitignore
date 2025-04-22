@@ -14,3 +14,11 @@
 /wp-signup.php
 /wp-trackback.php
 /xmlrpc.php
+/wp-content/themes/
+/wp-content/plugins/akismet/
+/wp-content/plugins/hello.php
+/wp-content/plugins/index.php
+/wp-admin/
+/wp-includes/
+/wp-content/index.php
+.idea

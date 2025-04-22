@@ -1,0 +1,71 @@
+.wpp-multistep-form {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.wpp-multistep-form .wpp-form-step {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.wpp-multistep-form.wpp-loading .wpp-form-step {
+    opacity: 0.5;
+    pointer-events: none;
+}
+
+.wpp-form-navigation {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.wpp-button-next, .wpp-button-submit {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.wpp-button-back {
+    background: #f1f1f1;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.wpp-field-group {
+    margin-bottom: 20px;
+}
+
+.wpp-field-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.wpp-field-group input[type="text"],
+.wpp-field-group input[type="number"],
+.wpp-field-group select {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.wpp-section {
+    margin: 20px 0;
+    padding: 15px;
+    background: #f9f9f9;
+    border-left: 4px solid #4CAF50;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
