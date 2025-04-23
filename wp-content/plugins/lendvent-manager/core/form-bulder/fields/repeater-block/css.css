@@ -1,0 +1,53 @@
+.repeater-block-field {
+    margin-bottom: 20px;
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.repeater-block-label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.repeater-block-row {
+    margin-bottom: 15px;
+    padding: 15px;
+    background: #f9f9f9;
+    border-radius: 4px;
+    position: relative;
+}
+
+.repeater-block-fields {
+    display: grid;
+    gap: 15px;
+}
+
+.repeater-block-add {
+    background: #4CAF50;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.repeater-block-remove {
+    background: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.repeater-block-add:hover {
+    background: #45a049;
+}
+
+.repeater-block-remove:hover {
+    background: #d32f2f;
+}

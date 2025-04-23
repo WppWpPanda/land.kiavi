@@ -154,27 +154,27 @@ function wpp_loan_form()
     ]);
 
     // Простой заголовок
-$out .= $formFieldsManager->renderField('heading', [
-    'text' => 'Контактная информация',
-    'type' => 'h2'
-]);
+    $out .= $formFieldsManager->renderField('heading', [
+        'text' => 'Контактная информация',
+        'type' => 'h2'
+    ]);
 
 // Заголовок с кастомными стилями
     $out .= $formFieldsManager->renderField('heading', [
-    'text' => 'Специальное предложение!',
-    'type' => 'h3',
-    'color' => '#ff5722',
-    'align' => 'center',
-    'margin_bottom' => '30px',
-    'extra_classes' => 'special-offer-heading'
-]);
+        'text' => 'Специальное предложение!',
+        'type' => 'h3',
+        'color' => '#ff5722',
+        'align' => 'center',
+        'margin_bottom' => '30px',
+        'extra_classes' => 'special-offer-heading'
+    ]);
 
 // Заголовок без обертки
     $out .= $formFieldsManager->renderField('heading', [
-    'text' => 'Дополнительные опции',
-    'type' => 'h4',
-    'wrapper' => false
-]);
+        'text' => 'Дополнительные опции',
+        'type' => 'h4',
+        'wrapper' => false
+    ]);
 
 
 // Выводим резуль_
@@ -242,14 +242,14 @@ function _wpp_loan_form()
     ]);
 
     // Простое текстовое поле
-    $out .=$formFieldsManager->renderField('textarea', [
+    $out .= $formFieldsManager->renderField('textarea', [
         'name' => 'description',
         'label' => 'Описание',
         'rows' => 6
     ]);
 
 // Поле с дополнительными параметрами
-    $out .=$formFieldsManager->renderField('textarea', [
+    $out .= $formFieldsManager->renderField('textarea', [
         'name' => 'bio',
         'label' => 'Биография',
         'value' => 'Расскажите о себе...',
@@ -260,10 +260,66 @@ function _wpp_loan_form()
         'input_class' => 'large-text'
     ]);
 
+    $out .= $formFieldsManager->renderField('repeater-block', [
+        'name' => 'team_members',
+        'label' => 'Члены команды',
+        'min_blocks' => 1,
+        'max_blocks' => 5,
+        'fields' => [
+            [
+                'name' => 'name',
+                'type' => 'text',
+                'args' => [
+                    'label' => 'Имя',
+                    'required' => true
+                ]
+            ],
+            [
+                'name' => 'position',
+                'type' => 'text',
+                'args' => [
+                    'label' => 'Должность'
+                ]
+            ],
+            [
+                'name' => 'bio',
+                'type' => 'textarea',
+                'args' => [
+                    'label' => 'Биография',
+                    'rows' => 3
+                ]
+            ],
+            [
+
+                'type' => 'radio-buttons',
+                'name' => 'bio2',
+                'args' => [
+                    'label' => 'Цветовая тема',
+                    'options' => [
+                        'light' => 'Bridge / Fix and Flip / Fix to Rent',
+                        'dark' => 'New Construction *',
+                        'system' => 'I\'m not sure yet'
+                    ],
+                    'button_style' => 'outline',
+                    'color' => '#FF5722',
+                ]
+            ],
+
+        ],
+        'values' => [
+            [
+                'name' => 'Иван Иванов',
+                'position' => 'Дизайнер',
+                'bio' => 'Опыт работы 5 лет',
+                'bio2' => 'dark'
+            ]
+        ]
+    ]);
 
 
 // Выводим резуль_
 
     return $out;
 }
+
 add_shortcode('wpp_loan_form', '_wpp_loan_form');
