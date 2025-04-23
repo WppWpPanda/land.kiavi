@@ -1,0 +1,39 @@
+.accordion-field {
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.accordion-header {
+    padding: 12px 15px;
+    background-color: #f7f7f7;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.accordion-header:hover {
+    background-color: #eee;
+}
+
+.accordion-icon {
+    margin-right: 10px;
+    font-size: 0.8em;
+}
+
+.accordion-title {
+    font-weight: 600;
+}
+
+.accordion-content {
+    padding: 15px;
+    background-color: #fff;
+    transition: all 0.3s ease;
+}
+
+/* Анимация открытия/закрытия */
+.accordion-content.is-transitioning {
+    overflow: hidden;
+}

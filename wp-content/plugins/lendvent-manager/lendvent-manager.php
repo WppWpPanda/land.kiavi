@@ -153,7 +153,117 @@ function wpp_loan_form()
         'color' => '#FF5722'
     ]);
 
+    // Простой заголовок
+$out .= $formFieldsManager->renderField('heading', [
+    'text' => 'Контактная информация',
+    'type' => 'h2'
+]);
+
+// Заголовок с кастомными стилями
+    $out .= $formFieldsManager->renderField('heading', [
+    'text' => 'Специальное предложение!',
+    'type' => 'h3',
+    'color' => '#ff5722',
+    'align' => 'center',
+    'margin_bottom' => '30px',
+    'extra_classes' => 'special-offer-heading'
+]);
+
+// Заголовок без обертки
+    $out .= $formFieldsManager->renderField('heading', [
+    'text' => 'Дополнительные опции',
+    'type' => 'h4',
+    'wrapper' => false
+]);
+
+
+// Выводим резуль_
+
     return $out;
 }
 
-add_shortcode('wpp_loan_form', 'wpp_loan_form');
+add_shortcode('_wpp_loan_form', 'wpp_loan_form');
+
+
+function _wpp_loan_form()
+{
+    $formFieldsManager = FormFieldsManager::getInstance();
+    $formFieldsManager->init();
+
+    $out = $formFieldsManager->renderField('heading', [
+        'type' => 'h2',
+        'text' => 'What kind of real estate investment are you considering?',
+        'wrapper' => false
+    ]);
+
+// Outline стиль
+    $out .= $formFieldsManager->renderField('radio-buttons', [
+        'name' => 'theme',
+        'label' => 'Цветовая тема',
+        'options' => [
+            'light' => 'Bridge / Fix and Flip / Fix to Rent',
+            'dark' => 'New Construction *',
+            'system' => 'I\'m not sure yet'
+        ],
+        'button_style' => 'outline',
+        'color' => '#FF5722'
+    ]);
+
+    $out .= $formFieldsManager->renderField('repeater', [
+        'name' => 'education',
+        'label' => 'Образование',
+        'add_button_text' => 'Добавить место учебы',
+        'min_rows' => 1,
+        'max_rows' => 5,
+        'template' => [
+            [
+                'name' => 'institution',
+                'label' => 'Учебное заведение',
+                'type' => 'text'
+            ],
+            [
+                'name' => 'year',
+                'label' => 'Год окончания',
+                'type' => 'text'
+            ],
+            [
+                'name' => 'description',
+                'label' => 'Описание',
+                'type' => 'textarea'
+            ]
+        ],
+        'value' => [
+            [
+                'institution' => 'МГУ',
+                'year' => '2010',
+                'description' => 'Факультет вычислительной математики'
+            ]
+        ]
+    ]);
+
+    // Простое текстовое поле
+    $out .=$formFieldsManager->renderField('textarea', [
+        'name' => 'description',
+        'label' => 'Описание',
+        'rows' => 6
+    ]);
+
+// Поле с дополнительными параметрами
+    $out .=$formFieldsManager->renderField('textarea', [
+        'name' => 'bio',
+        'label' => 'Биография',
+        'value' => 'Расскажите о себе...',
+        'placeholder' => 'Введите информацию о себе',
+        'required' => true,
+        'rows' => 8,
+        'wrapper_class' => 'bio-field',
+        'input_class' => 'large-text'
+    ]);
+
+
+
+// Выводим резуль_
+
+    return $out;
+}
+add_shortcode('wpp_loan_form', '_wpp_loan_form');
