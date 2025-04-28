@@ -1,53 +1,17 @@
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelectorAll('.accordion-header').forEach(header => {
         header.addEventListener('click', function() {
-            const accordion = this.parentElement;
+            const isExpanded = this.getAttribute('aria-expanded') === 'true';
             const content = this.nextElementSibling;
             const icon = this.querySelector('.accordion-icon');
-            const transition = parseInt(accordion.dataset.transition) || 300;
-            const iconClosed = accordion.querySelector('.accordion-icon').textContent;
-            const iconOpen = accordion.dataset.iconOpen || '▾';
 
-            // Если аккордеон уже анимируется, ничего не делаем
-            if (content.classList.contains('is-transitioning')) return;
+            this.setAttribute('aria-expanded', !isExpanded);
+            content.hidden = isExpanded;
 
-            // Переключаем состояние
-            const isOpening = content.style.display === 'none';
-
-            // Устанавливаем высоту перед анимацией
-            if (isOpening) {
-                content.style.display = 'block';
-                const startHeight = content.offsetHeight;
-                content.style.height = '0px';
-                content.classList.add('is-transitioning');
-
-                setTimeout(() => {
-                    content.style.height = startHeight + 'px';
-                }, 10);
-
-                // Меняем иконку
-                icon.textContent = iconOpen;
-            } else {
-                const startHeight = content.offsetHeight;
-                content.style.height = startHeight + 'px';
-                content.classList.add('is-transitioning');
-
-                setTimeout(() => {
-                    content.style.height = '0px';
-                }, 10);
-
-                // Меняем иконку
-                icon.textContent = iconClosed;
+            // Анимация иконки
+            if (icon) {
+                icon.style.transform = isExpanded ? 'rotate(0deg)' : 'rotate(90deg)';
             }
-
-            // Завершение анимации
-            setTimeout(() => {
-                content.classList.remove('is-transitioning');
-                content.style.height = '';
-                if (!isOpening) {
-                    content.style.display = 'none';
-                }
-            }, transition);
         });
     });
 });

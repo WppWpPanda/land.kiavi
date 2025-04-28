@@ -1,8 +1,10 @@
 <?php
+
 /**
  * Class Field_Select - Поле выбора (select)
  */
-class Field_Select {
+class Field_Select
+{
     /**
      * @var array Аргументы поля
      */
@@ -13,15 +15,18 @@ class Field_Select {
      *
      * @param array $args Аргументы поля
      */
-    public function __construct(array $args = []) {
+    public function __construct(array $args = [])
+    {
         $defaults = [
             'name' => 'select_field',
             'value' => '',
+            'class' => 'select_field',
             'options' => [],
             'label' => 'Select Field',
             'required' => false,
             'multiple' => false,
-            'placeholder' => 'Выберите вариант'
+            'placeholder' => 'Выберите вариант',
+            'conditional' => false
         ];
 
         $this->args = array_merge($defaults, $args);
@@ -32,13 +37,14 @@ class Field_Select {
      *
      * @return string
      */
-    public function render(): string {
+    public function render(): string
+    {
         $required = $this->args['required'] ? ' required' : '';
         $multiple = $this->args['multiple'] ? ' multiple' : '';
         $name = $this->args['multiple'] ? $this->args['name'] . '[]' : $this->args['name'];
-        
+
         $options = '';
-        
+
         // Добавляем placeholder если есть
         if (!empty($this->args['placeholder']) && !$this->args['multiple']) {
             $options .= sprintf(
@@ -46,13 +52,13 @@ class Field_Select {
                 esc_html($this->args['placeholder'])
             );
         }
-        
+
         // Добавляем опции
         foreach ($this->args['options'] as $value => $label) {
-            $selected = is_array($this->args['value']) 
+            $selected = is_array($this->args['value'])
                 ? in_array($value, $this->args['value']) ? ' selected' : ''
                 : ($value == $this->args['value'] ? ' selected' : '');
-                
+
             $options .= sprintf(
                 '<option value="%s"%s>%s</option>',
                 esc_attr($value),
@@ -60,11 +66,14 @@ class Field_Select {
                 esc_html($label)
             );
         }
-        
+
+        $conditional = !empty( $this->args['conditional'] ) && is_array($this->args['conditional']) ? ' data-conditional="' . json_encode( (object)$this->args['conditional'] ) . '"' : '';
+
+
         return sprintf(
             '<div class="form-field select-field">
                 <label for="%1$s">%2$s</label>
-                <select id="%1$s" name="%3$s"%4$s%5$s>
+                <select id="%1$s" name="%3$s"%4$s%5$s class="%7$s"%8$s>
                     %6$s
                 </select>
             </div>',
@@ -73,7 +82,9 @@ class Field_Select {
             esc_attr($name),
             $required,
             $multiple,
-            $options
+            $options,
+            esc_html($this->args['class']),
+            $conditional
         );
     }
 }

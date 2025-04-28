@@ -39,6 +39,7 @@ class Field_Textarea {
         $wrapper_class = !empty($this->args['wrapper_class']) ? ' class="' . esc_attr($this->args['wrapper_class']) . '"' : '';
         $input_class = !empty($this->args['input_class']) ? ' class="' . esc_attr($this->args['input_class']) . '"' : '';
 
+
         return sprintf(
             '<div%s>
                 <label for="%s">%s%s</label>

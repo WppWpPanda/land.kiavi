@@ -33,6 +33,7 @@
     transition: all 0.3s ease;
     text-align: center;
     user-select: none;
+    box-sizing: border-box;
 }
 
 .radio-button-input:focus + .radio-button-label {
@@ -57,4 +58,19 @@
 .required {
     color: #ff0000;
     margin-left: 3px;
+}
+
+
+.wpp-line-buttons .radio-button-group {
+    display: inline-block;
+    width: 100%;
+}
+
+.wpp-line-buttons label.radio-button-label {
+    width: 100%;
+    text-align: left;
+}
+
+.wpp-line-buttons .radio-button-option {
+    margin-bottom: 10px;
 }

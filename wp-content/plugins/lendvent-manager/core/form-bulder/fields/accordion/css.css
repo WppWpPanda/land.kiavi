@@ -1,39 +1,58 @@
 .accordion-field {
-    margin-bottom: 15px;
-    border: 1px solid #ddd;
+    border: 1px solid #e0e0e0;
     border-radius: 4px;
+    margin-bottom: 15px;
     overflow: hidden;
 }
 
 .accordion-header {
-    padding: 12px 15px;
-    background-color: #f7f7f7;
-    cursor: pointer;
+    width: 100%;
+    padding: 12px 16px;
+    background: #f8f9fa;
+    border: none;
+    text-align: left;
     display: flex;
     align-items: center;
-    transition: background-color 0.2s;
+    gap: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
 }
 
 .accordion-header:hover {
-    background-color: #eee;
+    background: #e9ecef;
+}
+
+.accordion-header[aria-expanded="true"] .accordion-icon {
+    transform: rotate(90deg);
 }
 
 .accordion-icon {
-    margin-right: 10px;
-    font-size: 0.8em;
-}
-
-.accordion-title {
-    font-weight: 600;
+    transition: transform 0.2s ease;
 }
 
 .accordion-content {
-    padding: 15px;
-    background-color: #fff;
-    transition: all 0.3s ease;
+    padding: 16px;
+    background: white;
 }
 
-/* Анимация открытия/закрытия */
-.accordion-content.is-transitioning {
-    overflow: hidden;
+.accordion-content[hidden] {
+    display: none;
+}
+
+.accordion-field.wpp-transparent button.accordion-header {
+    display: block;
+    width: auto;
+    background-color: transparent;
+    text-decoration: underline;
+    color: #2e4e9b;
+}
+
+.accordion-field.wpp-transparent {
+    border: none;
+}
+
+.accordion-field.wpp-transparent button.accordion-header:focus,
+.accordion-field.wpp-transparent button.accordion-header:hover {
+    background-color: transparent;
+    outline: none;
 }
