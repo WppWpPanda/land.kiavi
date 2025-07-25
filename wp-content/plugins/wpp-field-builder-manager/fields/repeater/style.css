@@ -1,0 +1,18 @@
+.wpp-repeater-container {
+    width: 100%;
+}
+.wpp-repeater-block {
+    padding: 2.8rem 1.5rem .5rem;
+}
+.wpp-wpp_repeater_field .wpp-repeater-block {
+    transition: background-color 0.3s ease;
+    position: relative;
+}
+
+.wpp-wpp_repeater_field .wpp-repeater-remove {
+    line-height: 1;
+    font-size: 1.2rem;
+    padding: 0.25rem 0.5rem;
+    z-index: 10;
+    max-width: 34px;
+}

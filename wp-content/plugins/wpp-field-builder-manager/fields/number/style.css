@@ -1,0 +1,18 @@
+
+.wpp-wpp_number_field .wpp-number-field .wpp-number-input{
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    width: fit-content;
+}
+
+.wpp-wpp_number_field .wpp-number-input input[type="text"] {
+    max-width: 60px!important;
+    text-align: center;
+    border-left: none;
+    border-right: none;
+}
+
+.wpp-wpp_number_field .wpp-number-input .btn {
+    padding: 0.375rem 0.75rem;
+}

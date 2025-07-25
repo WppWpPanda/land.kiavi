@@ -1,0 +1,21 @@
+/**
+ * Textarea Field Styles
+ *
+ * Стили для textarea в админке и на фронтенде.
+ */
+
+.wpp-wpp_textarea_field textarea {
+    border-color: #ced4da;
+    padding: 0.375rem 0.75rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.wpp-wpp_textarea_field textarea:focus {
+    border-color: #80bdff;
+    outline: 0;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}

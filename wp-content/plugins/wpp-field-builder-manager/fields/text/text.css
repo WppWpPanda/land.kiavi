@@ -1,0 +1,23 @@
+/**
+ * Text Field Styles
+ */
+
+.wpp-wpp-text .form-control[type="tel"],
+.wpp-field-type-WPP_Text_Field .form-control[type="email"] {
+    border-color: #ced4da;
+}
+
+.wpp-wpp-text .form-control:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0,123,255,0.25);
+}
+
+/* Стили для поля percentage */
+.wpp-wpp-text input[type="percentage"] {
+    border-color: #ced4da;
+}
+
+.wpp-wpp-text input[type="percentage"]:focus {
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
