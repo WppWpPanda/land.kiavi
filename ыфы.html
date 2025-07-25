@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>New Users Intro Guide</title>
+    <style>
+        /* === Стили кнопки wpp-guide-modal-button === */
+        #wpp-guide-modal-button {
+            display: inline-flex;
+            align-items: center;
+            padding: 12px 20px;
+            background-color: #fd0033; /* Красный фон */
+            color: white; /* Белый текст */
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        #wpp-guide-modal-button svg {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            fill: white; /* Иконка YouTube белая */
+        }
+
+        #wpp-guide-modal-button:hover {
+            background-color: #fd3b30; /* При наведении чуть темнее */
+        }
+
+        /* === Стили модального окна wpp-guide-modal === */
+        #wpp-guide-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.6);
+        }
+
+        .wpp-ug-modal-content {
+            background-color: transparent;
+            margin: 8% auto;
+            padding: 24px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 700px;
+            position: relative;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .wpp-ug-close-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 24px;
+            font-weight: bold;
+            color: #fd0033;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        .wpp-ug-close-button:hover,
+        .wpp-ug-close-button:focus {
+            color: black;
+            outline: none;
+        }
+
+        .wpp-ug-video-container {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 */
+            margin: 20px 0;
+            overflow: hidden;
+            border-radius: 8px;
+        }
+
+        .wpp-ug-video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<!-- === Кнопка === -->
+<button id="wpp-guide-modal-button">
+    <!-- SVG иконка YouTube -->
+    <svg fill="#ffffff" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 260 180" enable-background="new 0 0 260 180" xml:space="preserve" stroke="#ffffff"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path d="M220,2H40C19.01,2,2,19.01,2,40v100c0,20.99,17.01,38,38,38h180c20.99,0,38-17.01,38-38V40C258,19.01,240.99,2,220,2z M102,130V50l68,40L102,130z"></path> </g></svg>
+    New Users Intro Guide
+</button>
+
+<!-- === Модальное окно === -->
+<div id="wpp-guide-modal" class="wpp-ug-modal">
+    <div class="wpp-ug-modal-content">
+        <!-- Крестик для закрытия -->
+        <button class="wpp-ug-close-button">&times;</button>
+
+        <!-- Видео контейнер -->
+        <div class="wpp-ug-video-container">
+            <iframe
+                    id="video-iframe"
+                    src="https://www.youtube.com/embed/PAtfzNft49U?enablejsapi=1&rel=0 "
+                    allowfullscreen
+                    title="Intro Video"
+            ></iframe>
+        </div>
+    </div>
+</div>
+
+<script>
+    // === Получаем элементы ===
+    const modal = document.getElementById('wpp-guide-modal');
+    const openButton = document.getElementById('wpp-guide-modal-button');
+    const closeButton = document.querySelector('.wpp-ug-close-button');
+    let player;
+
+    // === Открытие модального окна ===
+    openButton.addEventListener('click', () => {
+        modal.style.display = 'block';
+
+        // Если YouTube API загружен — запускаем видео
+        if (window.YT && YT.Player && !player) {
+            player = new YT.Player('video-iframe', {
+                events: {
+                    onReady: function(event) {
+                        event.target.playVideo();
+                    }
+                }
+            });
+        }
+    });
+
+    // === Закрытие по клику на крестик или вне окна ===
+    function stopAndCloseModal() {
+        modal.style.display = 'none';
+        if (player && player.stopVideo) {
+            player.stopVideo();
+        }
+    }
+
+    closeButton.addEventListener('click', stopAndCloseModal);
+
+    window.addEventListener('click', (e) => {
+        if (e.target === modal) {
+            stopAndCloseModal();
+        }
+    });
+
+    // === Подключение YouTube IFrame API ===
+    function onYouTubeIframeAPIReady() {
+        // Можно создать плеер при первом открытии
+    }
+
+    // Загрузка YouTube API
+    (function loadYouTubeAPI() {
+        const tag = document.createElement('script');
+        tag.src = 'https://www.youtube.com/iframe_api ';
+        const firstScriptTag = document.getElementsByTagName('script')[0];
+        firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    })();
+</script>
+</body>
+</html>

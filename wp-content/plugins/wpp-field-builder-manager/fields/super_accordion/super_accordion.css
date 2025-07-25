@@ -1,0 +1,48 @@
+.wpp-super-accordion {
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    width: 100%;
+}
+
+.wpp-super-accordion-header {
+    background-color: #f8f9fa;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: bold;
+}
+
+.wpp-super-accordion-header:hover {
+    background-color: #e9ecef;
+}
+
+.wpp-super-accordion-body {
+    padding: 1rem;
+    background-color: #fff;
+    border-top: 1px solid #dee2e6;
+}
+
+.toggle-icon {
+    transition: transform 0.3s ease;
+}
+
+.wpp-super-accordion.open .toggle-icon {
+    transform: rotate(180deg);
+}
+
+.wpp-super-accordion-header h5 {
+    display: flex;
+    width: 100%;
+    justify-content: flex-start;
+    min-width: 100%;
+    font-size: 15px;
+    padding: 0 10px;
+}
+
+.wpp-super-accordion-header span {
+    width: auto;
+}

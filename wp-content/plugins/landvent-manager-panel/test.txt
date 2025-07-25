@@ -1,0 +1,642 @@
+array(7) {
+  [2]=>
+  array(2) {
+    ["id"]=>
+    string(1) "2"
+    ["raw_data"]=>
+    object(stdClass)#430 (41) {
+      ["s1_investment_type"]=>
+      string(16) "new_construction"
+      ["s2_entity_selector"]=>
+      string(9) "new_entry"
+      ["s2_entity_name"]=>
+      string(10) "test entry"
+      ["s2_entity_type"]=>
+      string(10) "individual"
+      ["s2_experience"]=>
+      string(2) "5+"
+      ["s2_first_name"]=>
+      string(4) "Liza"
+      ["s2_last_name"]=>
+      string(6) "backer"
+      ["s2_suffix"]=>
+      string(1) "V"
+      ["sguarantor_id"]=>
+      int(4)
+      ["s3_address_line_1"]=>
+      string(12) "Mayakowskogo"
+      ["s3_address_line_2"]=>
+      string(1) "5"
+      ["s3_city"]=>
+      string(8) "Gorlovka"
+      ["s3_state"]=>
+      string(2) "AZ"
+      ["s3_zip"]=>
+      string(6) "120881"
+      ["s4_property_state"]=>
+      string(0) ""
+      ["s4_property_type"]=>
+      string(13) "single_family"
+      ["s4_estimated_fico_score"]=>
+      string(7) "720-739"
+      ["s4_personally_guaranteed"]=>
+      string(3) "yes"
+      ["s4_refinance"]=>
+      string(2) "no"
+      ["s4_purchase_price"]=>
+      int(200000)
+      ["s4_purchase_loan_amount"]=>
+      int(150000)
+      ["s4_property_rehab"]=>
+      string(3) "yes"
+      ["s4_rehab_cost"]=>
+      int(25000)
+      ["s4_rehab_funds"]=>
+      string(3) "yes"
+      ["s4_after_repair_value"]=>
+      int(300000)
+      ["s4_chosen_rate_type"]=>
+      string(9) "12 Months"
+      ["s4_chosen_rate"]=>
+      string(4) "8.25"
+      ["s5_us_citizen_checkbox"]=>
+      string(1) "1"
+      ["s5_not_living_checkbox"]=>
+      string(1) "1"
+      ["s6_address_line_1"]=>
+      string(12) "Mayakowskogo"
+      ["s6_address_line_2"]=>
+      string(1) "5"
+      ["s6_city"]=>
+      string(8) "Gorlovka"
+      ["s6_state"]=>
+      string(2) "FL"
+      ["s6_zip"]=>
+      string(6) "120881"
+      ["s7_signing_date"]=>
+      string(10) "2025-06-30"
+      ["s8_date_of_birth"]=>
+      int(20250506)
+      ["s8_address_line_1"]=>
+      int(0)
+      ["s8_address_line_2"]=>
+      int(5)
+      ["s8_city"]=>
+      int(0)
+      ["s8_state"]=>
+      int(0)
+      ["s8_zip_code"]=>
+      int(120881)
+    }
+  }
+  [5]=>
+  array(2) {
+    ["id"]=>
+    string(1) "5"
+    ["raw_data"]=>
+    object(stdClass)#1012 (36) {
+      ["s1_investment_type"]=>
+      string(20) "bridge_fix_flip_rent"
+      ["s2_entity_selector"]=>
+      string(10) "existing_1"
+      ["s3_address_line_1"]=>
+      string(13) "4375 Paris St"
+      ["s3_address_line_2"]=>
+      string(1) "5"
+      ["s3_city"]=>
+      string(6) "Garson"
+      ["s3_state"]=>
+      string(2) "MT"
+      ["s3_zip"]=>
+      string(7) "K1L 6C7"
+      ["s4_property_state"]=>
+      string(0) ""
+      ["s4_property_type"]=>
+      string(13) "single_family"
+      ["s4_estimated_fico_score"]=>
+      string(7) "720-739"
+      ["s4_personally_guaranteed"]=>
+      string(3) "yes"
+      ["s4_refinance"]=>
+      string(2) "no"
+      ["s4_purchase_price"]=>
+      int(200000)
+      ["s4_purchase_loan_amount"]=>
+      int(150000)
+      ["s4_property_rehab"]=>
+      string(3) "yes"
+      ["s4_rehab_cost"]=>
+      int(25000)
+      ["s4_rehab_funds"]=>
+      string(3) "yes"
+      ["s4_after_repair_value"]=>
+      int(300000)
+      ["s4_chosen_rate_type"]=>
+      string(9) "18 Months"
+      ["s4_chosen_rate"]=>
+      string(1) "9"
+      ["s5_us_citizen_checkbox"]=>
+      string(1) "1"
+      ["s5_not_living_checkbox"]=>
+      string(1) "1"
+      ["s6_address_line_1"]=>
+      string(13) "4375 Paris St"
+      ["s6_address_line_2"]=>
+      string(1) "5"
+      ["s6_city"]=>
+      string(6) "Garson"
+      ["s6_state"]=>
+      string(2) "MT"
+      ["s6_zip"]=>
+      string(7) "K1L 6C7"
+      ["s7_signing_date"]=>
+      string(10) "2025-06-30"
+      ["s8_date_of_birth"]=>
+      int(20250506)
+      ["s8_address_line_1"]=>
+      int(4375)
+      ["s8_address_line_2"]=>
+      int(0)
+      ["s8_city"]=>
+      int(0)
+      ["s8_state"]=>
+      int(0)
+      ["s8_zip_code"]=>
+      int(167)
+      ["s8_credit_report_consent"]=>
+      int(1)
+      ["s8_background_check_consent"]=>
+      int(1)
+    }
+  }
+  [6]=>
+  array(2) {
+    ["id"]=>
+    string(1) "6"
+    ["raw_data"]=>
+    object(stdClass)#1015 (43) {
+      ["s1_investment_type"]=>
+      string(16) "new_construction"
+      ["s2_entity_selector"]=>
+      string(9) "new_entry"
+      ["s2_entity_name"]=>
+      string(10) "test entry"
+      ["s2_entity_type"]=>
+      string(11) "corporation"
+      ["s2_experience"]=>
+      string(2) "5+"
+      ["s2_first_name"]=>
+      string(4) "Test"
+      ["s2_last_name"]=>
+      string(5) "User1"
+      ["s2_suffix"]=>
+      string(3) "Jr."
+      ["sguarantor_id"]=>
+      int(5)
+      ["s3_address_line_1"]=>
+      string(13) "4375 Paris St"
+      ["s3_address_line_2"]=>
+      string(1) "5"
+      ["s3_city"]=>
+      string(6) "Garson"
+      ["s3_state"]=>
+      string(2) "MT"
+      ["s3_zip"]=>
+      string(7) "K1L 6C7"
+      ["s4_property_state"]=>
+      string(2) "LA"
+      ["s4_property_type"]=>
+      string(13) "single_family"
+      ["s4_estimated_fico_score"]=>
+      string(7) "720-739"
+      ["s4_personally_guaranteed"]=>
+      string(3) "yes"
+      ["s4_refinance"]=>
+      string(2) "no"
+      ["s4_purchase_price"]=>
+      int(200000)
+      ["s4_purchase_loan_amount"]=>
+      int(150000)
+      ["s4_property_rehab"]=>
+      string(3) "yes"
+      ["s4_rehab_cost"]=>
+      int(25000)
+      ["s4_rehab_funds"]=>
+      string(3) "yes"
+      ["s4_after_repair_value"]=>
+      int(300000)
+      ["s4_chosen_rate_type"]=>
+      string(9) "18 Months"
+      ["s4_chosen_rate"]=>
+      string(1) "9"
+      ["s5_us_citizen_checkbox"]=>
+      string(1) "1"
+      ["s5_not_living_checkbox"]=>
+      string(1) "1"
+      ["s6_address_line_1"]=>
+      string(36) "2019 Newnan Crossing Bypass APT 1416"
+      ["s6_address_line_2"]=>
+      string(1) "5"
+      ["s6_city"]=>
+      string(4) "city"
+      ["s6_state"]=>
+      string(2) "GA"
+      ["s6_zip"]=>
+      string(3) "ZIP"
+      ["s7_signing_date"]=>
+      string(10) "2025-06-29"
+      ["s8_date_of_birth"]=>
+      int(20250623)
+      ["s8_address_line_1"]=>
+      int(0)
+      ["s8_address_line_2"]=>
+      int(0)
+      ["s8_city"]=>
+      int(0)
+      ["s8_state"]=>
+      int(0)
+      ["s8_zip_code"]=>
+      int(120881)
+      ["s8_credit_report_consent"]=>
+      int(1)
+      ["s8_background_check_consent"]=>
+      int(1)
+    }
+  }
+  [7]=>
+  array(2) {
+    ["id"]=>
+    string(1) "7"
+    ["raw_data"]=>
+    object(stdClass)#1016 (43) {
+      ["s1_investment_type"]=>
+      string(20) "bridge_fix_flip_rent"
+      ["s2_entity_selector"]=>
+      string(9) "new_entry"
+      ["s2_entity_name"]=>
+      string(10) "test entry"
+      ["s2_entity_type"]=>
+      string(10) "individual"
+      ["s2_experience"]=>
+      string(2) "5+"
+      ["s2_first_name"]=>
+      string(4) "Test"
+      ["s2_last_name"]=>
+      string(5) "User1"
+      ["s2_suffix"]=>
+      string(3) "III"
+      ["sguarantor_id"]=>
+      int(6)
+      ["s3_address_line_1"]=>
+      string(8) "Street 1"
+      ["s3_address_line_2"]=>
+      string(1) "5"
+      ["s3_city"]=>
+      string(6) "city 1"
+      ["s3_state"]=>
+      string(2) "FL"
+      ["s3_zip"]=>
+      string(5) "11111"
+      ["s4_property_state"]=>
+      string(0) ""
+      ["s4_property_type"]=>
+      string(13) "single_family"
+      ["s4_estimated_fico_score"]=>
+      string(7) "720-739"
+      ["s4_personally_guaranteed"]=>
+      string(3) "yes"
+      ["s4_refinance"]=>
+      string(2) "no"
+      ["s4_purchase_price"]=>
+      int(200000)
+      ["s4_purchase_loan_amount"]=>
+      int(150000)
+      ["s4_property_rehab"]=>
+      string(3) "yes"
+      ["s4_rehab_cost"]=>
+      int(25000)
+      ["s4_rehab_funds"]=>
+      string(3) "yes"
+      ["s4_after_repair_value"]=>
+      int(300000)
+      ["s4_chosen_rate_type"]=>
+      string(9) "18 Months"
+      ["s4_chosen_rate"]=>
+      string(1) "9"
+      ["s5_us_citizen_checkbox"]=>
+      string(1) "1"
+      ["s5_not_living_checkbox"]=>
+      string(1) "1"
+      ["s6_address_line_1"]=>
+      string(8) "Street 1"
+      ["s6_address_line_2"]=>
+      string(1) "5"
+      ["s6_city"]=>
+      string(6) "city 1"
+      ["s6_state"]=>
+      string(2) "AZ"
+      ["s6_zip"]=>
+      string(5) "11111"
+      ["s7_signing_date"]=>
+      string(10) "2025-06-30"
+      ["s8_date_of_birth"]=>
+      int(20250528)
+      ["s8_address_line_1"]=>
+      int(4375)
+      ["s8_address_line_2"]=>
+      int(5)
+      ["s8_city"]=>
+      int(0)
+      ["s8_state"]=>
+      int(0)
+      ["s8_zip_code"]=>
+      int(167)
+      ["s8_credit_report_consent"]=>
+      int(1)
+      ["s8_background_check_consent"]=>
+      int(1)
+    }
+  }
+  [8]=>
+  array(2) {
+    ["id"]=>
+    string(1) "8"
+    ["raw_data"]=>
+    object(stdClass)#1017 (43) {
+      ["s1_investment_type"]=>
+      string(20) "bridge_fix_flip_rent"
+      ["s2_entity_selector"]=>
+      string(9) "new_entry"
+      ["s2_entity_name"]=>
+      string(10) "test entry"
+      ["s2_entity_type"]=>
+      string(10) "individual"
+      ["s2_experience"]=>
+      string(3) "1-4"
+      ["s2_first_name"]=>
+      string(4) "Test"
+      ["s2_last_name"]=>
+      string(5) "User1"
+      ["s2_suffix"]=>
+      string(3) "III"
+      ["sguarantor_id"]=>
+      string(1) "6"
+      ["s3_address_line_1"]=>
+      string(8) "Street 1"
+      ["s3_address_line_2"]=>
+      string(1) "5"
+      ["s3_city"]=>
+      string(6) "city 1"
+      ["s3_state"]=>
+      string(2) "FL"
+      ["s3_zip"]=>
+      string(5) "11111"
+      ["s4_property_state"]=>
+      string(0) ""
+      ["s4_property_type"]=>
+      string(13) "single_family"
+      ["s4_estimated_fico_score"]=>
+      string(7) "720-739"
+      ["s4_personally_guaranteed"]=>
+      string(3) "yes"
+      ["s4_refinance"]=>
+      string(2) "no"
+      ["s4_purchase_price"]=>
+      int(200000)
+      ["s4_purchase_loan_amount"]=>
+      int(150000)
+      ["s4_property_rehab"]=>
+      string(3) "yes"
+      ["s4_rehab_cost"]=>
+      int(25000)
+      ["s4_rehab_funds"]=>
+      string(3) "yes"
+      ["s4_after_repair_value"]=>
+      int(300000)
+      ["s4_chosen_rate_type"]=>
+      string(9) "18 Months"
+      ["s4_chosen_rate"]=>
+      string(1) "9"
+      ["s5_us_citizen_checkbox"]=>
+      string(1) "1"
+      ["s5_not_living_checkbox"]=>
+      string(1) "1"
+      ["s6_address_line_1"]=>
+      string(8) "Street 1"
+      ["s6_address_line_2"]=>
+      string(1) "5"
+      ["s6_city"]=>
+      string(6) "city 1"
+      ["s6_state"]=>
+      string(2) "FL"
+      ["s6_zip"]=>
+      string(5) "11111"
+      ["s7_signing_date"]=>
+      string(10) "2025-06-30"
+      ["s8_date_of_birth"]=>
+      int(20250630)
+      ["s8_address_line_1"]=>
+      int(1)
+      ["s8_address_line_2"]=>
+      int(5)
+      ["s8_city"]=>
+      int(0)
+      ["s8_state"]=>
+      int(0)
+      ["s8_zip_code"]=>
+      int(11111)
+      ["s8_credit_report_consent"]=>
+      int(1)
+      ["s8_background_check_consent"]=>
+      int(1)
+    }
+  }
+  [9]=>
+  array(2) {
+    ["id"]=>
+    string(1) "9"
+    ["raw_data"]=>
+    object(stdClass)#1018 (41) {
+      ["s1_investment_type"]=>
+      string(20) "bridge_fix_flip_rent"
+      ["s2_entity_selector"]=>
+      string(9) "new_entry"
+      ["s2_entity_name"]=>
+      string(10) "test entry"
+      ["s2_entity_type"]=>
+      string(11) "corporation"
+      ["s2_experience"]=>
+      string(3) "1-4"
+      ["s2_first_name"]=>
+      string(2) "Wp"
+      ["s2_last_name"]=>
+      string(5) "User1"
+      ["s2_suffix"]=>
+      string(3) "III"
+      ["sguarantor_id"]=>
+      int(7)
+      ["s3_address_line_1"]=>
+      string(8) "Street 1"
+      ["s3_address_line_2"]=>
+      string(0) ""
+      ["s3_city"]=>
+      string(6) "city 1"
+      ["s3_state"]=>
+      string(2) "FL"
+      ["s3_zip"]=>
+      string(5) "11111"
+      ["s4_property_state"]=>
+      string(0) ""
+      ["s4_property_type"]=>
+      string(13) "single_family"
+      ["s4_estimated_fico_score"]=>
+      string(7) "720-739"
+      ["s4_personally_guaranteed"]=>
+      string(3) "yes"
+      ["s4_refinance"]=>
+      string(2) "no"
+      ["s4_purchase_price"]=>
+      int(200000)
+      ["s4_purchase_loan_amount"]=>
+      int(150000)
+      ["s4_property_rehab"]=>
+      string(3) "yes"
+      ["s4_rehab_cost"]=>
+      int(25000)
+      ["s4_rehab_funds"]=>
+      string(3) "yes"
+      ["s4_after_repair_value"]=>
+      int(300000)
+      ["s4_chosen_rate_type"]=>
+      string(9) "24 Months"
+      ["s4_chosen_rate"]=>
+      string(4) "9.25"
+      ["s5_us_citizen_checkbox"]=>
+      string(1) "1"
+      ["s5_not_living_checkbox"]=>
+      string(1) "1"
+      ["s6_address_line_1"]=>
+      string(8) "Street 1"
+      ["s6_address_line_2"]=>
+      string(0) ""
+      ["s6_city"]=>
+      string(6) "city 1"
+      ["s6_state"]=>
+      string(2) "FL"
+      ["s6_zip"]=>
+      string(5) "11111"
+      ["s7_signing_date"]=>
+      string(10) "2025-06-29"
+      ["s8_date_of_birth"]=>
+      int(20250616)
+      ["s8_address_line_1"]=>
+      int(1)
+      ["s8_address_line_2"]=>
+      int(5)
+      ["s8_city"]=>
+      int(1)
+      ["s8_state"]=>
+      int(0)
+      ["s8_zip_code"]=>
+      int(11111)
+    }
+  }
+  [10]=>
+  array(2) {
+    ["id"]=>
+    string(2) "10"
+    ["raw_data"]=>
+    object(stdClass)#1019 (45) {
+      ["s1_investment_type"]=>
+      string(20) "bridge_fix_flip_rent"
+      ["s2_entity_selector"]=>
+      string(9) "new_entry"
+      ["s2_entity_name"]=>
+      string(11) "test entry2"
+      ["s2_entity_type"]=>
+      string(11) "corporation"
+      ["s2_experience"]=>
+      string(2) "5+"
+      ["s2_first_name"]=>
+      string(6) "veargo"
+      ["s2_last_name"]=>
+      string(4) "Team"
+      ["s2_suffix"]=>
+      string(2) "IV"
+      ["sguarantor_id"]=>
+      int(8)
+      ["s3_address_line_1"]=>
+      string(8) "Street 1"
+      ["s3_address_line_2"]=>
+      string(1) "5"
+      ["s3_city"]=>
+      string(6) "city 1"
+      ["s3_state"]=>
+      string(2) "FL"
+      ["s3_zip"]=>
+      string(5) "11111"
+      ["s4_property_state"]=>
+      string(0) ""
+      ["s4_property_type"]=>
+      string(13) "single_family"
+      ["s4_estimated_fico_score"]=>
+      string(7) "720-739"
+      ["s4_personally_guaranteed"]=>
+      string(3) "yes"
+      ["s4_refinance"]=>
+      string(3) "yes"
+      ["s4_prop_owned_6_months"]=>
+      string(3) "yes"
+      ["s4_estimated_home_value"]=>
+      int(225000)
+      ["s4_remaining_mortgage"]=>
+      int(0)
+      ["s4_refinance_loan_amount"]=>
+      int(150000)
+      ["s4_property_rehab"]=>
+      string(3) "yes"
+      ["s4_rehab_cost"]=>
+      int(25000)
+      ["s4_rehab_funds"]=>
+      string(3) "yes"
+      ["s4_after_repair_value"]=>
+      int(300000)
+      ["s4_chosen_rate_type"]=>
+      string(9) "18 Months"
+      ["s4_chosen_rate"]=>
+      string(2) "11"
+      ["s5_us_citizen_checkbox"]=>
+      string(1) "1"
+      ["s5_not_living_checkbox"]=>
+      string(1) "1"
+      ["s6_address_line_1"]=>
+      string(13) "4375 Paris St"
+      ["s6_address_line_2"]=>
+      string(1) "5"
+      ["s6_city"]=>
+      string(6) "Garson"
+      ["s6_state"]=>
+      string(2) "MT"
+      ["s6_zip"]=>
+      string(7) "K1L 6C7"
+      ["s7_signing_date"]=>
+      string(10) "2025-05-27"
+      ["s8_date_of_birth"]=>
+      int(20250712)
+      ["s8_address_line_1"]=>
+      int(1)
+      ["s8_address_line_2"]=>
+      int(5)
+      ["s8_city"]=>
+      int(0)
+      ["s8_state"]=>
+      int(0)
+      ["s8_zip_code"]=>
+      int(11111)
+      ["s8_credit_report_consent"]=>
+      int(1)
+      ["s8_background_check_consent"]=>
+      int(1)
+    }
+  }
+}

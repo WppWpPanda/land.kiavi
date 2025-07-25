@@ -1,0 +1,54 @@
+.page-template-single-loan .accordion-item:last-of-type .accordion-button:not(.collapsed),
+.page-template-single-loan .accordion-item:first-of-type .accordion-button:not(.collapsed),
+.page-template-single-loan .accordion-button:not(.collapsed),
+.page-template-single-loan .accordion-item:last-of-type .accordion-button,
+.page-template-single-loan .accordion-item:first-of-type .accordion-button,
+.page-template-single-loan .accordion-item .accordion-button,
+.page-template-single-loan .accordion-item,
+.page-template-single-loan .accordion-item:last-of-type,
+.page-template-single-loan .accordion-item:first-of-type {
+    border-radius: 0;
+}
+
+.page-template-single-loan .accordion-button:focus {
+    z-index: 3;
+    border-color: transparent;
+    outline: 0;
+    box-shadow: none;
+}
+
+.page-template-single-loan .accordion-item {
+    border: none;
+}
+
+.page-template-single-loan .accordion-header {
+    border-bottom:1px solid #c3c4c7;
+}
+
+#sidebar {
+    border-right:1px solid #c3c4c7;
+    height: 100%;
+}
+
+.page-template-single-loan main {
+    background-color: #efefef;
+}
+
+.loan-status-bar {
+    background-color: #fff;
+    margin: 0 -24px 25px;
+    padding: 1rem;
+    border-top: none;
+}
+
+.wpp-iside {
+    margin: 0 -14px;
+}
+
+li.nav-item {
+    border-bottom: 1px solid #c3c4c7;
+}
+
+li.nav-item a{
+    color: #272727;
+}

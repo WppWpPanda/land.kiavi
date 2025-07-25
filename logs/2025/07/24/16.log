@@ -1,0 +1,35 @@
+[24-Jul-2025 13:05:14 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[24-Jul-2025 13:05:16 UTC] Automatic updates starting...
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\applicant-info.php on line 262
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 755
+[24-Jul-2025 13:05:16 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 861
+[24-Jul-2025 13:05:17 UTC] Automatic updates complete.
+[24-Jul-2025 13:05:26 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[24-Jul-2025 13:05:26 UTC] PHP Notice:  Function wpdb::prepare was called <strong>incorrectly</strong>. The query argument of wpdb::prepare() must have a placeholder. Please see <a href="https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/">Debugging in WordPress</a> for more information. (This message was added in version 3.9.0.) in F:\os\OSPanel\domains\land.kiavi\wp-includes\functions.php on line 6121
+[24-Jul-2025 13:05:30 UTC] PHP Warning:  Attempt to read property "card_ids" on null in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\trello-columns.php on line 165
+[24-Jul-2025 13:05:30 UTC] PHP Deprecated:  json_decode(): Passing null to parameter #1 ($json) of type string is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\trello-columns.php on line 165
+[24-Jul-2025 13:05:30 UTC] PHP Fatal error:  Uncaught TypeError: array_filter(): Argument #1 ($array) must be of type array, null given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\trello-columns.php:168
+Stack trace:
+#0 F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\trello-columns.php(168): array_filter()
+#1 F:\os\OSPanel\domains\land.kiavi\wp-includes\class-wp-hook.php(324): update_card_position_callback()
+#2 F:\os\OSPanel\domains\land.kiavi\wp-includes\class-wp-hook.php(348): WP_Hook->apply_filters()
+#3 F:\os\OSPanel\domains\land.kiavi\wp-includes\plugin.php(517): WP_Hook->do_action()
+#4 F:\os\OSPanel\domains\land.kiavi\wp-admin\admin-ajax.php(192): do_action()
+#5 {main}
+  thrown in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\trello-columns.php on line 168
+[24-Jul-2025 13:05:34 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[24-Jul-2025 13:05:34 UTC] PHP Notice:  Function wpdb::prepare was called <strong>incorrectly</strong>. The query argument of wpdb::prepare() must have a placeholder. Please see <a href="https://developer.wordpress.org/advanced-administration/debug/debug-wordpress/">Debugging in WordPress</a> for more information. (This message was added in version 3.9.0.) in F:\os\OSPanel\domains\land.kiavi\wp-includes\functions.php on line 6121

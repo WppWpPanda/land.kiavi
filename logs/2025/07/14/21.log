@@ -1,0 +1,13 @@
+[14-Jul-2025 18:06:48 UTC] PHP Warning:  mysqli_real_connect(): (HY000/2002): Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение in F:\os\OSPanel\domains\land.kiavi\wp-includes\class-wpdb.php on line 1988
+[14-Jul-2025 18:07:00 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[14-Jul-2025 18:07:05 UTC] Automatic updates starting...
+[14-Jul-2025 18:07:06 UTC] Automatic updates complete.
+[14-Jul-2025 18:55:44 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[14-Jul-2025 18:55:46 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[14-Jul-2025 18:56:02 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[14-Jul-2025 18:56:04 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[14-Jul-2025 18:56:46 UTC] Гарант сохранён под ID: 11
+[14-Jul-2025 18:56:48 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[14-Jul-2025 18:56:50 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[14-Jul-2025 18:56:58 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[14-Jul-2025 18:57:01 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
