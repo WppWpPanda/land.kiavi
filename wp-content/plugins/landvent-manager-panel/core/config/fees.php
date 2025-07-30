@@ -8,82 +8,72 @@ function wpp_step_config_fees() {
 	$base_amount = $base_amount > 0 ? $base_amount : 0;
 
 	$fields = [
-		'fee_deposit' => [
-			'type'         => 'percent_money',
-			'name'         => 'fee_deposit',
-			'label'        => 'Deposit',
-			'width'        => 'full',
-			'base_amount'  => $base_amount,
-			'default'      => [
-				'money'   => '0.00',
-				'percent' => '0.00'
-			],
+		'fee_deposit'             => [
+			'type'        => 'percent_money',
+			'name'        => 'fee_deposit',
+			'label'       => 'Deposit',
+			'width'       => 'full',
+			'base_amount' => $base_amount,
 		],
-		'fee_broker_fee' => [
-			'type'         => 'percent_money',
-			'name'         => 'fee_broker_fee',
-			'label'        => 'Broker Fee',
-			'width'        => 'full',
-			'base_amount'  => $base_amount,
-			'default'      => [
-				'money'   => '0.00',
-				'percent' => '0.00'
-			],
+		'fee_broker_fee'          => [
+			'type'        => 'percent_money',
+			'name'        => 'fee_broker_fee',
+			'label'       => 'Broker Fee',
+			'width'       => 'full',
+			'base_amount' => $base_amount,
 		],
-		'fee_origination_fee' => [
-			'type'         => 'percent_money',
-			'name'         => 'fee_origination_fee',
-			'label'        => 'Origination Fee',
-			'width'        => 'full',
-			'base_amount'  => $base_amount,
-			'default'      => [
-				'money'   => '0.00',
-				'percent' => '0.00'
-			],
+		'fee_origination_fee'     => [
+			'type'        => 'percent_money',
+			'name'        => 'fee_origination_fee',
+			'label'       => 'Origination Fee',
+			'width'       => 'full',
+			'base_amount' => $base_amount,
 		],
-		'fee_lender_fee' => [
-			'type'         => 'percent_money',
-			'name'         => 'fee_lender_fee',
-			'label'        => 'Lender Fee',
-			'width'        => 'full',
-			'base_amount'  => $base_amount,
-			'default'      => [
-				'money'   => '0.00',
-				'percent' => '0.00'
-			],
+		'fee_lender_fee'          => [
+			'type'        => 'percent_money',
+			'name'        => 'fee_lender_fee',
+			'label'       => 'Lender Fee',
+			'width'       => 'full',
+			'base_amount' => $base_amount,
 		],
-		'fee_processing_fee' => [
-			'type'         => 'percent_money',
-			'name'         => 'fee_processing_fee',
-			'label'        => 'Processing Fee',
-			'width'        => 'full',
-			'base_amount'  => $base_amount,
-			'default'      => [
-				'money'   => '0.00',
-				'percent' => '0.00'
-			],
+		'fee_processing_fee'      => [
+			'type'        => 'percent_money',
+			'name'        => 'fee_processing_fee',
+			'label'       => 'Processing Fee',
+			'width'       => 'full',
+			'base_amount' => $base_amount,
 		],
 		'fee_site_inspection_fee' => [
-			'type'         => 'percent_money',
-			'name'         => 'fee_site_inspection_fee',
-			'label'        => 'Site Inspection Fee',
-			'width'        => 'full',
-			'base_amount'  => $base_amount,
-			'default'      => [
-				'money'   => '0.00',
-				'percent' => '0.00'
-			],
+			'type'        => 'percent_money',
+			'name'        => 'fee_site_inspection_fee',
+			'label'       => 'Site Inspection Fee',
+			'width'       => 'full',
+			'base_amount' => $base_amount,
 		],
-		'fee_appraisal_fee' => [
-			'type'         => 'percent_money',
-			'name'         => 'fee_appraisal_fee',
-			'label'        => 'Appraisal Fee',
-			'width'        => 'full',
-			'base_amount'  => $base_amount,
-			'default'      => [
-				'money'   => '0.00',
-				'percent' => '0.00'
-			],
+		'fee_appraisal_fee'       => [
+			'type'        => 'percent_money',
+			'name'        => 'fee_appraisal_fee',
+			'label'       => 'Appraisal Fee',
+			'width'       => 'full',
+			'base_amount' => $base_amount
+		],
+		'fee_custom'       => [
+			'type'    => 'content',
+			'name'    => 'fee_custom',
+			'label'   => '',
+			'width'   => 'full',
+			'content' => '
+                <!-- Контейнер для пользовательских сборов -->
+                <div id="custom-fees-container">
+                    <h4>Additional Fees</h4>
+                    <!-- Сюда будут добавляться кастомные сборы -->
+                </div>
+                
+                <!-- Кнопка добавления -->
+                <button type="button" class="btn btn-sm btn-outline-secondary mt-2" id="add-custom-fee">
+                    + Add New Fee
+                </button>
+            ',
 		],
 	];
 
@@ -98,7 +88,7 @@ function wpp_term_fees() { ?>
 				'type'    => 'accordion',
 				'name'    => 'info_fees',
 				'title'   => 'Fees',
-				'content' =>  function () {
+				'content' => function () {
 					foreach ( wpp_step_config_fees() as $name => $config ) {
 						$class_name = 'WPP_' . ucfirst( $config['type'] ) . '_Field';
 

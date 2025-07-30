@@ -395,3 +395,11 @@ div#kanban-stats span {
 div#kanban-stats  .tl.int-loan-count span {
     margin-right: 3px;
 }
+
+.custom-fee-item.mb-2>div>input {
+    width: 150px;
+    min-width: 150px;
+    font-size: .8rem;
+    font-weight: 300;
+    margin-right:50px
+}

@@ -117,9 +117,12 @@ function wpp_default_value( $default, $args ) {
 		$data = wpp_get_loan_data_r();
 
 		if ( ! empty( $data[ $args['name'] ] ) ) {
+
+			//var_dump($data[ $args['name'] ]);
 			return $data[ $args['name'] ];
 		}
 	}
+
 
 	return $default;
 

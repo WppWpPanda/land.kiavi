@@ -59,9 +59,8 @@ abstract class WPP_Form_Field {
 		];
 
         $defaults['default'] = apply_filters( 'wpp_form_field_default', $defaults['default'], $args );
+
         $defaults['default'] = apply_filters( 'wpp_form_field_default_' . $args['name'], $defaults['default'], $args );
-
-
 
 
 		$this->args = wp_parse_args( $args, $defaults );

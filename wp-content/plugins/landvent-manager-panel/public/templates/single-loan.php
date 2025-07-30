@@ -2,8 +2,19 @@
 /*
 Template Name: LandVent — Single Loan
 */
-get_header(); ?>
+get_header();
+// Получаем данныемфк
 
+$loanData = wpp_get_loan_data_r($_GET['loan']);
+$loanData['baseAmount'] = wpp_get_total_loan_amount();
+// Преобразуем в JSON (используем JSON_HEX_APOS и JSON_HEX_QUOT для экранирования)
+$loanDataJson = json_encode($loanData, JSON_HEX_APOS | JSON_HEX_QUOT);
+?>
+    <script>
+        // Передаем данные в JavaScript
+        const loanData = JSON.parse('<?php echo $loanDataJson; ?>');
+        console.log(loanData); // Проверяем в консоли
+    </script>
     <div class="container-fluid">
         <div class="row">
 

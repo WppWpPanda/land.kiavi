@@ -1,123 +1,140 @@
 (function ($) {
     'use strict';
 
+    let customFeeIndex = 0;
+
     $(document).ready(function () {
-        //console.log('WPP Field Builder: Frontend script loaded.');
 
-        // Инициализация условной логики при загрузке страницы
-        handleConditionalFields();
-
-        // Обновление видимости полей при изменении других полей
-        $(document).on('input', '.wpp-field input, .wpp-field select', function () {
-            handleConditionalFields();
-        });
-
-        /**
-         * Получаем значение поля по имени
-         *
-         * @param {string} fieldName - имя поля
-         * @returns {string}
-         */
-        function getFieldValue(fieldName) {
-            const $input = $(`[name="${fieldName}"]`);
-
-            if ($input.length === 0) return '';
-
-            // Если поле имеет атрибут disabled → игнорируем его значение
-            if ($input.prop('disabled')) {
-                return '';
-            }
-
-            const value = $input.val();
-
-            // Для money-полей очищаем от лишних символов
-            if ($input.closest('.wpp-field').find('[data-type="money"]').length > 0) {
-                return value.replace(/[^0-9.]/g, '');
-            }
-
-            return value;
-        }
-
-        /**
-         * Обработчик условного отображения полей
-         */
-        function handleConditionalFields() {
-            const allFields = $('.wpp-field');
-
-            // Проходим по каждому полю и проверяем условия
-            allFields.each(function () {
-                const field = $(this);
-                const conditionData = field.attr('data-condition');
-                const compareType = field.attr('data-compare') || '=';
-
-                if (!conditionData) return; // Пропускаем, если нет условия
-
-                try {
-                    const conditions = JSON.parse(conditionData);
-                    let show = true;
-
-                    $.each(conditions, function (key, expectedValues) {
-                        const fieldValue = getFieldValue(key);
-
-                        // Если expectedValues — массив
-                        if (Array.isArray(expectedValues)) {
-                            const matches = expectedValues.includes(fieldValue);
-                            if (compareType === '!=') {
-                                show = !matches;
-                            } else {
-                                show = matches;
-                            }
-                        } else {
-                            // Одиночное значение
-                            const matches = String(fieldValue) === String(expectedValues);
-                            if (compareType === '!=') {
-                                show = !matches;
-                            } else {
-                                show = matches;
-                            }
-                        }
-
-                        // Останавливаем цикл, если уже определено, что не показывать
-                        if (!show) return false;
-                    });
-
-                    // Управляем отображением и состоянием поля
-                    if (!show) {
-                        field.hide();
-                        field.find('input, select').prop('disabled', true); // Блокируем ввод
-                    } else {
-                        field.show();
-                        field.find('input, select').prop('disabled', false); // Разрешаем ввод
-                    }
-
-                } catch (e) {
-                    console.error('Ошибка условия:', conditionData);
-                }
+        // === 1. Восстановление custom fees из loanData ===
+        if (typeof loanData !== 'undefined' && Array.isArray(loanData.custom_fees)) {
+            loanData.custom_fees.forEach(function (fee) {
+                addCustomFee(fee.label, fee.money, fee.percent);
             });
         }
 
-        /**
-         * Пример кастомной валидации формы
-         */
-        $('form.wpp-custom-form').on('submit', function (e) {
-            let isValid = true;
-
-            $('.wpp-field [required]').each(function () {
-                const value = $(this).val();
-                if (!value) {
-                    isValid = false;
-                    $(this).addClass('is-invalid');
-                } else {
-                    $(this).removeClass('is-invalid');
-                }
-            });
-
-            if (!isValid) {
-                e.preventDefault();
-                alert('Пожалуйста, заполните все обязательные поля.');
-            }
+        // === 2. Кнопка "Add New Fee" ===
+        $('#add-custom-fee').on('click', function () {
+            addCustomFee('', '0.00', '0.00');
         });
 
+        // === 3. Функция добавления нового сбора ===
+        function addCustomFee(label = '', money = '0.00', percent = '0.00') {
+            const baseAmount = parseFloat(loanData.baseAmount) || 0;
+            const index = customFeeIndex++;
+
+            const $container = $('#custom-fees-container');
+
+            const feeHtml = `
+            <div class="custom-fee-item mb-2" data-index="${index}">
+                <div class="input-group input-group-sm">
+                    <!-- Название -->
+                    <input type="text"
+                           name="custom_fees[${index}][label]"
+                           class="form-control fee-label"
+                           placeholder="Fee Name"
+                           value="${$.escapeHtml(label)}"
+                           style="max-width: 150px;"
+                           data-index="${index}">
+
+                    <div class="wpp-percent-money-field d-flex align-items-center gap-2 flex-grow-1">
+                        <!-- Сумма -->
+                        <div class="wpp-money-input input-group input-group-sm">
+                            <span class="input-group-text wpp-prefix">$</span>
+                            <input type="number"
+                                   step="any"
+                                   name="custom_fees[${index}][money]"
+                                   class="form-control money"
+                                   data-base-amount="${baseAmount}"
+                                   data-linked-field="#custom-fee-${index}-percent"
+                                   value="${$.escapeHtml(money)}"
+                                   placeholder="0.00"
+                                   data-index="${index}">
+                        </div>
+
+                        <span class="mx-1">or</span>
+
+                        <!-- Процент -->
+                        <div class="wpp-percent-input input-group input-group-sm">
+                            <input type="number"
+                                   step="any"
+                                   name="custom_fees[${index}][percent]"
+                                   id="custom-fee-${index}-percent"
+                                   class="form-control percent"
+                                   data-base-amount="${baseAmount}"
+                                   data-linked-field="[name='custom_fees[${index}][money]']"
+                                   value="${$.escapeHtml(percent)}"
+                                   placeholder="0.00"
+                                   data-index="${index}">
+                            <span class="input-group-text wpp-suffix">%</span>
+                        </div>
+
+                        <!-- Удалить -->
+                        <button type="button"
+                                class="btn btn-sm btn-outline-danger remove-custom-fee"
+                                data-index="${index}">
+                            ×
+                        </button>
+                    </div>
+                </div>
+            </div>`;
+
+            $container.append(feeHtml);
+
+            // Запускаем пересчёт, если есть значения
+            const $moneyInput = $(`.custom-fee-item[data-index="${index}"] .money`);
+            const $percentInput = $(`.custom-fee-item[data-index="${index}"] .percent`);
+
+            // Принудительно обновляем значения
+            if (money !== '0.00' && !isNaN(parseFloat(money))) {
+                $moneyInput.trigger('input');
+            } else if (percent !== '0.00' && !isNaN(parseFloat(percent))) {
+                $percentInput.trigger('input');
+            }
+        }
+
+        // === 4. Удаление сбора ===
+        $(document).on('click', '.remove-custom-fee', function () {
+            $(this).closest('.custom-fee-item').remove();
+        });
+
+        // === 5. Расчёт: money → percent ===
+        $(document).on('input', '.custom-fee-item .money', function () {
+            const $input = $(this);
+            const index = $input.data('index');
+            const $percentInput = $(`.custom-fee-item[data-index="${index}"] .percent`);
+            const baseAmount = parseFloat($input.data('base-amount'));
+            const moneyValue = Math.max(0, parseFloat($input.val()) || 0);
+
+            const percentValue = baseAmount > 0 ? (moneyValue / baseAmount) * 100 : 0;
+            $percentInput.val(percentValue.toFixed(2));
+        });
+
+        // === 6. Расчёт: percent → money ===
+        $(document).on('input', '.custom-fee-item .percent', function () {
+            const $input = $(this);
+            const index = $input.data('index');
+            const $moneyInput = $(`.custom-fee-item[data-index="${index}"] .money`);
+            const baseAmount = parseFloat($input.data('base-amount'));
+            const percentValue = Math.max(0, Math.min(100, parseFloat($input.val()) || 0));
+
+            const moneyValue = baseAmount > 0 ? (percentValue / 100) * baseAmount : 0;
+            $moneyInput.val(parseFloat(moneyValue.toFixed(2)));
+        });
+
+        // === 7. Защита от пустых значений ===
+        $(document).on('blur', '.custom-fee-item input', function () {
+            if ($(this).val() === '' || isNaN($(this).val())) {
+                $(this).val('0.00');
+                $(this).trigger('input'); // Пересчитываем
+            }
+        });
     });
+
+    // === Утилита: Экранирование HTML ===
+    $.escapeHtml = function (text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    };
 
 })(jQuery);

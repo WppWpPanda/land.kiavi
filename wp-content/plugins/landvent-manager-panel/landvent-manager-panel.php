@@ -58,6 +58,16 @@ function wpp_enqueue_Loan_styles() {
 		true
 	);
 
+	wp_enqueue_script(
+		'trello-script-ft',
+		WPP_LOAN_MANAGER_URL . 'assets/js/frontend.js',
+		array('jquery'),
+		file_exists( WPP_LOAN_MANAGER_PATH . 'assets/js/frontend.js' )
+			? filemtime( WPP_LOAN_MANAGER_PATH . 'assets/js/frontend.js' )
+			: time(),
+		true
+	);
+
 
     // Локализация для AJAX
     wp_localize_script('trello-script', 'trello_vars', array(

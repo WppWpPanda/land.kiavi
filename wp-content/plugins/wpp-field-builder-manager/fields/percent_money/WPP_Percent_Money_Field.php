@@ -63,8 +63,8 @@ if (!class_exists('WPP_Percent_Money_Field') && class_exists('WPP_Form_Field')) 
 			$description = esc_html($this->args['description'] ?? '');
 
 			// Получаем значения по умолчанию
-			$money_value = $this->get_value('money');
-			$percent_value = $this->get_value('percent');
+			$money_value = !empty($this->args['default']) && !empty($this->args['default']['money']) ? $this->args['default']['money'] : 0;
+			$percent_value = !empty($this->args['default']) && !empty($this->args['default']['percent']) ? $this->args['default']['percent'] : 0;
 
 			// Базовая сумма для расчёта
 			$base_amount = isset($this->args['base_amount']) ? (float)$this->args['base_amount'] : 0;
@@ -95,7 +95,7 @@ if (!class_exists('WPP_Percent_Money_Field') && class_exists('WPP_Form_Field')) 
                 </div>
 
                 <!-- Разделитель (опционально) -->
-                <div class="wpp-percent-separator">или</div>
+                <div class="wpp-percent-separator">or</div>
 
                 <!-- Поле для процента с суффиксом % -->
                 <div class="wpp-percent-input input-group">
