@@ -69,11 +69,13 @@ if (!class_exists('WPP_Text_Field') && class_exists('WPP_Form_Field')) :
 			// Новый тип: percentage
 			$is_percentage = $element_type === 'percentage';
 
+
 			// Формируем значение для отображения
 			$displayValue = $value;
 
 			if ($is_money) {
-				$displayValue = $value ? str_replace(['$', ','], '', $value) : '';
+				$displayValue = $value ? str_replace(['$', ',', "\xc2\xa0", "\t", " "], '', $value) : '';
+
 				if (!$displayValue) {
 					$displayValue = '';
 				} elseif ($has_cents) {
@@ -82,6 +84,7 @@ if (!class_exists('WPP_Text_Field') && class_exists('WPP_Form_Field')) :
 					$displayValue = number_format((int)$displayValue, 0, '', ',');
 				}
 				$displayValue = '$' . $displayValue;
+
 			} elseif ($is_percentage) {
 				$displayValue = $value ? str_replace('%', '', $value) : '';
 				if (!$displayValue) {

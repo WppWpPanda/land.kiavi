@@ -1,0 +1,39 @@
+.wpp-percent-money-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
+.wpp-percent-money-field .input-group {
+    flex: 1;
+}
+
+.wpp-percent-money-field .input-group-text {
+    background-color: #f8f9fa;
+    border: 1px solid #ced4da;
+    color: #495057;
+    font-size: 1rem;
+    padding: 0 10px;
+}
+
+.wpp-percent-separator {
+    font-size: 0.9em;
+    color: #6c757d;
+    white-space: nowrap;
+    margin: 0 4px;
+}
+
+.wpp-percent-money-field .input-group{
+    flex-wrap: nowrap;
+}
+/* На маленьких экранах — перенос */
+@media (max-width: 576px) {
+    .wpp-percent-money-field {
+        flex-direction: column;
+        gap: 6px;
+    }
+    .wpp-percent-separator {
+        margin: 0;
+    }
+}

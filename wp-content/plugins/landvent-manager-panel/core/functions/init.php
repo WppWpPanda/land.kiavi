@@ -4,6 +4,7 @@ defined( 'ABSPATH' ) || exit;
 
 require_once 'get-colums-data.php';
 require_once 'save-loans.php';
+require_once 'helpers.php';
 
 function debugPanel(...$data)
 {
@@ -196,3 +197,17 @@ window.showDebugPanel = function() {
 <button onclick="showDebugPanel()" style="position: fixed; bottom: 20px; right: 20px; z-index: 99999; background: #444; color: #fff; border: none; padding: 10px 15px; cursor: pointer;">Показать Debug Panel</button>
 HTML;
 }
+
+
+add_action('init', function() {
+remove_action( 'wpp_lmp_loan_content','wpp_term_additional_reserve',40);
+//remove_action( 'wpp_lmp_loan_content','wpp_term_fees',50);
+remove_action( 'wpp_lmp_loan_content','wpp_term_milestones',60);
+remove_action( 'wpp_lmp_loan_content','wpp_term_payments',70);
+remove_action( 'wpp_lmp_loan_content','wpp_term_conditions',80);
+remove_action( 'wpp_lmp_loan_content','wpp_term_investors',90);
+remove_action( 'wpp_lmp_loan_content','wpp_term_attorney',100);
+remove_action( 'wpp_lmp_loan_content','wpp_term_title_company',110);
+remove_action( 'wpp_lmp_loan_content' ,'wpp_term_required_documents',120);
+remove_action( 'wpp_lmp_loan_content','wpp_term_required_documents',130);
+},50);

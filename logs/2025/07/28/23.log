@@ -1,0 +1,10 @@
+[28-Jul-2025 20:21:51 UTC] PHP Warning:  mysqli_real_connect(): (HY000/2002): Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение in F:\os\OSPanel\domains\land.kiavi\wp-includes\class-wpdb.php on line 1988
+[28-Jul-2025 20:21:55 UTC] PHP Warning:  mysqli_real_connect(): (HY000/2002): Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение in F:\os\OSPanel\domains\land.kiavi\wp-includes\class-wpdb.php on line 1988
+[28-Jul-2025 20:21:58 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[28-Jul-2025 20:21:58 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[28-Jul-2025 20:22:00 UTC] PHP Deprecated:  strpos(): Passing null to parameter #1 ($haystack) of type string is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-includes\functions.php on line 7360
+[28-Jul-2025 20:22:00 UTC] PHP Deprecated:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-includes\functions.php on line 2195
+[28-Jul-2025 20:22:00 UTC] PHP Deprecated:  basename(): Passing null to parameter #1 ($path) of type string is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-dev\libs\show-current-template\show-current-template.php on line 20
+[28-Jul-2025 20:22:00 UTC] PHP Deprecated:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-dev\libs\show-current-template\show-current-template.php on line 21
+[28-Jul-2025 20:22:03 UTC] Automatic updates starting...
+[28-Jul-2025 20:22:04 UTC] Automatic updates complete.

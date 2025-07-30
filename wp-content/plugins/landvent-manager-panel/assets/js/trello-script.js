@@ -38,10 +38,42 @@ jQuery(document).ready(function($) {
         }
     }
 
+    function totalSum() {
+        let sumNitAdv = 0;
+        let sumTotal = 0;
+        let sumLoanCount = 0;
+
+        $('.colum-header-wrap').each(function () {
+            const $column = $(this);
+
+            // Извлекаем текст из тегов <b> и преобразуем в число
+            const nitAdvText = $column.find('.wpp-nit b').text().trim();
+            const totalText = $column.find('.wpp-total b').text().trim();
+            const loanCountText = $column.find('.wpp-loan-count b').text().trim();
+
+            // Парсим числа, удаляя символы "$" и "," (если есть)
+            const nitAdv = parseFloat(nitAdvText.replace(/[^0-9.-]+/g, '')) || 0;
+            const total = parseFloat(totalText.replace(/[^0-9.-]+/g, '')) || 0;
+            const loanCount = parseInt(loanCountText) || 0;
+
+            // Суммируем
+            sumNitAdv += nitAdv;
+            sumTotal += total;
+            sumLoanCount += loanCount;
+        });
+
+        // Вставляем суммы в нужные span'ы
+        $('.int-adv-tp span').text('$' + sumNitAdv.toLocaleString());
+        $('.int-tot-tp span').text('$' + sumTotal.toLocaleString());
+        $('.int-loan-count span').text(sumLoanCount);
+    }
+
 
     $('.column').each(function() {
         updateColumnStats(this);
     });
+
+    totalSum();
 
     // Инициализация сортируемых элементов
     function initSortables() {

@@ -102,12 +102,46 @@
             }
         });
 
-        // Инициализация: добавляем $ при пустом значении
+        // Инициализация: форматируем начальное значение
         $('.wpp-field[data-type="money"] input').each(function () {
             const $input = $(this);
+            const hasCents = $input.attr('data-has-cents') === 'yes';
+            let value = $input.val().trim();
 
-            if (!$input.val()) {
+            // Если поле пустое - устанавливаем $
+            if (!value || value === '$') {
                 $input.val('$');
+                return;
+            }
+
+            // Удаляем все нечисловые символы, кроме точки (для центов)
+            let cleanedValue = value.replace(/[^\d.]/g, '');
+
+            // Если значение содержит пробелы (как в "200 000")
+            if (value.includes(' ')) {
+                cleanedValue = value.replace(/\s/g, ''); // Просто удаляем все пробелы
+            }
+
+            // Для полей с центами
+            if (hasCents) {
+                const num = parseFloat(cleanedValue);
+                if (!isNaN(num)) {
+                    $input.val(new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'USD'
+                    }).format(num / 100));
+                } else {
+                    $input.val('$');
+                }
+            }
+            // Для полей без центов
+            else {
+                const num = parseInt(cleanedValue, 10);
+                if (!isNaN(num)) {
+                    $input.val('$' + num.toLocaleString('en-US'));
+                } else {
+                    $input.val('$');
+                }
             }
         });
 

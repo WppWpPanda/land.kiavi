@@ -1,12 +1,13 @@
 jQuery(document).ready(function ($) {
     'use strict';
 
-    $('.wpp-wpp_repeater_field').each(function () {
+    $('.wpp-repeater-container').each(function () {
         const container = $(this);
         const template = container.find('script[type="text/html"]').first();
         const innerContainer = container.find('.wpp-repeater-inner');
         const addBtn = container.find('.wpp-repeater-add');
         const max = parseInt(addBtn.data('max')) || 999;
+        const min = parseInt(container.data('min')) || 1;
 
         if (!template.length) {
             return;
@@ -17,6 +18,17 @@ jQuery(document).ready(function ($) {
 
         if (!tmpl) {
             return;
+        }
+
+        // Получаем данные инициализации
+        let initData = {};
+        const dataScript = container.find('.wpp-repeater-data');
+        if (dataScript.length) {
+            try {
+                initData = JSON.parse(dataScript.text());
+            } catch (e) {
+                console.error('Error parsing repeater data:', e);
+            }
         }
 
         // Функция для получения следующего уникального индекса
@@ -57,17 +69,22 @@ jQuery(document).ready(function ($) {
 
         // Удаление блока
         innerContainer.on('click', '.wpp-repeater-remove', function () {
-            $(this).closest('.wpp-repeater-block').remove();
+            const block = $(this).closest('.wpp-repeater-block');
+            const currentCount = innerContainer.children('.wpp-repeater-block').length;
+
+            // Не удаляем, если достигнут минимум
+            if (currentCount <= min) {
+                return;
+            }
+
+            block.remove();
         });
 
         // Инициализация существующих блоков (если есть)
-        innerContainer.children('.wpp-repeater-block').each(function() {
-            const existingIndex = $(this).find('input, select, textarea').first().attr('name');
-            if (existingIndex) {
-                const match = existingIndex.match(/\[(\d+)\]/);
-                if (match && match[1]) {
-                    $(this).attr('data-repeater-index', match[1]);
-                }
+        // Блоки уже отрендерены PHP, просто добавляем индексы если их нет
+        innerContainer.children('.wpp-repeater-block').each(function(index) {
+            if (!$(this).data('repeater-index') && $(this).data('repeater-index') !== 0) {
+                $(this).attr('data-repeater-index', index);
             }
         });
     });

@@ -99,7 +99,7 @@ function lmp_render_sidebar_menu() {
 				?>
                 <li class="nav-item">
                     <a class="nav-link<?php echo $active_class; ?>" href="<?php echo esc_url( $item['url'] ); ?>">
-                        <i class="fas fa-<?php echo esc_attr( $item['icon'] ); ?>"></i>
+                        <i class="fas fa-<?php echo esc_attr( $item['icon'] ) ?? ''; ?>"></i>
 						<?php echo esc_html( $item['title'] ); ?>
 						<?php echo $badge_html; ?>
                     </a>

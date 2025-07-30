@@ -381,3 +381,17 @@ form#wpp-sl-form {
 .wpp-super-accordion-header h5 span {
     font-weight: 400;
 }
+
+div#kanban-stats {
+    display: flex;
+    font-size: .9rem;
+}
+
+div#kanban-stats span {
+    font-weight: 600;
+    margin: 0 10px 0 1px;
+}
+
+div#kanban-stats  .tl.int-loan-count span {
+    margin-right: 3px;
+}

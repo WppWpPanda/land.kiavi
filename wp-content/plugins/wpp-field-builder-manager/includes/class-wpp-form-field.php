@@ -58,6 +58,12 @@ abstract class WPP_Form_Field {
 			'validation'  => null,         // Callback для валидации
 		];
 
+        $defaults['default'] = apply_filters( 'wpp_form_field_default', $defaults['default'], $args );
+        $defaults['default'] = apply_filters( 'wpp_form_field_default_' . $args['name'], $defaults['default'], $args );
+
+
+
+
 		$this->args = wp_parse_args( $args, $defaults );
 	}
 
@@ -105,8 +111,6 @@ abstract class WPP_Form_Field {
 
 
 		$name    = esc_attr( $this->args['name'] );
-
-		var_dump($name);
 		$classes = array_map( 'esc_attr', $this->args['classes'] );
 		$width   = strtolower( trim( $this->args['width'] ) );
 

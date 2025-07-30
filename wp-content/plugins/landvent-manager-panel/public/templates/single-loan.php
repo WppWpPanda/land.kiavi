@@ -3,152 +3,6 @@
 Template Name: LandVent — Single Loan
 */
 get_header(); ?>
-    <style>
-        body.page-template-single-loan .navbar {
-            position: fixed;
-            width: 100vw;
-            z-index: 99;
-        }
-
-        body.page-template-single-loan nav#sidebar {
-            position: fixed;
-        }
-
-        body.page-template-single-loan nav#sidebar,
-        body.page-template-single-loan main {
-            margin-top: 57px;
-        }
-
-        .loan-status-bar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #e0e0e0;
-            padding: 10px 0;
-        }
-
-        .loan-status-bar__left,
-        .loan-status-bar__right {
-            display: flex;
-            align-items: center;
-        }
-
-        .loan-status-bar__icon {
-            margin-right: 5px;
-        }
-
-        .loan-status-bar__title {
-            font-weight: bold;
-        }
-
-        .loan-status-bar__select {
-            margin-right: 10px;
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-        }
-
-        .loan-status-bar__button {
-            margin-left: 5px;
-            padding: 5px 10px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-
-        .loan-status-bar__more-actions {
-            margin-left: 5px;
-            padding: 5px 10px;
-            background-color: #fff;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            cursor: pointer;
-        }
-    </style>
-    <style>
-        .page-template-single-loan .wpp-field {
-            display: flex;
-        }
-
-        .page-template-single-loan .wpp-field label.form-label,
-        .page-template-single-loan h3.wpp-content-label,
-        .page-template-single-loan .wpp-wpp_datepicker_field label {
-            width: 200px;
-            min-width: 200px;
-            font-size: .8rem;
-            font-weight: 300;
-        }
-
-        .page-template-single-loan .wpp-wpp_select_field select.form-control {
-            height: calc(.8em + 0.75rem + 2px);
-            font-size: .8rem;
-            padding: .1rem .5rem;
-            font-weight: 300;
-        }
-
-        .page-template-single-loan .wpp-wpp-text input.form-control,
-        .page-template-single-loan .wpp-wpp_datepicker_field input.form-control {
-            height: calc(.8em + 0.75rem + 2px);
-            font-size: .8rem;
-            padding: .1rem .5rem;
-        }
-
-        .wpp-field.wpp-wpp_checkbox_field .form-check {
-            display: flex;
-            flex-direction: row-reverse;
-            padding: 0;
-            margin-bottom: 0;
-        }
-
-        .page-template-single-loan .wpp-field label.form-check-label {
-            width: 222px;
-            min-width: 200px;
-            font-size: .8rem;
-            font-weight: 300;
-        }
-
-        .page-template-single-loan .wpp-field {
-            margin-bottom: .5rem;
-        }
-
-        .page-template-single-loan .wpp-field.wpp-wpp_checkbox_field.wpp-no-label-inverse .form-check {
-            display: flex;
-            flex-direction: row;
-            margin-left: 220px;
-        }
-
-        .page-template-single-loan .wpp-field.wpp-wpp_checkbox_field.wpp-no-label-inverse.no-left .form-check {
-            display: flex;
-            flex-direction: row;
-            margin-left: 20px;
-        }
-
-        .page-template-single-loan .wpp-field.wpp-wpp_checkbox_field.wpp-no-label-inverse .form-check input {
-            margin-right: 10px;
-        }
-
-        .page-template-single-loan .wpp-field.wpp-wpp_radio_field .form-check {
-            margin-left: 200px;
-        }
-
-        .page-template-single-loan .wpp-field.wpp-wpp_radio_field {
-            display: flex;
-            flex-direction: column;
-        }
-
-        .page-template-single-loan .wpp-field.wpp-wpp_radio_field {
-        }
-
-        .page-template-single-loan .wpp-field.wpp-wpp_radio_field .form-check .form-check-label {
-            width: 100%;
-        }
-
-        .accordion {
-            min-width: 100%;
-        }
-
-    </style>
 
     <div class="container-fluid">
         <div class="row">
@@ -181,10 +35,23 @@ get_header(); ?>
 
                 <?php
                 echo wpp_get_form_messages();
-                var_dump($_POST);
+               // var_dump($_POST);
+                $data  = get_colums_data(14 );
+               //wpp_dump( $data[14]['raw_data'] );
                 ?>
 
+
+
                 <form id="wpp-sl-form" method="post">
+
+                    <div class="info-cards-block">
+                        <div class="wpp-loan-block closing-date-block">Closing Date<span>Sep 16, 2024</span></div>
+                        <div class="wpp-loan-block total-loan-block">Total Loan<span>-</span></div>
+                        <div class="wpp-loan-block advance-at-closing-block">Advance at Closing<span>
+                                <?php echo  format_usd_price(wpp_get_total_loan_amount()); ?>
+                            </span></div>
+                    </div>
+
                     <input type="hidden" value="<?php echo $_GET['loan'] ?>" name="current_loan_id">
 	                <?php wp_nonce_field('wpp_save_loan_data', 'wpp_loan_nonce'); ?>
                     <div class="wpp-save-button-panel">
@@ -212,7 +79,7 @@ get_header(); ?>
             </main>
         </div>
     </div>
-<script>
+<!--<script>
     jQuery(document).ready(function($) {
         // Получаем loan_id из скрытого поля формы
         var loanId = $('input[name="current_loan_id"]').val();
@@ -220,7 +87,7 @@ get_header(); ?>
         if (loanId) {
             // Запрашиваем данные с сервера
             $.ajax({
-                url: '<?php echo admin_url('admin-ajax.php'); ?>',
+                url: '<?php /*echo admin_url('admin-ajax.php'); */?>',
                 type: 'GET',
                 dataType: 'json',
                 data: {
@@ -257,5 +124,5 @@ get_header(); ?>
             });
         }
     });
-</script>
+</script>-->
 <?php get_footer(); ?>

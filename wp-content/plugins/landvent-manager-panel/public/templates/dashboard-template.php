@@ -28,6 +28,18 @@ get_header(); ?>
                             </svg>
                         </button>
                     </div>
+                    <div id="kanban-stats">
+                        <div class="tl int-adv-tp">Initial Advance:
+                            <span>0</span>
+                        </div>
+                        <div class="tl int-tot-tp">
+                            Total Facility:
+                            <span>0</span>
+                        </div>
+                        <div class="tl int-loan-count">
+                            <span>0</span>loans
+                        </div>
+                    </div>
                 </div>
 				<?php
 				$data  = get_colums_data();
@@ -53,6 +65,8 @@ get_header(); ?>
 				?>
 
                 <div class="trello-board">
+
+
                     <div class="columns-container">
                         <div class="column" data-column-id="New">
                             <div class="column-header">
@@ -134,8 +148,8 @@ get_header(); ?>
 
 
 						foreach ( $array as $item ) {
-							if ( ! empty( $item->card_ids  ) ) {
-                                $ids = json_decode($item->card_ids );
+							if ( ! empty( $item->card_ids ) ) {
+								$ids = json_decode( $item->card_ids );
 
 
 							}
@@ -160,9 +174,9 @@ get_header(); ?>
                                 <button class="delete-column" title="Remove Column"></button>
                             </div>
                             <div class="cards-container ui-sortable">
-	                            <?php foreach ( $ids as $key ) :
-                                    $value = $data[$key];
-                                    ?>
+								<?php foreach ( $ids as $key ) :
+									$value = $data[ $key ];
+									?>
                                     <a href="<?php echo get_home_url(); ?>/loan?loan=<?php echo $key ?>" class="card"
                                        data-card-id="<?php echo $key ?>">
                                         <div class="card-content" contenteditable="true">
@@ -171,11 +185,11 @@ get_header(); ?>
                                             </div>
                                         </div>
                                         <div class="address">
-				                            <?php echo $value['raw_data']->s3_address_line_1; ?>
-				                            <?php if ( ! empty( $value['raw_data']->s3_address_line_2 ) ) {
-					                            echo ', ' . $value['raw_data']->s3_address_line_2;
-				                            } ?><br>
-				                            <?php echo $value['raw_data']->s3_city; ?>
+											<?php echo $value['raw_data']->s3_address_line_1; ?>
+											<?php if ( ! empty( $value['raw_data']->s3_address_line_2 ) ) {
+												echo ', ' . $value['raw_data']->s3_address_line_2;
+											} ?><br>
+											<?php echo $value['raw_data']->s3_city; ?>
                                             , <?php echo $value['raw_data']->s3_state; ?>
                                             , <?php echo $value['raw_data']->s3_zip; ?>
                                         </div>
@@ -186,36 +200,36 @@ get_header(); ?>
                                                 </div>
                                                 <div class="st-2">@</div>
                                                 <div class="st-3">
-						                            <?php echo $value['raw_data']->s4_chosen_rate; ?>%
+													<?php echo $value['raw_data']->s4_chosen_rate; ?>%
                                                 </div>
                                             </div>
                                             <div class="payment-info">
                                                 <div class="st-1">
                                                     $<?php
-						                            echo number_format( $value['raw_data']->s4_chosen_monthly_payment, 2 );
-						                            ?>
+													echo number_format( $value['raw_data']->s4_chosen_monthly_payment, 2 );
+													?>
                                                 </div>
                                                 <div class="st-2">|</div>
                                                 <div class="st-3">
-						                            <?php echo $value['raw_data']->s4_chosen_rate_type; ?>
+													<?php echo $value['raw_data']->s4_chosen_rate_type; ?>
                                                 </div>
                                             </div>
                                         </div>
                                         <div class="wcard-footer">
                                             <div class="agent-info">
-					                            <?php
-					                            // Здесь должно быть имя агента, но в данных его нет
-					                            echo "Agent Name"; // Замените на реальное поле, если оно есть
-					                            ?>
+												<?php
+												// Здесь должно быть имя агента, но в данных его нет
+												echo "Agent Name"; // Замените на реальное поле, если оно есть
+												?>
                                             </div>
                                             <div class="days-info">
-					                            <?php
-					                            echo wpp_time_ago( $value['date'] );
-					                            ?>
+												<?php
+												echo wpp_time_ago( $value['date'] );
+												?>
                                             </div>
                                         </div>
                                     </a>
-	                            <?php endforeach; ?>
+								<?php endforeach; ?>
 
                             </div>
                             </div><?php

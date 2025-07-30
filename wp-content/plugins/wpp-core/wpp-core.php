@@ -43,3 +43,9 @@ function recursive_require_wpp_al($dir) {
 }
 
 recursive_require_wpp_al(__DIR__ );
+
+function removeEmptySubarrays($array) {
+	return array_filter($array, function($item) {
+		return !is_array($item) || !empty($item);
+	});
+}
