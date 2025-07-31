@@ -35,3 +35,4 @@
 [31-Jul-2025 20:48:58 UTC] PHP Deprecated:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-includes\functions.php on line 2195
 [31-Jul-2025 20:48:58 UTC] PHP Deprecated:  basename(): Passing null to parameter #1 ($path) of type string is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-dev\libs\show-current-template\show-current-template.php on line 20
 [31-Jul-2025 20:48:58 UTC] PHP Deprecated:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-dev\libs\show-current-template\show-current-template.php on line 21
+[31-Jul-2025 20:50:03 UTC] Cron reschedule event error for hook: action_scheduler_run_queue, Error code: invalid_schedule, Error message: Event schedule does not exist., Data: {"schedule":"every_minute","args":["WP Cron"],"interval":60}
