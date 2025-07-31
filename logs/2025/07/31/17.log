@@ -1,0 +1,168 @@
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[31-Jul-2025 14:32:24 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:24 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\applicant-info.php on line 258
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 807
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 913
+[31-Jul-2025 14:32:24 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:32:24 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\payments.php on line 186
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[31-Jul-2025 14:32:42 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:32:42 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\applicant-info.php on line 258
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 807
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 913
+[31-Jul-2025 14:32:42 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:32:42 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\payments.php on line 186
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[31-Jul-2025 14:33:11 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:33:11 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\applicant-info.php on line 258
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 807
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 913
+[31-Jul-2025 14:33:11 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:33:11 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\payments.php on line 186
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[31-Jul-2025 14:37:18 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:18 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\applicant-info.php on line 258
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 807
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 913
+[31-Jul-2025 14:37:18 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:37:18 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\payments.php on line 186
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[31-Jul-2025 14:37:27 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:37:27 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\applicant-info.php on line 258
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 807
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 913
+[31-Jul-2025 14:37:27 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:37:27 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\payments.php on line 186
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[31-Jul-2025 14:38:16 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:38:16 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\applicant-info.php on line 258
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 807
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 913
+[31-Jul-2025 14:38:16 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:38:16 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\payments.php on line 186
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[31-Jul-2025 14:49:18 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:49:18 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\applicant-info.php on line 258
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 807
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 913
+[31-Jul-2025 14:49:18 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:49:18 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\payments.php on line 186
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
+[31-Jul-2025 14:50:26 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  Undefined array key "icon" in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\navs.php on line 102
+[31-Jul-2025 14:50:26 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\applicant-info.php on line 258
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 807
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\property-details.php on line 913
+[31-Jul-2025 14:50:26 UTC] PHP Deprecated:  Constant FILTER_SANITIZE_STRING is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\functions\helpers.php on line 27
+[31-Jul-2025 14:50:26 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\landvent-manager-panel\core\config\payments.php on line 186

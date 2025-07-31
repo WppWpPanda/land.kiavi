@@ -1,0 +1,145 @@
+/* Стили для поля загрузки документов */
+.wpp-documents-upload-field,
+.wpp-field.wpp-wpp_documents_upload_field.col-12 {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+}
+
+.wpp-documents-upload-field {
+    width: 80%;
+    margin-left: 50px;
+}
+
+.wpp-field.wpp-wpp_documents_upload_field.col-12 {
+    border-bottom: 1px solid #ddd;
+}
+
+/* Общие стили для элементов */
+.wpp-wpp_documents_upload_field .upload-link,
+.wpp-wpp_documents_upload_field .missing-documents,
+.wpp-wpp_documents_upload_field .date,
+.wpp-wpp_documents_upload_field .remove-file,
+.wpp-wpp_documents_upload_field .status-select {
+    font-size: 12px;
+}
+
+.wpp-wpp_documents_upload_field .upload-link,
+.wpp-wpp_documents_upload_field a {
+    color: #0f974a;
+    cursor: pointer;
+    width: 100%;
+}
+
+.wpp-wpp_documents_upload_field .fa-cloud-upload-alt{
+    color: #0f974a!important;
+}
+.wpp-wpp_documents_upload_field a{
+    color: #4b76e3;
+}
+
+.wpp-wpp_documents_upload_field .missing-documents {
+    color: #ff4747;
+    font-weight: bold;
+    width: 200px;
+}
+
+.wpp-wpp_documents_upload_field .fa-exclamation-triangle{
+    color: #ff4747!important;
+}
+
+.wpp-wpp_documents_upload_field .date {
+    color: gray;
+    width: 150px;
+    text-align: center;
+}
+
+/* Иконки */
+.wpp-wpp_documents_upload_field .upload-link i,
+.wpp-wpp_documents_upload_field .missing-documents i {
+    font-size: 16px;
+    margin-right: 5px;
+}
+
+/* Поля ввода и кнопки */
+.wpp-wpp_documents_upload_field .status-select {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    width: 200px;
+}
+
+.wpp-wpp_documents_upload_field .remove-file {
+    background: none;
+    border: none;
+    color: #ff4747;
+    cursor: pointer;
+    width: 50px;
+}
+
+/* Контейнеры */
+.wpp-wpp_documents_upload_field .wpp-documents-upload-wrap {
+    width: 20%;
+    margin-top: 5px;
+}
+
+.wpp-wpp_documents_upload_field .wpp-documents-upload-wrap label {
+    margin-bottom: 0;
+}
+
+.wpp-wpp_documents_upload_field .wpp-documents-upload-wrap .description {
+    margin-top: 0;
+}
+
+/* Фикс для float (если используется) */
+.wpp-wpp_documents_upload_field .clearfix-btn {
+    width: 50px;
+}
+
+.wpp-wpp_documents_upload_field .clearfix-bate {
+    width: 150px;
+}
+
+.wpp-content-body {
+    width: 100%;
+}
+
+.th-wrap {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: space-between;
+}
+
+.th-wrap-1 {
+    width: 20%;
+}
+
+.th-wrap-d {
+    width: 80%;
+    margin-left: 50px;
+    align-items: center;
+    gap: 10px;
+    justify-content: space-between;
+    display: flex;
+}
+
+.th-wrap-5 {
+    width: 50px;
+}
+
+.th-wrap-4 {
+    width: 200px;
+    text-align: center;
+}
+
+.th-wrap-3 {
+    width: 150px;
+    text-align: center;
+}
+
+.th-wrap-2 {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}

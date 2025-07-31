@@ -2,41 +2,7 @@
 function wpp_step_config_documents() {
 
 
-	$form_fields = [
-		'project_milestones' => [
-			'type' => 'super_accordion',
-			'name' => 'project_milestones',
-			'title' => 'Project Milestones',
-			'open' => false,
-			'fields' => [
-				'milestone_1' => [
-					'type' => 'text',
-					'element_type' => 'text',
-					'name' => 'milestone_1',
-					'label' => 'Milestone 1',
-					'placeholder' => 'e.g., Foundation Pour',
-					'width' => 'full'
-				],
-				'milestone_2' => [
-					'type' => 'text',
-					'element_type' => 'text',
-					'name' => 'milestone_2',
-					'label' => 'Milestone 2',
-					'placeholder' => 'e.g., Framing Complete',
-					'width' => 'full'
-				],
-				'milestone_3' => [
-					'type' => 'text',
-					'element_type' => 'text',
-					'name' => 'milestone_3',
-					'label' => 'Milestone 3',
-					'placeholder' => 'e.g., Final Inspection',
-					'width' => 'full'
-				]
-			],
-			'width' => 'full'
-		]
-	];
+	$form_fields = [];
 
 	return $form_fields;
 }

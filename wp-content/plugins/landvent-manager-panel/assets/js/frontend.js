@@ -137,4 +137,62 @@
         return div.innerHTML;
     };
 
+
+
+
+    // Обработка клика на ссылку для скачивания всех документов
+    $(document).on('click', '.wpp-download-docs', function(e) {
+        e.preventDefault(); // Предотвращаем стандартное поведение ссылки
+
+        // Получаем loan_id из параметра GET в URL
+        let urlParams = new URLSearchParams(window.location.search);
+        let loanId = urlParams.get('loan');
+
+        // Проверяем, есть ли loan_id
+        if (!loanId) {
+            alert('Loan ID not found in the URL (e.g., ?loan=123).');
+            console.error('wpp-download-docs: Loan ID is missing from the URL parameters.');
+            return;
+        }
+
+        // Очищаем loanId от недопустимых символов (на всякий случай, хотя intval в PHP тоже поможет)
+        loanId = parseInt(loanId, 10);
+        if (isNaN(loanId) || loanId <= 0) {
+            alert('Invalid Loan ID in the URL.');
+            console.error('wpp-download-docs: Invalid Loan ID found in URL:', urlParams.get('loan'));
+            return;
+        }
+
+        // Создаем временную форму для отправки запроса
+        var $form = $('<form>', {
+            'action': wpp_ajax.ajax_url, // URL для обработки запроса
+            'method': 'POST'
+        }).hide(); // Скрываем форму
+
+        // Добавляем скрытые поля с данными
+        $form.append($('<input>', {
+            'type': 'hidden',
+            'name': 'action',
+            'value': 'wpp_download_all_documents'
+        }));
+
+        $form.append($('<input>', {
+            'type': 'hidden',
+            'name': 'loan_id',
+            'value': loanId
+        }));
+
+        $form.append($('<input>', {
+            'type': 'hidden',
+            'name': 'nonce',
+            'value': wpp_ajax.nonce
+        }));
+
+        // Добавляем форму в DOM, отправляем и удаляем
+        $('body').append($form);
+        $form.submit();
+        $form.remove();
+    });
+
 })(jQuery);
+
