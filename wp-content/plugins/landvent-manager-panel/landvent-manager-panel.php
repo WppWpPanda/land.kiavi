@@ -128,7 +128,7 @@ require_once 'core/config/investors.php';
 require_once 'core/config/payments.php';
 require_once 'core/config/required-documents.php';
 require_once 'core/config/title-company.php';
-
+require_once 'core/functions/endpoints.php';
 
 
 
@@ -176,6 +176,9 @@ function trello_create_db_tables() {
 		dbDelta($sql_loans);
 		update_option('loans_db_version', $current_loans_version);
 	}
+
+	LandVent_Manager_Endpoints::get_instance()->add_endpoints();
+	flush_rewrite_rules();
 }
 
 // Хук активации
@@ -191,5 +194,7 @@ function check_db_updates() {
 	    version_compare(get_option('loans_db_version', '0'), $current_loans_version, '<')) {
 		trello_create_db_tables();
 	}
+
+
 }
-register_activation_hook(__FILE__, 'trello_create_db_tables');
+//register_activation_hook(__FILE__, 'trello_create_db_tables');

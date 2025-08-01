@@ -10,15 +10,15 @@ function lmp_render_sidebar_menu() {
 
 		if ( $current_template === 'dashboard-template.php' ) {
 			$menu_items = array(
-				array( 'title' => 'Tasks', 'icon' => 'tasks', 'url' => '#' ),
-				array( 'title' => 'Terminated', 'icon' => 'ban', 'url' => '#' ),
+				//array( 'title' => 'Tasks', 'icon' => 'tasks', 'url' => '#' ),
+				//array( 'title' => 'Terminated', 'icon' => 'ban', 'url' => '#' ),
 				array( 'title' => 'Law Firms & Clerks', 'icon' => 'users', 'url' => '#' ),
 				array( 'title' => 'Title Companies', 'icon' => 'building', 'url' => '#' ),
 				array( 'title' => 'Brokers', 'icon' => 'exchange-alt', 'url' => '#' ),
 				array( 'title' => 'Appraisers', 'icon' => 'search-dollar', 'url' => '#' ),
-				array( 'title' => 'Reports', 'icon' => 'chart-bar', 'url' => '#', 'badge' => 'New' ),
-				array( 'title' => 'Servicing', 'icon' => 'cog', 'url' => '#' ),
-				array( 'title' => 'Map', 'icon' => 'map-marked-alt', 'url' => '#' ),
+				//array( 'title' => 'Reports', 'icon' => 'chart-bar', 'url' => '#', 'badge' => 'New' ),
+				//array( 'title' => 'Servicing', 'icon' => 'cog', 'url' => '#' ),
+				//array( 'title' => 'Map', 'icon' => 'map-marked-alt', 'url' => '#' ),
 			);
 		} elseif ( $current_template === 'single-loan.php' ) {
 			$menu_items = array(
