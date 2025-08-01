@@ -24,3 +24,5 @@
 .idea
 /wp-config.php
 /back
+/wp-content/plugins/query-monitor/
+/logs/
