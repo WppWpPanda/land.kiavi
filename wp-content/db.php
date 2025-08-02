@@ -1,0 +1,1 @@
+F:/os/OSPanel/domains/land.kiavi/wp-content/plugins/query-monitor/wp-content/db.php

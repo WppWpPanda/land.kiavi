@@ -138,3 +138,77 @@ function format_usd_price( $amount, $args = [] ) {
 
 	return $formatted;
 }
+
+/**
+ * Determines the current manager dashboard endpoint
+ *
+ * This function checks whether the current page is a manager dashboard endpoint
+ * and optionally verifies if it matches a specific endpoint. It always returns
+ * either the endpoint identifier string or false.
+ *
+ * @since 1.1.0
+ *
+ * @param string $specific_endpoint (optional) Specific endpoint slug to verify against.
+ *                                 Possible values:
+ *                                 - 'main' (dashboard homepage)
+ *                                 - 'law-firms-clerks'
+ *                                 - 'title-companies'
+ *                                 - 'brokers'
+ *                                 - 'appraisers'
+ *                                 - 'loan' (loan endpoints)
+ *                                 - Empty string to get current endpoint
+ *
+ * @return string|false Returns:
+ *                     - Current endpoint slug when no specific endpoint provided
+ *                     - Requested endpoint slug when matches current page
+ *                     - false when not a dashboard page or no match found
+ *
+ * @example // Get current endpoint
+ * $endpoint = wpp_is_manager_dashboard();
+ * if ($endpoint) {
+ *     switch ($endpoint) {
+ *         case 'main':
+ *             // Handle dashboard homepage
+ *             break;
+ *         case 'loan':
+ *             $loan_id = get_query_var('loan_id');
+ *             // Handle loan page
+ *             break;
+ *     }
+ * }
+ *
+ * @example // Check for specific endpoint
+ * if (wpp_is_manager_dashboard('loan') === 'loan') {
+ *     // This is a loan endpoint page
+ *     $loan_id = get_query_var('loan_id');
+ * }
+ *
+ * @example // Secure endpoint check with capability verification
+ * if (wpp_is_manager_dashboard() && current_user_can('manage_options')) {
+ *     // Safe to perform admin operations
+ * }
+ */
+function wpp_is_manager_dashboard($specific_endpoint = '') {
+	global $wp_query;
+
+	// Get current endpoint from query vars
+	$current_endpoint = $wp_query->get('manager_dashboard');
+
+	// Return false if not a dashboard page
+	if (empty($current_endpoint)) {
+		return false;
+	}
+
+	// If checking against specific endpoint
+	if (!empty($specific_endpoint)) {
+		// Special handling for loan endpoints
+		if ($specific_endpoint === 'loan') {
+			return strpos($current_endpoint, 'loan') === 0 ? $current_endpoint : false;
+		}
+		// Exact match for other endpoints
+		return $current_endpoint === $specific_endpoint ? $current_endpoint : false;
+	}
+
+	// Default case: return current endpoint
+	return $current_endpoint;
+}

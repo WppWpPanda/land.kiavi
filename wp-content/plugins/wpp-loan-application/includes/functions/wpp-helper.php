@@ -186,14 +186,38 @@ function wpp_save_session_to_database_raw($user_id = 0) {
 function wpp_has_shortcode_on_page() {
 	global $post;
 
-	foreach ( WPP_LOAN_STEPS as $key => $one ) {
+	// 1. Get the value of the constant (which is a JSON string)
+	$steps_json = defined('WPP_LOAN_STEPS') ? WPP_LOAN_STEPS: null;
 
-		// Проверяем, есть ли шорткод в контенте поста/страницы
-		if ( is_singular() && has_shortcode( $post->post_content, $one['short'] ) ) {
+	// 2. Check if the constant is defined
+	if (!$steps_json) {
+		error_log('WPP_LOAN_STEPS is not defined.');
+		return false;
+	}
+
+	// 3. Decode the JSON string into a PHP array
+	$steps = json_decode($steps_json, true); // Second argument true for associative array
+
+	// 4. Check if decoding was successful
+	if (!is_array($steps)) {
+		error_log('WPP_LOAN_STEP is not a valid JSON string or could not be decoded.');
+		return false;
+	}
+
+	// 5. Now we can safely use foreach
+	foreach ( $steps as $key => $one ) {
+
+		// Check if the shortcode exists in the post/page content
+		// IMPORTANT: has_shortcode looks for the shortcode name WITHOUT square brackets.
+		// Therefore, the 'short' value in your array should contain only the name, e.g., 'wpp_loan_application_step_1'
+		$shortcode_name = trim($one['short'], '[]'); // Remove square brackets if they exist
+
+		if ( is_singular() && has_shortcode( $post->post_content, $shortcode_name ) ) {
 
 			$step_data = WPP_Loan_Session_Handler::get_step_data($key);
 			if(empty($step_data)) {
 				wp_safe_redirect(get_home_url());
+				exit; // Always use exit after wp_safe_redirect
 			}
 		}
 	}

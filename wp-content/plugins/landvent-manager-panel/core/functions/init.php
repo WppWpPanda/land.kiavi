@@ -6,6 +6,7 @@ require_once 'get-colums-data.php';
 require_once 'save-loans.php';
 require_once 'helpers.php';
 require_once 'ajax.php';
+require_once 'templates.php';
 
 function debugPanel(...$data)
 {

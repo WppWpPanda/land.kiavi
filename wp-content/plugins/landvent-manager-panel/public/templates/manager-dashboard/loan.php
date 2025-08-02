@@ -7,6 +7,8 @@ if (!defined('ABSPATH')) exit;
 
 global $wp_query;
 $loan_id = isset($wp_query->query_vars['loan_id']) ? $wp_query->query_vars['loan_id'] : 0;
+
+var_dump($_GET);
 ?>
 
 <div class="manager-dashboard-loan">

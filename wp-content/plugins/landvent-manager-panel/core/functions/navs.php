@@ -2,25 +2,24 @@
 defined( 'ABSPATH' ) || exit;
 
 function lmp_render_sidebar_menu() {
+	$endpoint = wpp_is_manager_dashboard();
 
-	if ( is_singular( 'page' ) ) {
-		global $post;
-		$current_template = get_post_meta( $post->ID, '_wp_page_template', true );
+	if ( ! empty( $endpoint ) ) {
 
-
-		if ( $current_template === 'dashboard-template.php' ) {
+		if ( 'loan' !== $endpoint ) {
+            $define_url = get_home_url() . '/manager-dashboard/';
 			$menu_items = array(
 				//array( 'title' => 'Tasks', 'icon' => 'tasks', 'url' => '#' ),
 				//array( 'title' => 'Terminated', 'icon' => 'ban', 'url' => '#' ),
-				array( 'title' => 'Law Firms & Clerks', 'icon' => 'users', 'url' => '#' ),
-				array( 'title' => 'Title Companies', 'icon' => 'building', 'url' => '#' ),
-				array( 'title' => 'Brokers', 'icon' => 'exchange-alt', 'url' => '#' ),
-				array( 'title' => 'Appraisers', 'icon' => 'search-dollar', 'url' => '#' ),
+				array( 'title' => 'Law Firms & Clerks', 'icon' => 'users', 'url' => "{$define_url}law-firms-clerks" ),
+				array( 'title' => 'Title Companies', 'icon' => 'building', 'url' => "{$define_url}title-companies" ),
+				array( 'title' => 'Brokers', 'icon' => 'exchange-alt', 'url' => "{$define_url}brokers" ),
+				array( 'title' => 'Appraisers', 'icon' => 'search-dollar', 'url' => "{$define_url}appraisers" ),
 				//array( 'title' => 'Reports', 'icon' => 'chart-bar', 'url' => '#', 'badge' => 'New' ),
 				//array( 'title' => 'Servicing', 'icon' => 'cog', 'url' => '#' ),
 				//array( 'title' => 'Map', 'icon' => 'map-marked-alt', 'url' => '#' ),
 			);
-		} elseif ( $current_template === 'single-loan.php' ) {
+		} else {
 			$menu_items = array(
 				array(
 					'title' => 'Applicant Info',
