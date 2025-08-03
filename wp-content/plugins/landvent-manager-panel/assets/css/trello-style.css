@@ -403,3 +403,11 @@ div#kanban-stats  .tl.int-loan-count span {
     font-weight: 300;
     margin-right:50px
 }
+
+a.nav-link.active.current-point {
+    color: #29bf7a;
+}
+
+a.nav-link.active.current-point:hover {
+    color: #198754;
+}

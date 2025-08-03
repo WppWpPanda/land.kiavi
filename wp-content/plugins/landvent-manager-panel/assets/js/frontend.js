@@ -138,10 +138,8 @@
     };
 
 
-
-
     // Обработка клика на ссылку для скачивания всех документов
-    $(document).on('click', '.wpp-download-docs', function(e) {
+    $(document).on('click', '.wpp-download-docs', function (e) {
         e.preventDefault(); // Предотвращаем стандартное поведение ссылки
 
         // Получаем loan_id из параметра GET в URL
@@ -193,6 +191,65 @@
         $form.submit();
         $form.remove();
     });
+
+
+    // Открытие модального окна
+    $('#wpp-open-brokerage-modal').on('click', function (e) {
+        e.preventDefault();
+        $('#wpp-brokerage-modal').fadeIn();
+    });
+
+    // Закрытие модального окна
+    $('.wpp-modal-close, .wpp-modal-overlay').on('click', function () {
+        $('#wpp-brokerage-modal').fadeOut();
+    });
+
+    // Закрытие при нажатии ESC
+    $(document).on('keyup', function (e) {
+        if (e.key === "Escape") {
+            $('#wpp-brokerage-modal').fadeOut();
+        }
+    });
+
+    // Отправка формы через AJAX
+    $('#wpp-brokerage-form').on('submit', function (e) {
+        e.preventDefault();
+
+        const form = $(this);
+        const submitBtn = form.find('button[type="submit"]');
+        const originalText = submitBtn.text();
+
+        // Собираем данные
+        const data = form.serializeArray();
+        data.push({
+            name: 'action',
+            value: 'wpp_save_brokerage'
+        });
+
+        // Отключаем кнопку
+        submitBtn.text('Сохранение...').prop('disabled', true);
+
+        $.post(trello_vars.ajax_url, data, function (response) {
+            if (response.success) {
+                alert('✅ ' + response.data.message);
+                form[0].reset(); // очистить форму
+                $('#wpp-brokerage-modal').fadeOut(); // закрыть модальное окно
+
+                // Можно добавить новую строку в таблицу или обновить список
+                $(document).trigger('wpp_brokerage_saved', [response.data]);
+
+            } else {
+                alert('❌ Ошибка: ' + response.data.message);
+            }
+        }, 'json')
+            .fail(function () {
+                alert('❌ Ошибка соединения с сервером.');
+            })
+            .always(function () {
+                submitBtn.text(originalText).prop('disabled', false);
+            });
+    });
+
 
 })(jQuery);
 

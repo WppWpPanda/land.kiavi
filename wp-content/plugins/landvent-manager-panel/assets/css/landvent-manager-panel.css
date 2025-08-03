@@ -236,3 +236,114 @@ body.page-template-single-loan main {
 [data-name="account_name_h"] hr {
     margin-top: 2px;
 }
+
+.wpp-lmd-point h1 {
+    font-size: 1.2rem;
+    margin: .5rem;
+}
+
+.wpp-action-button {
+
+    color: #29bf7a;
+    padding: 8px 16px;
+    border-radius: 4px;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    transition: background-color 0.3s;
+}
+
+.wpp-action-button:hover {
+    color: #198754;
+}
+
+.wpp-action-button .fas.fa-plus-circle {
+    font-size: 1.1em;
+}
+
+button.wpp-button.wpp-button-primary {
+    border-radius: 3px;
+    background: #29bf7a;
+    border-width: 0 0 3px 0;
+    padding: .3rem 1.5rem;
+    border-bottom-color: #198754!important;
+    color: #fff;
+    transition: all .5s;
+}
+
+button.wpp-button.wpp-button-primary:hover {
+    background: #198754;
+    border-bottom-color: #146a42!important;
+}
+
+
+.wpp-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 9999;
+    display: none;
+}
+
+.wpp-modal-overlay {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+}
+
+.wpp-modal-content {
+    position: relative;
+    max-width: 800px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.wpp-modal-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.wpp-modal-header h3 {
+    margin: 0;
+}
+
+.wpp-modal-close {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+}
+
+.wpp-modal-body {
+    padding: 20px;
+}
+
+.wpp-form-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.wpp-modal  .wpp-field label {
+    font-size: .8rem;
+    margin-bottom: .05rem;
+}
+
+.wpp-modal .wpp-field {
+    margin-bottom: .8rem;
+}
+
+.wpp-modal .wpp-field input[type="text"] {
+    border-radius: 0;
+    padding: .2rem 0.375rem;
+}

@@ -1,114 +1,97 @@
 <?php
 defined( 'ABSPATH' ) || exit;
 
+/**
+ * Renders the manager dashboard sidebar menu with active item highlighting
+ *
+ * @since 1.0.0
+ */
 function lmp_render_sidebar_menu() {
-	$endpoint = wpp_is_manager_dashboard();
+	$current_endpoint = wpp_is_manager_dashboard();
 
-	if ( ! empty( $endpoint ) ) {
+	if ( ! $current_endpoint ) {
+		return;
+	}
 
-		if ( 'loan' !== $endpoint ) {
-            $define_url = get_home_url() . '/manager-dashboard/';
-			$menu_items = array(
-				//array( 'title' => 'Tasks', 'icon' => 'tasks', 'url' => '#' ),
-				//array( 'title' => 'Terminated', 'icon' => 'ban', 'url' => '#' ),
-				array( 'title' => 'Law Firms & Clerks', 'icon' => 'users', 'url' => "{$define_url}law-firms-clerks" ),
-				array( 'title' => 'Title Companies', 'icon' => 'building', 'url' => "{$define_url}title-companies" ),
-				array( 'title' => 'Brokers', 'icon' => 'exchange-alt', 'url' => "{$define_url}brokers" ),
-				array( 'title' => 'Appraisers', 'icon' => 'search-dollar', 'url' => "{$define_url}appraisers" ),
-				//array( 'title' => 'Reports', 'icon' => 'chart-bar', 'url' => '#', 'badge' => 'New' ),
-				//array( 'title' => 'Servicing', 'icon' => 'cog', 'url' => '#' ),
-				//array( 'title' => 'Map', 'icon' => 'map-marked-alt', 'url' => '#' ),
-			);
-		} else {
-			$menu_items = array(
-				array(
-					'title' => 'Applicant Info',
-					'url'   => '#applicant-info',
-					'id'    => 'menu-applicant-info',
-				),
-				array(
-					'title' => 'Property Details',
-					'url'   => '#property-details',
-					'id'    => 'menu-property-details',
-				),
-				array(
-					'title' => 'Term Sheet Details',
-					'url'   => '#term-sheet-details',
-					'id'    => 'menu-term-sheet-details',
-				),
-				array(
-					'title' => 'Additional Reserves',
-					'url'   => '#additional-reserves',
-					'id'    => 'menu-additional-reserves',
-				),
-				array(
-					'title' => 'Fees',
-					'url'   => '#fees',
-					'id'    => 'menu-fees',
-				),
-				array(
-					'title' => 'Milestones',
-					'url'   => '#milestones',
-					'id'    => 'menu-milestones',
-				),
-				array(
-					'title' => 'Payments',
-					'url'   => '#payments',
-					'id'    => 'menu-payments',
-				),
-				array(
-					'title' => 'Conditions',
-					'url'   => '#conditions',
-					'id'    => 'menu-conditions',
-				),
-				array(
-					'title' => 'Investors',
-					'url'   => '#investors',
-					'id'    => 'menu-investors',
-				),
-				array(
-					'title' => 'Attorney',
-					'url'   => '#attorney',
-					'id'    => 'menu-attorney',
-				),
-				array(
-					'title'  => 'Title Company',
-					'url'    => '#title-company',
-					'id'     => 'menu-title-company',
-					'active' => true,
-				),
-				array(
-					'title' => 'Required Documents',
-					'url'   => '#required-documents',
-					'id'    => 'menu-required-documents',
-				),
-				array(
-					'title' => 'Documents',
-					'url'   => '#documents',
-					'id'    => 'menu-documents',
-				),
-			);
+	$base_url             = home_url( '/manager-dashboard/' );
+	$menu_items           = [];
+	$current_loan_section = '';
+
+	// Handle loan page anchor detection
+	if ( $current_endpoint === 'loan' ) {
+		$current_loan_section = isset( $_GET['section'] ) ? sanitize_key( $_GET['section'] ) : 'title-company';
+	}
+
+	// Build menu items based on current endpoint
+	if ( $current_endpoint !== 'loan' ) {
+		$main_menu_items = [
+			'main'             => [ 'title' => 'Home', 'icon' => 'home' ],
+			'law-firms-clerks' => [ 'title' => 'Law Firms & Clerks', 'icon' => 'users' ],
+			'title-companies'  => [ 'title' => 'Title Companies', 'icon' => 'building' ],
+			'brokers'          => [ 'title' => 'Brokers', 'icon' => 'exchange-alt' ],
+			'appraisers'       => [ 'title' => 'Appraisers', 'icon' => 'search-dollar' ],
+		];
+
+		foreach ( $main_menu_items as $slug => $item ) {
+
+			$menu_items[] = [
+				'title'  => $item['title'],
+				'icon'   => $item['icon'],
+				'url'    => $slug === 'main' ? $base_url : $base_url . $slug,
+				'active' => $current_endpoint === $slug
+			];
+
+
+			/*  if( empty($slug) && 'main' === $current_endpoint ) {
+				  $menu_items['active'] = true;
+			  }*/
 		}
+	} else {
+		$loan_menu_items = [
+			'applicant-info'      => [ 'title' => 'Applicant Info' ],
+			'property-details'    => [ 'title' => 'Property Details' ],
+			'term-sheet-details'  => [ 'title' => 'Term Sheet Details' ],
+			'additional-reserves' => [ 'title' => 'Additional Reserves' ],
+			'fees'                => [ 'title' => 'Fees' ],
+			'milestones'          => [ 'title' => 'Milestones' ],
+			'payments'            => [ 'title' => 'Payments' ],
+			'conditions'          => [ 'title' => 'Conditions' ],
+			'investors'           => [ 'title' => 'Investors' ],
+			'attorney'            => [ 'title' => 'Attorney' ],
+			'title-company'       => [ 'title' => 'Title Company' ],
+			'required-documents'  => [ 'title' => 'Required Documents' ],
+			'documents'           => [ 'title' => 'Documents' ],
+		];
 
-		if ( ! empty( $menu_items ) ) {
-			echo '<ul class="nav flex-column">';
-			foreach ( $menu_items as $item ) {
-				$active_class = isset( $item['active'] ) ? ' active' : '';
-				$badge_html   = isset( $item['badge'] ) ? '<span class="badge bg-success text-white ms-2">' . esc_html( $item['badge'] ) . '</span>' : '';
-				?>
-                <li class="nav-item">
-                    <a class="nav-link<?php echo $active_class; ?>" href="<?php echo esc_url( $item['url'] ); ?>">
-                        <i class="fas fa-<?php echo esc_attr( $item['icon'] ) ?? ''; ?>"></i>
-						<?php echo esc_html( $item['title'] ); ?>
-						<?php echo $badge_html; ?>
-                    </a>
-                </li>
-				<?php
-			}
-			echo '</ul>';
+		foreach ( $loan_menu_items as $slug => $item ) {
+			$menu_items[] = [
+				'title'  => $item['title'],
+				'url'    => '#' . $slug,
+				'id'     => 'menu-' . $slug,
+				'active' => $current_loan_section === $slug
+			];
 		}
 	}
 
+	// Render the menu
+	if ( ! empty( $menu_items ) ) {
+		echo '<ul class="nav flex-column">';
+		foreach ( $menu_items as $item ) {
+			$active_class = $item['active'] ? ' active current-point' : '';
+			$icon_html    = isset( $item['icon'] ) ? '<i class="fas fa-' . esc_attr( $item['icon'] ) . ' me-2"></i>' : '';
+			?>
+            <li class="nav-item">
+                <a class="nav-link<?php echo esc_attr( $active_class ); ?>"
+                   href="<?php echo esc_url( $item['url'] ); ?>"
+					<?php echo isset( $item['id'] ) ? 'id="' . esc_attr( $item['id'] ) . '"' : ''; ?>>
+					<?php echo $icon_html . esc_html( $item['title'] ); ?>
+                </a>
+            </li>
+			<?php
+		}
+		echo '</ul>';
+	}
 }
 
 add_action( 'wpp_lmp_nav_side', 'lmp_render_sidebar_menu' );
+

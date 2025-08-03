@@ -7,6 +7,7 @@ require_once 'save-loans.php';
 require_once 'helpers.php';
 require_once 'ajax.php';
 require_once 'templates.php';
+require_once 'wpp-core-filters.php';
 
 function debugPanel(...$data)
 {
@@ -213,3 +214,29 @@ remove_action( 'wpp_lmp_loan_content','wpp_term_attorney',100);
 //remove_action( 'wpp_lmp_loan_content' ,'wpp_term_required_documents',120);
 remove_action( 'wpp_lmp_loan_content','wpp_term_required_documents',130);
 },50);
+
+
+// Хук для проверки обновлений при каждом запуске
+//add_action('plugins_loaded', 'check_db_updates');
+function check_db_updates() {
+	$current_versions = [
+		'trello' => '1.0',
+		'loans' => '1.0',
+		'appraiser' => '1.0',
+		'companies' => '1.0',
+		'brokers' => '1.0',
+		'law_firm' => '1.0'
+	];
+
+	$need_update = false;
+	foreach ($current_versions as $key => $version) {
+		if (version_compare(get_option("{$key}_db_version", '0'), $version, '<')) {
+			$need_update = true;
+			break;
+		}
+	}
+
+	if ($need_update) {
+		trello_create_db_tables();
+	}
+}
