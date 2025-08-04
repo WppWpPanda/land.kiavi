@@ -1,28 +1,31 @@
 <?php
 /**
- * Wpp_List_Table — Universal, Reusable Database Table Display Class
+ * Wpp_List_Table — Universal Database Table Display Class
  *
- * This class enables developers to display data from any WordPress database table
- * on the **frontend or backend** with full support for:
+ * A fully reusable, standalone PHP class for displaying data from any WordPress
+ * database table on the **frontend or backend** with support for:
  *
  * - Pagination
  * - Column sorting
  * - Search (with optional AJAX)
- * - Custom column rendering (e.g., "Edit", "Delete")
+ * - Virtual (custom) columns (e.g., "Actions", "Edit", "Delete")
  * - Responsive design
  * - XSS and SQL injection protection
  * - No dependency on `WP_List_Table`
  * - Works in plugins, themes, or standalone includes
  *
- * Designed to be extended. Cannot be used directly.
+ * This class is designed to be extended. You define:
+ * - $table_name
+ * - $columns
+ * - $virtual_columns (for non-database fields)
  *
  * @package           WppLibs\Table
  * @subpackage        Core
- * @author            Your Name <your.email@example.com>
- * @copyright         2025 Your Name
+ * @author            WP_Panda <panda@wp-panda.pro>
+ * @copyright         2025 WP_Panda
  * @license           GPL-2.0-or-later
  *
- * @version           2.5.0
+ * @version           2.6.0
  * @since             1.0.0
  *
  * @abstract
@@ -34,35 +37,42 @@
  * @link              https://developer.wordpress.org/plugins/javascript/enqueuing/
  *
  * @example
- *     // Step 1: Include the class
  *     require_once 'Wpp_List_Table.php';
  *
- *     // Step 2: Create a child class
- *     class ProductTable extends Wpp_List_Table {
- *         protected $table_name         = 'products';
+ *     class BrokersTable extends Wpp_List_Table {
+ *         protected $table_name         = 'wpp_brokers';
  *         protected $primary_key        = 'id';
  *         protected $columns            = [
  *             'id'          => 'ID',
- *             'name'        => 'Product Name',
- *             'price'       => 'Price',
- *             'actions'     => 'Actions'  // Virtual column
+ *             'name'        => 'Brokerage Name',
+ *             'city'        => 'City',
+ *             'actions'     => 'Actions'
  *         ];
- *         protected $sortable_columns   = [ 'id', 'name', 'price' ];
- *         protected $searchable_columns = [ 'name' ];
- *         protected $show_search        = false; // Hide search form
+ *         protected $virtual_columns    = [ 'actions' ]; // Not in DB
+ *         protected $sortable_columns   = [ 'id', 'name', 'city' ];
+ *         protected $searchable_columns = [ 'name', 'city' ];
  *         protected $per_page           = 10;
+ *         protected $show_search        = true;
+ *
+ *         public function column_actions( $item ) {
+ *             return '<a href="/edit/' . $item['id'] . '">Edit</a>';
+ *         }
  *     }
  *
- *     // Step 3: Render the table
- *     $table = new ProductTable();
+ *     $table = new BrokersTable();
  *     echo $table->display(); // Outputs full HTML table
  *
  * @example
- *     // Disable asset loading (use your own CSS/JS)
+ *     // Disable asset loading
  *     class MinimalTable extends Wpp_List_Table {
  *         protected $enqueue_assets = false;
- *         // ... other settings
  *     }
+ *
+ * @todo Add support for bulk actions (checkboxes + dropdown)
+ * @todo Add AJAX-only mode with JSON response
+ * @todo Add column visibility toggle
+ * @todo Add CSV export button
+ * @todo Support for date range filtering
  */
 if ( ! defined( 'ABSPATH' ) && ! ( isset( $GLOBALS['wpdb'] ) && class_exists( 'wpdb' ) ) ) {
 	return;
@@ -79,19 +89,13 @@ add_action( 'admin_enqueue_scripts', function () {
 /**
  * Abstract class Wpp_List_Table
  *
- * A fully self-contained, reusable class for displaying database tables.
+ * A fully self-contained class for displaying database tables with:
+ * - Safe SQL generation
+ * - Virtual column support
+ * - Search, sorting, pagination
+ * - Custom cell rendering
  *
- * Features:
- * - No dependency on `WP_List_Table`
- * - Safe for early inclusion (e.g., in plugin files)
- * - Compatible with Query Monitor (QM_DB)
- * - Supports custom column rendering
- * - Handles PHP 8.1+ deprecation warnings
- * - Automatically escapes SQL to prevent injection
- *
- * This class must be extended. Child classes must define:
- * - $table_name
- * - $columns
+ * Designed to be extended. Cannot be used directly.
  *
  * @abstract
  * @since 1.0.0
@@ -101,7 +105,7 @@ abstract class Wpp_List_Table {
 	/**
 	 * Name of the database table (without prefix).
 	 *
-	 * Will be automatically prefixed with WordPress table prefix (e.g., 'wp_' or 'custom_').
+	 * Will be automatically prefixed with WordPress table prefix (e.g., 'wp_' or custom).
 	 *
 	 * Example: 'products' → becomes `wp_products`
 	 *
@@ -131,8 +135,7 @@ abstract class Wpp_List_Table {
 	/**
 	 * Table columns: 'column_name' => 'Display Label'.
 	 *
-	 * Keys can be real database fields or virtual (e.g., 'actions').
-	 * Values are human-readable labels.
+	 * Can include real database fields and virtual (custom) columns.
 	 *
 	 * @var array
 	 * @access protected
@@ -142,10 +145,27 @@ abstract class Wpp_List_Table {
 	 *     protected $columns = [
 	 *         'id'        => 'ID',
 	 *         'name'      => 'Name',
-	 *         'edit_link' => 'Edit'  // Virtual column
+	 *         'actions'   => 'Actions'  // Virtual column
 	 *     ];
 	 */
 	protected $columns = array();
+
+	/**
+	 * List of virtual columns (not present in the database).
+	 *
+	 * These columns are NOT included in the SQL SELECT clause.
+	 * Their content is generated via `column_{name}()` methods.
+	 *
+	 * @var array
+	 * @access protected
+	 * @since 2.6.0
+	 *
+	 * @example
+	 *     protected $virtual_columns = [ 'actions', 'preview' ];
+	 *
+	 * @reference https://developer.wordpress.org/reference/classes/wpdb/prepare/
+	 */
+	protected $virtual_columns = array();
 
 	/**
 	 * Columns that support sorting.
@@ -165,6 +185,7 @@ abstract class Wpp_List_Table {
 	 * Columns included in search queries.
 	 *
 	 * Search uses `LIKE %keyword%` on these fields.
+	 * Virtual columns are automatically excluded.
 	 *
 	 * @var array
 	 * @access protected
@@ -287,6 +308,10 @@ abstract class Wpp_List_Table {
 	 * @example
 	 *     $table = new CustomTable();
 	 *     echo $table->display();
+	 *
+	 * @reference https://developer.wordpress.org/reference/functions/_doing_it_wrong/
+	 * @reference https://developer.wordpress.org/reference/classes/wpdb/get_var/
+	 * @reference https://developer.wordpress.org/reference/functions/esc_html_e/
 	 */
 	public function __construct() {
 		global $wpdb;
@@ -300,6 +325,7 @@ abstract class Wpp_List_Table {
 		$this->full_table_name = $this->db->prefix . $this->table_name;
 
 		// Check if table exists in database
+		// @reference https://developer.wordpress.org/reference/classes/wpdb/prepare/
 		$table_exists = $this->db->get_var(
 			$this->db->prepare( "SHOW TABLES LIKE %s", $this->full_table_name )
 		);
@@ -329,21 +355,28 @@ abstract class Wpp_List_Table {
 	 * @reference https://www.php.net/manual/en/function.filter-input.php
 	 * @reference https://developer.wordpress.org/reference/functions/sanitize_key/
 	 * @reference https://developer.wordpress.org/reference/functions/sanitize_text_field/
+	 * @reference https://www.php.net/manual/en/function.strtoupper.php
+	 * @reference https://www.php.net/manual/en/function.absint.php
 	 */
 	protected function handle_request() {
-		$this->current_page = max( 1, absint( filter_input( INPUT_GET, 'paged', FILTER_DEFAULT ) ?: 1 ) );
+		// Handle pagination
+		$paged = filter_input( INPUT_GET, 'paged', FILTER_DEFAULT );
+		$this->current_page = max( 1, absint( $paged ?: 1 ) );
 
+		// Handle sorting column
 		$orderby = filter_input( INPUT_GET, 'orderby', FILTER_DEFAULT );
 		if ( $orderby !== null && $orderby !== false ) {
-			$orderby = sanitize_key( $orderby );
+			$orderby = sanitize_key( $orderby ); // @reference https://developer.wordpress.org/reference/functions/sanitize_key/
 			if ( in_array( $orderby, $this->sortable_columns, true ) ) {
 				$this->orderby = $orderby;
 			}
 		}
 
+		// Handle sort direction
 		$order = filter_input( INPUT_GET, 'order', FILTER_DEFAULT );
 		$this->order = ( $order !== null && $order !== false && strtoupper( (string) $order ) === 'DESC' ) ? 'DESC' : 'ASC';
 
+		// Handle search query
 		$search = filter_input( INPUT_GET, 's', FILTER_DEFAULT );
 		$this->search = ( $search !== null && $search !== false ) ? trim( sanitize_text_field( $search ) ) : '';
 	}
@@ -355,6 +388,7 @@ abstract class Wpp_List_Table {
 	 * - CSS: wpp-table.css
 	 * - JS: wpp-table.js (depends on jQuery)
 	 *
+	 * Uses file modification time as version for cache busting.
 	 * Delays script localization to `wp_loaded` to avoid calling `wp_create_nonce()`
 	 * before WordPress is fully initialized.
 	 *
@@ -365,27 +399,41 @@ abstract class Wpp_List_Table {
 	 * @reference https://developer.wordpress.org/reference/functions/wp_enqueue_script/
 	 * @reference https://developer.wordpress.org/reference/functions/wp_localize_script/
 	 * @reference https://developer.wordpress.org/reference/functions/add_action/
+	 * @reference https://www.php.net/manual/en/function.filemtime.php
 	 */
 	protected function maybe_enqueue_assets() {
 		if ( ! $this->enqueue_assets || ! function_exists( 'wp_enqueue_style' ) ) {
 			return;
 		}
 
-		$version = '2.5.0';
 		$dir_url = $this->get_assets_url();
+		$dir_path = str_replace( content_url(), WP_CONTENT_DIR, $dir_url );
 
+		// Get file modification time for cache busting
+		$css_version = @filemtime( $dir_path . 'assets/css/wpp-table.css' );
+		if ( ! $css_version ) {
+			$css_version = false; // Fallback to WordPress version
+		}
+
+		$js_version = @filemtime( $dir_path . 'assets/js/wpp-table.js' );
+		if ( ! $js_version ) {
+			$js_version = false; // Fallback to WordPress version
+		}
+
+		// Enqueue CSS
 		wp_enqueue_style(
 			'wpp-list-table',
-			$dir_url . 'css/wpp-table.css',
+			$dir_url . 'assets/css/wpp-table.css',
 			array(),
-			$version
+			$css_version
 		);
 
+		// Enqueue JS
 		wp_enqueue_script(
 			'wpp-list-table',
-			$dir_url . 'js/wpp-table.js',
+			$dir_url . 'assets/js/wpp-table.js',
 			array( 'jquery' ),
-			$version,
+			$js_version,
 			true
 		);
 
@@ -450,7 +498,7 @@ abstract class Wpp_List_Table {
 	/**
 	 * Build SQL query for fetching data.
 	 *
-	 * Uses regex-based column escaping for compatibility with QM_DB (which lacks esc_sql).
+	 * Excludes virtual columns from SELECT and WHERE.
 	 *
 	 * @return string SQL query
 	 * @since 1.0.0
@@ -458,24 +506,28 @@ abstract class Wpp_List_Table {
 	 *
 	 * @reference https://developer.wordpress.org/reference/classes/wpdb/prepare/
 	 * @reference https://developer.wordpress.org/reference/classes/wpdb/esc_like/
+	 * @reference https://www.php.net/manual/en/function.preg-replace.php
 	 */
 	protected function get_query() {
 		global $wpdb;
 
-		// Safely escape column names using regex (no esc_sql method call)
+		// Only select real (non-virtual) columns
+		$real_columns = array_diff( array_keys( $this->columns ), $this->virtual_columns );
 		$escaped_columns = array();
-		foreach ( array_keys( $this->columns ) as $col ) {
+		foreach ( $real_columns as $col ) {
+			// Only allow safe characters in column names
 			$escaped_columns[] = preg_replace( '/[^a-zA-Z0-9_]/', '', $col );
 		}
 		$select_cols = implode( ', ', $escaped_columns );
 
 		$query = "SELECT {$select_cols} FROM {$this->full_table_name}";
 
-		// WHERE for search
+		// WHERE for search — only on real and searchable columns
 		$where_parts = array();
-		$search_like = '%' . $wpdb->esc_like( $this->search ) . '%';
+		$searchable_real_cols = array_diff( $this->searchable_columns, $this->virtual_columns );
+		$search_like = '%' . $wpdb->esc_like( $this->search ) . '%'; // @reference https://developer.wordpress.org/reference/classes/wpdb/esc_like/
 
-		foreach ( $this->searchable_columns as $col ) {
+		foreach ( $searchable_real_cols as $col ) {
 			$safe_col = preg_replace( '/[^a-zA-Z0-9_]/', '', $col );
 			$where_parts[] = $wpdb->prepare( "{$safe_col} LIKE %s", $search_like );
 		}
@@ -484,8 +536,8 @@ abstract class Wpp_List_Table {
 			$query .= ' WHERE (' . implode( ' OR ', $where_parts ) . ')';
 		}
 
-		// Sorting
-		if ( ! empty( $this->orderby ) ) {
+		// Sorting — only on real and sortable columns
+		if ( ! empty( $this->orderby ) && in_array( $this->orderby, array_keys( $this->columns ) ) && ! in_array( $this->orderby, $this->virtual_columns ) ) {
 			$orderby = preg_replace( '/[^a-zA-Z0-9_]/', '', $this->orderby );
 			$order   = $this->order === 'DESC' ? 'DESC' : 'ASC';
 			$query  .= " ORDER BY {$orderby} {$order}";
@@ -508,6 +560,8 @@ abstract class Wpp_List_Table {
 	 *     foreach ( $items as $item ) {
 	 *         echo $item['name'];
 	 *     }
+	 *
+	 * @reference https://developer.wordpress.org/reference/classes/wpdb/get_results/
 	 */
 	public function get_items() {
 		$query = $this->get_query();
@@ -522,6 +576,8 @@ abstract class Wpp_List_Table {
 	 *
 	 * @return int
 	 * @since 1.0.0
+	 *
+	 * @reference https://developer.wordpress.org/reference/classes/wpdb/get_var/
 	 */
 	public function get_total_items() {
 		global $wpdb;
@@ -558,6 +614,8 @@ abstract class Wpp_List_Table {
 	 * @param string $column Column name
 	 * @return string URL with sort parameters
 	 * @since 1.0.0
+	 *
+	 * @reference https://developer.wordpress.org/reference/functions/add_query_arg/
 	 */
 	protected function get_sort_url( $column ) {
 		$order = 'ASC';
@@ -586,6 +644,8 @@ abstract class Wpp_List_Table {
 	 * @param int $page Page number
 	 * @return string URL
 	 * @since 1.0.0
+	 *
+	 * @reference https://developer.wordpress.org/reference/functions/add_query_arg/
 	 */
 	protected function get_pagenum_link( $page ) {
 		$args = array();
@@ -644,13 +704,15 @@ abstract class Wpp_List_Table {
 	 *     public function column_actions( $item ) {
 	 *         return '<a href="#">Edit</a>';
 	 *     }
+	 *
+	 * @reference https://www.php.net/manual/en/function.method-exists.php
+	 * @reference https://www.php.net/manual/en/function.esc-html.php
 	 */
 	protected function render_cell( $item, $column_name ) {
 		$method = 'column_' . $column_name;
 		if ( method_exists( $this, $method ) ) {
 			return $this->$method( $item );
 		}
-
 		return esc_html( $item[ $column_name ] ?? '' );
 	}
 

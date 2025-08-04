@@ -176,12 +176,16 @@ $brokerage_form_config = [
     </div>
     <div class="wpp-data-table">
 		<?php
-		// Создаём экземпляр
-		$brokers_table = new Brokers_Table();
 
 
-		// Выводим HTML таблицы
-		echo $brokers_table->display();
+		// Create and render the table
+		$table = new Brokers_Table();
+
+		// Output the table
+		echo '<div style="margin: 20px;">';
+		echo '<h2>Brokers Management</h2>';
+		echo $table->display();
+		echo '</div>';
 		?>
     </div>
 <?php

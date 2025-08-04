@@ -1,28 +1,70 @@
 /**
- * Wpp Table — Responsive Styling for Wpp_List_Table
+ * WPP Table — Responsive Styling for Wpp_List_Table
+ * Optimized version 2.5.0
  *
- * A clean, modern, and responsive design for database tables.
- * Works on desktop and mobile.
- *
- * @version 2.2.0
- * @author Your Name
+ * @version 2.5.0
+ * @author WP_Panda <panda@wp-panda.pro>
  * @license GPL-2.0-or-later
  */
 
-/* Main container */
-.wpp-table-container {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-    max-width: 100%;
-    overflow-x: auto;
-    margin: 2rem 0;
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    padding: 1.5rem;
+:root {
+    /* Primary colors */
+    --wpp-primary: #0073aa;
+    --wpp-primary-dark: #005a87;
+    --wpp-primary-light: #e1f0f7;
+
+    /* Status colors */
+    --wpp-error: #dc3232;
+    --wpp-error-dark: #a00;
+    --wpp-success: #46b450;
+    --wpp-warning: #ffb900;
+
+    /* Neutral colors */
+    --wpp-dark: #23282d;
+    --wpp-gray-dark: #2c3e50;
+    --wpp-gray: #6c757d;
+    --wpp-gray-light: #e0e0e0;
+    --wpp-gray-lighter: #f1f1f1;
+    --wpp-gray-very-light: #f8f9fa;
+
+    /* Text colors */
+    --wpp-text-dark: #23282d;
+    --wpp-text: #333;
+    --wpp-text-light: #6c757d;
+    --wpp-text-very-light: #999;
+
+    /* Backgrounds */
+    --wpp-bg-white: #fff;
+    --wpp-bg-light: #f8f9fa;
+
+    /* Borders */
+    --wpp-border-color: #ddd;
+    --wpp-border-light: #eee;
+
+    /* Shadows */
+    --wpp-shadow-sm: 0 1px 3px rgba(0,0,0,0.1);
+    --wpp-shadow-md: 0 2px 8px rgba(0,0,0,0.1);
 }
 
-/* Search Form */
+.wpp-table-container {
+    display: flex
+;
+    justify-content: center;
+    width: 100%;
+    max-width: 100%;
+    margin: 2rem 0;
+    padding: 15px;
+    box-sizing: border-box;
+    background: var(--wpp-bg-white);
+    border: 1px solid var(--wpp-border-color);
+    border-radius: 8px;
+    box-shadow: var(--wpp-shadow-md);
+    overflow-x: auto;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
 .wpp-table-search-form {
     display: flex;
     gap: 10px;
@@ -30,21 +72,21 @@
     align-items: center;
     margin-bottom: 1.5rem;
     padding-bottom: 1rem;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--wpp-border-light);
 }
 
 .wpp-table-search-input {
     flex: 1 1 200px;
     padding: 10px 14px;
-    border: 1px solid #ddd;
+    border: 1px solid var(--wpp-border-color);
     border-radius: 6px;
     font-size: 14px;
-    transition: border-color 0.2s ease;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .wpp-table-search-input:focus {
     outline: none;
-    border-color: #0073aa;
+    border-color: var(--wpp-primary);
     box-shadow: 0 0 0 2px rgba(0, 115, 170, 0.2);
 }
 
@@ -56,56 +98,59 @@
     font-size: 14px;
     font-weight: 500;
     cursor: pointer;
-    text-decoration: none;
     transition: background 0.2s ease;
     white-space: nowrap;
 }
 
 .wpp-table-search-button {
-    background: #0073aa;
+    background: var(--wpp-primary);
     color: white;
 }
 
 .wpp-table-search-button:hover {
-    background: #005a87;
+    background: var(--wpp-primary-dark);
 }
 
 .wpp-table-clear-search {
-    background: #a00;
+    background: var(--wpp-error);
     color: white;
 }
 
 .wpp-table-clear-search:hover {
-    background: #800;
+    background: var(--wpp-error-dark);
 }
 
-/* Data Table */
 .wpp-data-table {
     width: 100%;
     border-collapse: collapse;
-    margin-top: 1rem;
+    margin: 10px 0 1rem;
+    box-shadow: var(--wpp-shadow-sm);
     table-layout: auto;
+    padding: .1rem;
+}
+
+.wpp-data-table h2 {
+    font-size: 1.2rem;
 }
 
 .wpp-data-table th,
 .wpp-data-table td {
     padding: 12px 15px;
     text-align: left;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px solid var(--wpp-gray-light);
     word-wrap: break-word;
 }
 
 .wpp-data-table th {
-    background-color: #f8f9fa;
-    color: #222;
+    background-color: var(--wpp-gray-dark);
+    color: white;
     font-weight: 600;
     font-size: 14px;
-    text-transform: uppercase;
     letter-spacing: 0.05em;
 }
 
 .wpp-data-table th a {
-    color: #0073aa;
+    color: white;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
@@ -120,24 +165,27 @@
     transition: background 0.2s ease;
 }
 
+.wpp-data-table tbody tr:nth-child(even) {
+    background-color: var(--wpp-gray-very-light);
+}
+
 .wpp-data-table tbody tr:hover {
-    background-color: #f1f1f1;
+    background-color: var(--wpp-primary-light);
 }
 
 .wpp-data-table td {
     font-size: 14px;
-    color: #333;
+    color: var(--wpp-text);
+    vertical-align: middle;
 }
 
-/* No items message */
 .wpp-no-items {
     text-align: center;
     font-style: italic;
-    color: #777;
+    color: var(--wpp-text-light);
     padding: 2rem;
 }
 
-/* Pagination */
 .wpp-pagination {
     margin-top: 2rem;
     text-align: center;
@@ -150,47 +198,41 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 36px;
+    min-width: 36px;
     height: 36px;
-    margin: 0 4px;
-    border-radius: 50%;
+    margin: 0 2px;
+    border-radius: 4px;
     text-decoration: none;
-    color: #0073aa;
-    border: 1px solid #ddd;
+    color: var(--wpp-primary);
+    border: 1px solid var(--wpp-border-color);
     transition: all 0.2s ease;
+    padding: 0 8px;
 }
 
 .wpp-pagination a:hover {
-    background-color: #0073aa;
+    background-color: var(--wpp-primary);
     color: white;
-    border-color: #0073aa;
+    border-color: var(--wpp-primary);
 }
 
 .wpp-pagination .current {
-    background-color: #0073aa;
+    background-color: var(--wpp-primary);
     color: white;
-    border-color: #0073aa;
+    border-color: var(--wpp-primary);
     font-weight: bold;
 }
 
 .wpp-pagination .dots {
-    width: auto;
-    padding: 0 8px;
-    background: transparent;
     border: none;
-    color: #999;
-    font-weight: bold;
+    color: var(--wpp-text-very-light);
     pointer-events: none;
 }
 
-/* Loading state */
 .wpp-table-container.loading {
     opacity: 0.7;
     pointer-events: none;
-    transition: opacity 0.3s ease;
 }
 
-/* Responsive Adjustments */
 @media (max-width: 768px) {
     .wpp-table-container {
         padding: 1rem;
@@ -199,7 +241,6 @@
 
     .wpp-table-search-form {
         flex-direction: column;
-        align-items: stretch;
     }
 
     .wpp-data-table th,
@@ -209,9 +250,8 @@
     }
 
     .wpp-pagination a,
-    .wpp-pagination .current,
-    .wpp-pagination .dots {
-        width: 32px;
+    .wpp-pagination .current {
+        min-width: 32px;
         height: 32px;
         font-size: 13px;
     }
@@ -222,18 +262,15 @@
         padding: 0.8rem;
     }
 
-    .wpp-data-table {
-        font-size: 12px;
-    }
-
     .wpp-data-table th,
     .wpp-data-table td {
         padding: 8px 6px;
+        font-size: 13px;
     }
 
     .wpp-pagination a,
     .wpp-pagination .current {
-        width: 28px;
+        min-width: 28px;
         height: 28px;
         font-size: 12px;
     }
