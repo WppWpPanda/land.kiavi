@@ -170,8 +170,20 @@ $brokerage_form_config = [
                 </form>
             </div>
         </div>
-    </div>
 
+
+
+    </div>
+    <div class="wpp-data-table">
+		<?php
+		// Создаём экземпляр
+		$brokers_table = new Brokers_Table();
+
+
+		// Выводим HTML таблицы
+		echo $brokers_table->display();
+		?>
+    </div>
 <?php
 // -------------------------------
 // 4. Render Page Footer

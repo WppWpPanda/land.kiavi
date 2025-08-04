@@ -8,6 +8,7 @@ require_once 'helpers.php';
 require_once 'ajax.php';
 require_once 'templates.php';
 require_once 'wpp-core-filters.php';
+require_once 'brokers-table.php';
 
 function debugPanel(...$data)
 {
