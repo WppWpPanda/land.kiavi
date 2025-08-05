@@ -111,7 +111,7 @@ $title_company_form_config = [
 
 						<?php endforeach; ?>
                     </div>
-
+	                <?php wp_nonce_field('wpp_company_nonce', '_ajax_nonce', false); ?>
                     <div class="wpp-form-actions">
                         <button type="submit" class="<?php echo esc_attr(implode(' ', $title_company_form_config['submit_button']['classes'])); ?>">
 							<?php echo esc_html($title_company_form_config['submit_button']['text']); ?>
@@ -122,27 +122,19 @@ $title_company_form_config = [
         </div>
     </div>
 
-    <script>
-        jQuery(document).ready(function($) {
-            // Открытие модального окна
-            $('#wpp-open-title-company-modal').on('click', function(e) {
-                e.preventDefault();
-                $('#wpp-title-company-modal').fadeIn();
-            });
+    <div class="wpp-data-table">
+		<?php
 
-            // Закрытие модального окна
-            $('.wpp-modal-close, .wpp-modal-overlay').on('click', function() {
-                $('#wpp-title-company-modal').fadeOut();
-            });
+		// Create and render the table
+		$table = new Companies_Table();
 
-            // Закрытие при нажатии ESC
-            $(document).on('keyup', function(e) {
-                if (e.key === "Escape") {
-                    $('#wpp-title-company-modal').fadeOut();
-                }
-            });
-        });
-    </script>
+		// Output the table
+		echo '<div style="margin: 20px;">';
+		echo '<h2>Title Companies</h2>';
+		echo $table->display();
+		echo '</div>';
+		?>
+    </div>
 
 <?php
 landvent_manager_footer_main();

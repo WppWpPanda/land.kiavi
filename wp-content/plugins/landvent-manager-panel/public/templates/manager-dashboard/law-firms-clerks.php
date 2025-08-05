@@ -117,7 +117,8 @@ $law_firm_form_config = [
 
 						<?php endforeach; ?>
                     </div>
-
+                    <!-- Security: Nonce field for AJAX verification -->
+	                <?php wp_nonce_field('wpp_law_firm_nonce', '_ajax_nonce', false); ?>
                     <div class="wpp-form-actions">
                         <button type="submit" class="<?php echo esc_attr(implode(' ', $law_firm_form_config['submit_button']['classes'])); ?>">
 							<?php echo esc_html($law_firm_form_config['submit_button']['text']); ?>
@@ -127,28 +128,21 @@ $law_firm_form_config = [
             </div>
         </div>
     </div>
+    <div class="wpp-data-table">
+		<?php
 
-    <script>
-        jQuery(document).ready(function($) {
-            // Открытие модального окна
-            $('#wpp-open-law-firm-modal').on('click', function(e) {
-                e.preventDefault();
-                $('#wpp-law-firm-modal').fadeIn();
-            });
 
-            // Закрытие модального окна
-            $('.wpp-modal-close, .wpp-modal-overlay').on('click', function() {
-                $('#wpp-law-firm-modal').fadeOut();
-            });
+		// Create and render the table
+		$table = new LawFirm_Table();
 
-            // Закрытие при нажатии ESC
-            $(document).on('keyup', function(e) {
-                if (e.key === "Escape") {
-                    $('#wpp-law-firm-modal').fadeOut();
-                }
-            });
-        });
-    </script>
+		// Output the table
+		echo '<div style="margin: 20px;">';
+		echo '<h2>Law Firms</h2>';
+		echo $table->display();
+		echo '</div>';
+		?>
+    </div>
+
 
 <?php
 landvent_manager_footer_main();

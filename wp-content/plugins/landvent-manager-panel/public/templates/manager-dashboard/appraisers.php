@@ -129,7 +129,7 @@ $appraiser_form_config = [
 
 						<?php endforeach; ?>
                     </div>
-
+	                <?php wp_nonce_field('wpp_appraiser_nonce', '_ajax_nonce', false); ?>
                     <div class="wpp-form-actions">
                         <button type="submit" class="<?php echo esc_attr(implode(' ', $appraiser_form_config['submit_button']['classes'])); ?>">
 							<?php echo esc_html($appraiser_form_config['submit_button']['text']); ?>
@@ -140,27 +140,20 @@ $appraiser_form_config = [
         </div>
     </div>
 
-    <script>
-        jQuery(document).ready(function($) {
-            // Открытие модального окна
-            $('#wpp-open-appraiser-modal').on('click', function(e) {
-                e.preventDefault();
-                $('#wpp-appraiser-modal').fadeIn();
-            });
+    <div class="wpp-data-table">
+		<?php
 
-            // Закрытие модального окна
-            $('.wpp-modal-close, .wpp-modal-overlay').on('click', function() {
-                $('#wpp-appraiser-modal').fadeOut();
-            });
 
-            // Закрытие при нажатии ESC
-            $(document).on('keyup', function(e) {
-                if (e.key === "Escape") {
-                    $('#wpp-appraiser-modal').fadeOut();
-                }
-            });
-        });
-    </script>
+		// Create and render the table
+		$table = new Appraisers_Table();
+
+		// Output the table
+		echo '<div style="margin: 20px;">';
+		echo '<h2>Appraisers</h2>';
+		echo $table->display();
+		echo '</div>';
+		?>
+    </div>
 
 <?php
 landvent_manager_footer_main();

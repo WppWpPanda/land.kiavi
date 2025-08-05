@@ -1,14 +1,14 @@
 <?php
 /**
- * Brokers_Table — Display and Manage Brokers from Database
+ * Appraisers_Table — Display and Manage Appraisers from Database
  *
- * A child class of Wpp_List_Table that displays real estate brokers
- * with custom actions (Edit, Delete) and full data from the `wpp_brokers` table.
+ * A child class of Wpp_List_Table that displays appraisers
+ * with custom actions (Edit, Delete) and full data from the `wpp_appraisers` table.
  *
  * Features:
  * - Pagination
- * - Sorting by ID, Name, City, State
- * - Search by name, city, BDM
+ * - Sorting by name, city, state
+ * - Search by name, city, phone, email
  * - Custom "Actions" column (Edit/Delete)
  * - Virtual column support (no DB query)
  * - Responsive design
@@ -16,12 +16,12 @@
  * - Enqueues custom JavaScript for enhanced interaction
  *
  * @package           WppLibs\Examples
- * @subpackage        Brokers
+ * @subpackage        Appraisers
  * @author            WP_Panda <panda@wp-panda.pro>
  * @copyright         2025 WP_Panda
  * @license           GPL-2.0-or-later
  *
- * @version           1.2.0
+ * @version           1.0.0
  * @since             1.0.0
  *
  * @link              https://developer.wordpress.org/reference/functions/add_query_arg/
@@ -33,7 +33,7 @@
  * @link              https://developer.wordpress.org/reference/functions/wp_enqueue_script/
  *
  * @example
- *     $table = new Brokers_Table();
+ *     $table = new Appraisers_Table();
  *     echo $table->display();
  *
  * @todo Add "View" button linking to frontend profile
@@ -60,9 +60,9 @@ if ( ! defined( 'WPP_TABLE_URL' ) ) {
 }
 
 /**
- * Class Brokers_Table
+ * Class Appraisers_Table
  *
- * Displays brokers from the `wpp_brokers` database table with Edit and Delete actions.
+ * Displays appraisers from the `wpp_appraisers` database table with Edit and Delete actions.
  *
  * Uses virtual columns to avoid querying non-existent fields like "actions".
  * Optionally enqueues a custom JavaScript file for enhanced functionality.
@@ -70,7 +70,7 @@ if ( ! defined( 'WPP_TABLE_URL' ) ) {
  * @extends Wpp_List_Table
  * @since 1.0.0
  */
-class Brokers_Table extends Wpp_List_Table {
+class Appraisers_Table extends Wpp_List_Table {
 
 	/**
 	 * Name of the database table (without prefix).
@@ -81,7 +81,7 @@ class Brokers_Table extends Wpp_List_Table {
 	 * @access protected
 	 * @since 1.0.0
 	 */
-	protected $table_name = 'wpp_brokers';
+	protected $table_name = 'wpp_appraiser';
 
 	/**
 	 * Primary key of the table.
@@ -126,13 +126,13 @@ class Brokers_Table extends Wpp_List_Table {
 	protected $enqueue_assets = true;
 
 	/**
-	 * Whether to enqueue a custom JavaScript file for broker-specific logic.
+	 * Whether to enqueue a custom JavaScript file for appraiser-specific logic.
 	 *
-	 * Set to false to disable loading of `brokers-table.js`.
+	 * Set to false to disable loading of `appraisers-table.js`.
 	 *
 	 * @var bool
 	 * @access protected
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 */
 	protected $enqueue_custom_js = true;
 
@@ -149,13 +149,13 @@ class Brokers_Table extends Wpp_List_Table {
 	 * @reference https://developer.wordpress.org/reference/classes/wpdb/get_results/
 	 */
 	protected $columns = array(
-		'id'                      => 'ID',
-		'brok_brokerage_name'     => 'Brokerage Name',
-		'brok_parent_brokerage'   => 'Parent Brokerage',
-		'brok_city'               => 'City',
-		'brok_state'              => 'State',
-		'brok_broker_bdm'         => 'Broker/BDM',
-		'actions'                 => 'Actions' // Virtual column — not in DB
+		'id'        => 'ID',
+		'appr_name' => 'Name',
+		'appr_city' => 'City',
+		'appr_state' => 'State',
+		'appr_phone' => 'Phone',
+		'appr_email' => 'Email',
+		'actions'   => 'Actions' // Virtual column — not in DB
 	);
 
 	/**
@@ -166,16 +166,9 @@ class Brokers_Table extends Wpp_List_Table {
 	 * @var array
 	 * @access protected
 	 * @since 1.0.0
-	 *
-	 * @example
-	 *     Sorting URL: ?orderby=brok_city&order=ASC
 	 */
 	protected $sortable_columns = array(
-		'id',
-		'brok_brokerage_name',
-		'brok_city',
-		'brok_state',
-		'brok_broker_bdm'
+		'id', 'appr_name', 'appr_city', 'appr_state', 'appr_phone', 'appr_email'
 	);
 
 	/**
@@ -191,12 +184,7 @@ class Brokers_Table extends Wpp_List_Table {
 	 * @reference https://developer.wordpress.org/reference/classes/wpdb/prepare/
 	 */
 	protected $searchable_columns = array(
-		'brok_brokerage_name',
-		'brok_parent_brokerage',
-		'brok_city',
-		'brok_state',
-		'brok_broker_bdm',
-		'brok_address'
+		'appr_name', 'appr_city', 'appr_state', 'appr_phone', 'appr_email', 'appr_address'
 	);
 
 	/**
@@ -207,10 +195,7 @@ class Brokers_Table extends Wpp_List_Table {
 	 *
 	 * @var array
 	 * @access protected
-	 * @since 1.1.0
-	 *
-	 * @example
-	 *     'actions' is rendered by column_actions()
+	 * @since 1.0.0
 	 */
 	protected $virtual_columns = array(
 		'actions'
@@ -234,7 +219,7 @@ class Brokers_Table extends Wpp_List_Table {
 		// Build edit URL
 		$edit_url = add_query_arg(
 			array(
-				'page' => 'edit-broker',
+				'page' => 'edit-appraiser',
 				'id'   => $item['id']
 			),
 			admin_url( 'admin.php' )
@@ -243,23 +228,22 @@ class Brokers_Table extends Wpp_List_Table {
 		// Build delete URL with nonce for security
 		$delete_url = add_query_arg(
 			array(
-				'page'   => 'manage-brokers',
-				'action' => 'delete_broker',
+				'page'   => 'manage-appraisers',
+				'action' => 'delete_appraiser',
 				'id'     => $item['id']
 			),
 			admin_url( 'admin.php' )
 		);
-		$delete_url = wp_nonce_url( $delete_url, 'delete_broker_' . $item['id'], 'broker_nonce' );
+		$delete_url = wp_nonce_url( $delete_url, 'delete_appraiser_' . $item['id'], 'appraiser_nonce' );
 
 		// Create Edit button
 		$actions = sprintf(
-			'<a href="%s" class="button button-small broker-edit" style="font-size:12px;padding:4px 8px;">✏️ Edit</a>',
-			esc_url( $edit_url )
+			'<a href="#" class="button button-small appr-edit" style="font-size:12px;padding:4px 8px;">✏️ Edit</a>'
 		);
 
 		// Create Delete button with confirmation
 		$actions .= ' ' . sprintf(
-				'<a href="%s" class="button button-small broker-delete" style="color:#a00;font-size:12px;padding:4px 8px;" onclick="return confirm(\'Are you sure you want to delete this broker?\\nThis action cannot be undone.\')">🗑️ Delete</a>',
+				'<a href="%s" class="button button-small appr-delete" style="color:#a00;font-size:12px;padding:4px 8px;" onclick="return confirm(\'Are you sure you want to delete this appraiser?\\nThis action cannot be undone.\')">🗑️ Delete</a>',
 				esc_url( $delete_url )
 			);
 
@@ -267,23 +251,23 @@ class Brokers_Table extends Wpp_List_Table {
 	}
 
 	/**
-	 * Optional: Customize brokerage name display.
+	 * Optional: Highlight appraiser name
 	 *
 	 * @param array $item
 	 * @return string
-	 * @since 1.1.0
+	 * @since 1.0.0
 	 */
-	public function column_brok_brokerage_name( $item ) {
-		return '<strong>' . esc_html( $item['brok_brokerage_name'] ) . '</strong>';
+	public function column_appr_name( $item ) {
+		return '<strong>' . esc_html( $item['appr_name'] ) . '</strong>';
 	}
 
 	/**
-	 * Enqueue custom JavaScript for broker interactions (e.g., modal, AJAX).
+	 * Enqueue custom JavaScript for appraiser interactions (e.g., modal, AJAX).
 	 *
-	 * Loads: /wpp-core/wpp_libs/wpp_list_table/js/brokers-table.js
+	 * Loads: /wpp-core/wpp_libs/wpp_list_table/js/appraisers-table.js
 	 * Version: file modification time (cache busting)
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 * @access protected
 	 */
 	protected function enqueue_custom_js() {
@@ -291,24 +275,24 @@ class Brokers_Table extends Wpp_List_Table {
 			return;
 		}
 
-		$js_url = WPP_LOAN_MANAGER_URL . 'assets/js/brokers-table.js';
+		$js_url = WPP_LOAN_MANAGER_URL . 'assets/js/appraisers-table.js';
 		$js_path = str_replace( content_url(), WP_CONTENT_DIR, $js_url );
 
 		// Use file modification time as version for cache busting
 		$version = @filemtime( $js_path ) ?: false;
 
 		wp_enqueue_script(
-			'wpp-brokers-table-js',
+			'wpp-appraisers-table-js',
 			$js_url,
 			array( 'jquery' ),
 			$version,
 			true
 		);
 
-		// Optional: Localize script (pass AJAX URL, nonce, etc.)
-		// wp_localize_script( 'wpp-brokers-table-js', 'wppBrokersConfig', array(
+		// Optional: Localize script
+		// wp_localize_script( 'wpp-appraisers-table-js', 'wppAppraisersConfig', array(
 		//     'ajax_url' => admin_url( 'admin-ajax.php' ),
-		//     'nonce'    => wp_create_nonce( 'wpp_broker_nonce' )
+		//     'nonce'    => wp_create_nonce( 'wpp_appraiser_nonce' )
 		// ) );
 	}
 
@@ -317,24 +301,10 @@ class Brokers_Table extends Wpp_List_Table {
 	 *
 	 * Extends parent constructor and enqueues custom JS.
 	 *
-	 * @since 1.2.0
+	 * @since 1.0.0
 	 */
 	public function __construct() {
 		parent::__construct();
 		$this->enqueue_custom_js();
 	}
-
-	/**
-	 * Debug: Log SQL query to debug.log
-	 *
-	 * Uncomment to debug SQL issues.
-	 *
-	 * @return string SQL query
-	 * @since 1.0.0
-	 */
-	// protected function get_query() {
-	//     $query = parent::get_query();
-	//     error_log( 'Brokers_Table Query: ' . $query );
-	//     return $query;
-	// }
 }

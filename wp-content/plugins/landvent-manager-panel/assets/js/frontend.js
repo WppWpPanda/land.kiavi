@@ -5,6 +5,10 @@
 
     $(document).ready(function () {
 
+        //*********************************************//
+        // FEE
+        //*********************************************//
+
         // === 1. Восстановление custom fees из loanData ===
         if (typeof loanData !== 'undefined' && Array.isArray(loanData.custom_fees)) {
             loanData.custom_fees.forEach(function (fee) {
@@ -128,127 +132,93 @@
                 $(this).trigger('input'); // Пересчитываем
             }
         });
-    });
-
-    // === Утилита: Экранирование HTML ===
-    $.escapeHtml = function (text) {
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    };
 
 
-    // Обработка клика на ссылку для скачивания всех документов
-    $(document).on('click', '.wpp-download-docs', function (e) {
-        e.preventDefault(); // Предотвращаем стандартное поведение ссылки
+        // === Утилита: Экранирование HTML ===
+        $.escapeHtml = function (text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        };
+        //*********************************************//
+        // Скачивание
+        //*********************************************//
 
-        // Получаем loan_id из параметра GET в URL
-        let urlParams = new URLSearchParams(window.location.search);
-        let loanId = urlParams.get('loan');
+        // Обработка клика на ссылку для скачивания всех документов
+        $(document).on('click', '.wpp-download-docs', function (e) {
+            e.preventDefault(); // Предотвращаем стандартное поведение ссылки
 
-        // Проверяем, есть ли loan_id
-        if (!loanId) {
-            alert('Loan ID not found in the URL (e.g., ?loan=123).');
-            console.error('wpp-download-docs: Loan ID is missing from the URL parameters.');
-            return;
-        }
+            // Получаем loan_id из параметра GET в URL
+            let urlParams = new URLSearchParams(window.location.search);
+            let loanId = urlParams.get('loan');
 
-        // Очищаем loanId от недопустимых символов (на всякий случай, хотя intval в PHP тоже поможет)
-        loanId = parseInt(loanId, 10);
-        if (isNaN(loanId) || loanId <= 0) {
-            alert('Invalid Loan ID in the URL.');
-            console.error('wpp-download-docs: Invalid Loan ID found in URL:', urlParams.get('loan'));
-            return;
-        }
+            // Проверяем, есть ли loan_id
+            if (!loanId) {
+                alert('Loan ID not found in the URL (e.g., ?loan=123).');
+                console.error('wpp-download-docs: Loan ID is missing from the URL parameters.');
+                return;
+            }
 
-        // Создаем временную форму для отправки запроса
-        var $form = $('<form>', {
-            'action': wpp_ajax.ajax_url, // URL для обработки запроса
-            'method': 'POST'
-        }).hide(); // Скрываем форму
+            // Очищаем loanId от недопустимых символов (на всякий случай, хотя intval в PHP тоже поможет)
+            loanId = parseInt(loanId, 10);
+            if (isNaN(loanId) || loanId <= 0) {
+                alert('Invalid Loan ID in the URL.');
+                console.error('wpp-download-docs: Invalid Loan ID found in URL:', urlParams.get('loan'));
+                return;
+            }
 
-        // Добавляем скрытые поля с данными
-        $form.append($('<input>', {
-            'type': 'hidden',
-            'name': 'action',
-            'value': 'wpp_download_all_documents'
-        }));
+            // Создаем временную форму для отправки запроса
+            var $form = $('<form>', {
+                'action': wpp_ajax.ajax_url, // URL для обработки запроса
+                'method': 'POST'
+            }).hide(); // Скрываем форму
 
-        $form.append($('<input>', {
-            'type': 'hidden',
-            'name': 'loan_id',
-            'value': loanId
-        }));
+            // Добавляем скрытые поля с данными
+            $form.append($('<input>', {
+                'type': 'hidden',
+                'name': 'action',
+                'value': 'wpp_download_all_documents'
+            }));
 
-        $form.append($('<input>', {
-            'type': 'hidden',
-            'name': 'nonce',
-            'value': wpp_ajax.nonce
-        }));
+            $form.append($('<input>', {
+                'type': 'hidden',
+                'name': 'loan_id',
+                'value': loanId
+            }));
 
-        // Добавляем форму в DOM, отправляем и удаляем
-        $('body').append($form);
-        $form.submit();
-        $form.remove();
-    });
+            $form.append($('<input>', {
+                'type': 'hidden',
+                'name': 'nonce',
+                'value': wpp_ajax.nonce
+            }));
 
-
-    // Открытие модального окна
-    $('#wpp-open-brokerage-modal').on('click', function (e) {
-        e.preventDefault();
-        $('#wpp-brokerage-modal').fadeIn();
-    });
-
-    // Закрытие модального окна
-    $('.wpp-modal-close, .wpp-modal-overlay').on('click', function () {
-        $('#wpp-brokerage-modal').fadeOut();
-    });
-
-    // Закрытие при нажатии ESC
-    $(document).on('keyup', function (e) {
-        if (e.key === "Escape") {
-            $('#wpp-brokerage-modal').fadeOut();
-        }
-    });
-
-    // Отправка формы через AJAX
-    $('#wpp-brokerage-form').on('submit', function (e) {
-        e.preventDefault();
-
-        const form = $(this);
-        const submitBtn = form.find('button[type="submit"]');
-        const originalText = submitBtn.text();
-
-        // Собираем данные
-        const data = form.serializeArray();
-        data.push({
-            name: 'action',
-            value: 'wpp_save_brokerage'
+            // Добавляем форму в DOM, отправляем и удаляем
+            $('body').append($form);
+            $form.submit();
+            $form.remove();
         });
 
-        // Отключаем кнопку
-        submitBtn.text('Сохранение...').prop('disabled', true);
 
-        $.post(trello_vars.ajax_url, data, function (response) {
-            if (response.success) {
-                alert('✅ ' + response.data.message);
-                form[0].reset(); // очистить форму
-                $('#wpp-brokerage-modal').fadeOut(); // закрыть модальное окно
+        //*********************************************//
+        // БРОКЕРЫ
+        //*********************************************//
 
-                // Можно добавить новую строку в таблицу или обновить список
-                $(document).trigger('wpp_brokerage_saved', [response.data]);
+        // Открытие модального окна
 
-            } else {
-                alert('❌ Ошибка: ' + response.data.message);
-            }
-        }, 'json')
-            .fail(function () {
-                alert('❌ Ошибка соединения с сервером.');
-            })
-            .always(function () {
-                submitBtn.text(originalText).prop('disabled', false);
-            });
-    });
+
+
+        //*********************************************//
+        // ФИРМЫ
+        //*********************************************//
+
+        // Открытие модального окна
+        $('#wpp-open-law-firm-modal').on('click', function(e) {
+            e.preventDefault();
+            $('#wpp-law-firm-modal').fadeIn();
+        });
+
+
+    })
 
 
 })(jQuery);

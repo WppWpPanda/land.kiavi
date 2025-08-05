@@ -163,30 +163,29 @@ function wpp_handle_download_all_documents() {
 /**
  * Hook: Register AJAX Actions
  *
- * Registers the callback function for both authenticated and unauthenticated users.
- * - 'wp_ajax_{action}'     -> for logged-in users
- * - 'wp_ajax_nopriv_{action}' -> for non-logged-in users (optional)
+ * Registers the callback function for authenticated users.
+ * - 'wp_ajax_{action}' -> for logged-in users only
  *
  * @link https://developer.wordpress.org/reference/functions/wp_ajax_add/
  */
 add_action('wp_ajax_wpp_save_brokerage', 'wpp_save_brokerage_callback');
-//add_action('wp_ajax_nopriv_wpp_save_brokerage', 'wpp_save_brokerage_callback'); // Uncomment if public submission is needed
+// add_action('wp_ajax_nopriv_wpp_save_brokerage', 'wpp_save_brokerage_callback'); // Uncomment if public access is needed
 
 /**
- * AJAX Callback: Save Brokerage Data to Database
+ * AJAX Callback: Save or Update Brokerage Data to Database
  *
- * Processes the brokerage form submission via AJAX, validates and sanitizes input,
- * and inserts it into the `wpp_brokers` custom table.
+ * Processes the brokerage form submission via AJAX. If a 'broker_id' is provided,
+ * updates the existing record; otherwise, inserts a new one into the `wpp_brokers` table.
  *
  * This function performs the following:
  * 1. Verifies the security nonce.
  * 2. Checks user capabilities.
  * 3. Sanitizes and collects form data.
  * 4. Validates required fields.
- * 5. Inserts data into the database using $wpdb.
- * 6. Returns a JSON response (success or error).
+ * 5. Inserts or updates data using $wpdb.
+ * 6. Returns a JSON response with full row data.
  *
- * @since 1.0.0
+ * @since 1.1.0
  *
  * @global wpdb $wpdb WordPress database abstraction object.
  *
@@ -196,7 +195,9 @@ add_action('wp_ajax_wpp_save_brokerage', 'wpp_save_brokerage_callback');
  * @uses current_user_can()       To restrict access by capability.
  * @uses sanitize_text_field()    To clean user input.
  * @uses wp_unslash()             To remove magic quotes.
- * @uses $wpdb->insert()          To safely insert data into the database.
+ * @uses $wpdb->insert()          To safely insert new data.
+ * @uses $wpdb->update()          To safely update existing data.
+ * @uses $wpdb->get_row()         To fetch full row after save (including timestamps).
  * @uses wp_send_json_success()   To return success response in JSON format.
  * @uses wp_send_json_error()     To return error response in JSON format.
  *
@@ -206,6 +207,7 @@ add_action('wp_ajax_wpp_save_brokerage', 'wpp_save_brokerage_callback');
  * @link https://developer.wordpress.org/reference/functions/sanitize_text_field/
  * @link https://developer.wordpress.org/reference/functions/wp_unslash/
  * @link https://developer.wordpress.org/reference/classes/wpdb/insert/
+ * @link https://developer.wordpress.org/reference/classes/wpdb/update/
  * @link https://developer.wordpress.org/reference/functions/wp_send_json_success/
  * @link https://developer.wordpress.org/reference/functions/wp_send_json_error/
  */
@@ -215,29 +217,29 @@ function wpp_save_brokerage_callback() {
 	// -------------------------------
 	// 1. Security: Nonce Verification
 	// -------------------------------
-	// Nonce (Number Used Once) prevents CSRF attacks.
+	// Prevents CSRF attacks.
 	// Must match the one generated with wp_nonce_field('wpp_brokerage_nonce', '_ajax_nonce')
 	//
 	// @link https://developer.wordpress.org/plugins/security/nonces/
-	if (!isset($_POST['_ajax_nonce']) || !wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['_ajax_nonce'])), 'wpp_brokerage_nonce')) {
-		wp_send_json_error([
+	if ( ! isset( $_POST['_ajax_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_nonce'] ) ), 'wpp_brokerage_nonce' ) ) {
+		wp_send_json_error( [
 			'message' => 'Invalid or missing security token (nonce).',
 			'code'    => 'invalid_nonce'
-		], 403);
+		], 403 );
 	}
 
 	// -------------------------------
 	// 2. Authorization: User Capability Check
 	// -------------------------------
-	// Restrict access to users with 'manage_options' capability (typically administrators).
+	// Restrict access to users with 'manage_options' capability (admins).
 	// Change to 'edit_posts', 'publish_pages', etc., if needed.
 	//
 	// @link https://developer.wordpress.org/plugins/users/capabilities/
-	if (!current_user_can('manage_options')) {
-		wp_send_json_error([
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error( [
 			'message' => 'You do not have permission to perform this action.',
 			'code'    => 'insufficient_permissions'
-		], 403);
+		], 403 );
 	}
 
 	// -------------------------------
@@ -256,60 +258,370 @@ function wpp_save_brokerage_callback() {
 	];
 
 	$data = [];
-
-	foreach ($allowed_fields as $field) {
-		if (isset($_POST[$field])) {
-			// Sanitize input: remove slashes and clean string
-			$data[$field] = sanitize_text_field(wp_unslash($_POST[$field]));
+	foreach ( $allowed_fields as $field ) {
+		if ( isset( $_POST[ $field ] ) ) {
+			$data[ $field ] = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
 		}
 	}
+
+	// Extract broker_id (optional)
+	$broker_id = ! empty( $_POST['broker_id'] ) ? absint( $_POST['broker_id'] ) : 0;
 
 	// -------------------------------
 	// 4. Validation
 	// -------------------------------
-	// Ensure required fields are not empty
-	if (empty($data['brok_brokerage_name'])) {
-		wp_send_json_error([
+	if ( empty( $data['brok_brokerage_name'] ) ) {
+		wp_send_json_error( [
 			'message' => 'Brokerage name is required.',
 			'field'   => 'brok_brokerage_name',
 			'code'    => 'missing_required_field'
-		]);
+		] );
 	}
 
 	// Optional: Add more validation (e.g., ZIP format, email, etc.)
 
 	// -------------------------------
-	// 5. Database Insertion
+	// 5. Determine Action: Insert or Update
 	// -------------------------------
 	$table_name = $wpdb->prefix . 'wpp_brokers';
 
-	// Insert data into the database
-	// Format: '%s' = string, '%d' = integer, '%f' = float
-	// Since all fields are strings, we use '%s' for all
-	$insert_result = $wpdb->insert(
-		$table_name,
-		$data,
-		array_fill(0, count($data), '%s') // Apply '%s' format to each value
-	);
+	if ( $broker_id > 0 ) {
+		// --- UPDATE EXISTING BROKER ---
 
-	// Check for database error
-	if ($insert_result === false) {
-		wp_send_json_error([
-			'message' => 'Database error occurred.',
-			'error'   => $wpdb->last_error,
-			'code'    => 'db_insert_failed'
-		], 500);
+		// Check if broker exists
+		$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table_name} WHERE id = %d", $broker_id ) );
+		if ( ! $exists ) {
+			wp_send_json_error( [
+				'message' => 'Broker not found.',
+				'code'    => 'broker_not_found'
+			], 404 );
+		}
+
+		// Add updated_at timestamp
+		$data['updated_at'] = current_time( 'mysql' );
+
+		// Perform update
+		$result = $wpdb->update(
+			$table_name,
+			$data,
+			[ 'id' => $broker_id ],
+			array_fill( 0, count( $data ), '%s' ),
+			[ '%d' ]
+		);
+
+		if ( $result === false ) {
+			wp_send_json_error( [
+				'message' => 'Database error occurred during update.',
+				'error'   => $wpdb->last_error,
+				'code'    => 'db_update_failed'
+			], 500 );
+		}
+
+		$saved_id = $broker_id;
+
+	} else {
+		// --- INSERT NEW BROKER ---
+
+		// Add timestamps
+		$data['created_at'] = current_time( 'mysql' );
+		$data['updated_at'] = current_time( 'mysql' );
+
+		// Perform insert
+		$result = $wpdb->insert(
+			$table_name,
+			$data,
+			array_fill( 0, count( $data ), '%s' )
+		);
+
+		if ( $result === false ) {
+			wp_send_json_error( [
+				'message' => 'Database error occurred during insertion.',
+				'error'   => $wpdb->last_error,
+				'code'    => 'db_insert_failed'
+			], 500 );
+		}
+
+		$saved_id = $wpdb->insert_id;
 	}
 
-	$inserted_id = $wpdb->insert_id;
+	// -------------------------------
+	// 6. Fetch Full Saved Row (with timestamps)
+	// -------------------------------
+	$saved_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE id = %d", $saved_id ), ARRAY_A );
+
+	if ( ! $saved_row ) {
+		wp_send_json_error( [
+			'message' => 'Failed to retrieve saved data.',
+			'code'    => 'data_retrieval_failed'
+		], 500 );
+	}
 
 	// -------------------------------
-	// 6. Success Response
+	// 7. Success Response
 	// -------------------------------
-	// Return success response with inserted ID and confirmation message
+	$action = $broker_id ? 'updated' : 'added';
+	wp_send_json_success( [
+		'message' => "Broker has been successfully {$action}.",
+		'id'      => $saved_id,
+		'action'  => $action,
+		'data'    => $saved_row // Full row with created_at, updated_at, etc.
+	], 200 );
+}
+
+
+
+
+
+add_action('wp_ajax_wpp_save_law_firm', 'wpp_save_law_firm_callback');
+
+function wpp_save_law_firm_callback() {
+	global $wpdb;
+
+	// Security: Nonce
+	if ( ! isset( $_POST['_ajax_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_nonce'] ) ), 'wpp_law_firm_nonce' ) ) {
+		wp_send_json_error([
+			'message' => 'Invalid or missing security token.',
+			'code'    => 'invalid_nonce'
+		], 403);
+	}
+
+	// Capability
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error([
+			'message' => 'You do not have permission.',
+			'code'    => 'insufficient_permissions'
+		], 403);
+	}
+
+	// Allowed fields
+	$allowed_fields = [
+		'law_firm_name', 'law_address', 'law_city', 'law_county',
+		'law_state', 'law_zip_code', 'law_phone', 'law_toll_free',
+		'law_fax', 'law_website'
+	];
+
+	$data = [];
+	foreach ( $allowed_fields as $field ) {
+		if ( isset( $_POST[ $field ] ) ) {
+			$data[ $field ] = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
+		}
+	}
+
+	if ( empty( $data['law_firm_name'] ) ) {
+		wp_send_json_error([
+			'message' => 'Law firm name is required.',
+			'field'   => 'law_firm_name',
+			'code'    => 'missing_required_field'
+		]);
+	}
+
+	$law_firm_id = ! empty( $_POST['law_firm_id'] ) ? absint( $_POST['law_firm_id'] ) : 0;
+	$table_name = $wpdb->prefix . 'wpp_law_firm';
+
+	if ( $law_firm_id > 0 ) {
+		// Update
+		$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table_name} WHERE id = %d", $law_firm_id ) );
+		if ( ! $exists ) {
+			wp_send_json_error([ 'message' => 'Law firm not found.', 'code' => 'not_found' ], 404 );
+		}
+
+		$data['updated_at'] = current_time( 'mysql' );
+		$result = $wpdb->update( $table_name, $data, [ 'id' => $law_firm_id ], array_fill( 0, count( $data ), '%s' ), [ '%d' ] );
+
+		if ( $result === false ) {
+			wp_send_json_error([ 'message' => 'Update failed.', 'error' => $wpdb->last_error ]);
+		}
+
+		$saved_id = $law_firm_id;
+	} else {
+		// Insert
+		$data['created_at'] = current_time( 'mysql' );
+		$data['updated_at'] = current_time( 'mysql' );
+		$result = $wpdb->insert( $table_name, $data, array_fill( 0, count( $data ), '%s' ) );
+
+		if ( $result === false ) {
+			wp_send_json_error([ 'message' => 'Insert failed.', 'error' => $wpdb->last_error ]);
+		}
+
+		$saved_id = $wpdb->insert_id;
+	}
+
+	$saved_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE id = %d", $saved_id ), ARRAY_A );
+
+	$action = $law_firm_id ? 'updated' : 'added';
 	wp_send_json_success([
-		'message' => 'Brokerage has been successfully added.',
-		'id'      => $inserted_id,
-		'data'    => $data // Optionally return sanitized data
-	], 200);
+		'message' => "Law firm has been successfully {$action}.",
+		'id'      => $saved_id,
+		'action'  => $action,
+		'data'    => $saved_row
+	]);
+}
+
+add_action('wp_ajax_wpp_save_company', 'wpp_save_company_callback');
+
+function wpp_save_company_callback() {
+	global $wpdb;
+
+	// Security: Nonce
+	if ( ! isset( $_POST['_ajax_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_nonce'] ) ), 'wpp_company_nonce' ) ) {
+		wp_send_json_error([
+			'message' => 'Invalid or missing security token.',
+			'code'    => 'invalid_nonce'
+		], 403);
+	}
+
+	// Capability
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error([
+			'message' => 'You do not have permission.',
+			'code'    => 'insufficient_permissions'
+		], 403);
+	}
+
+	// Allowed fields
+	$allowed_fields = [
+		'comp_title_company_name', 'comp_address', 'comp_city', 'comp_county',
+		'comp_state', 'comp_zip_code', 'comp_phone', 'comp_toll_free', 'comp_fax'
+	];
+
+	$data = [];
+	foreach ( $allowed_fields as $field ) {
+		if ( isset( $_POST[ $field ] ) ) {
+			$data[ $field ] = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
+		}
+	}
+
+	if ( empty( $data['comp_title_company_name'] ) ) {
+		wp_send_json_error([
+			'message' => 'Company name is required.',
+			'field'   => 'comp_title_company_name',
+			'code'    => 'missing_required_field'
+		]);
+	}
+
+	$company_id = ! empty( $_POST['company_id'] ) ? absint( $_POST['company_id'] ) : 0;
+	$table_name = $wpdb->prefix . 'wpp_companies';
+
+	if ( $company_id > 0 ) {
+		// Update
+		$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table_name} WHERE id = %d", $company_id ) );
+		if ( ! $exists ) {
+			wp_send_json_error([ 'message' => 'Company not found.', 'code' => 'not_found' ], 404 );
+		}
+
+		$data['updated_at'] = current_time( 'mysql' );
+		$result = $wpdb->update( $table_name, $data, [ 'id' => $company_id ], array_fill( 0, count( $data ), '%s' ), [ '%d' ] );
+
+		if ( $result === false ) {
+			wp_send_json_error([ 'message' => 'Update failed.', 'error' => $wpdb->last_error ]);
+		}
+
+		$saved_id = $company_id;
+	} else {
+		// Insert
+		$data['created_at'] = current_time( 'mysql' );
+		$data['updated_at'] = current_time( 'mysql' );
+		$result = $wpdb->insert( $table_name, $data, array_fill( 0, count( $data ), '%s' ) );
+
+		if ( $result === false ) {
+			wp_send_json_error([ 'message' => 'Insert failed.', 'error' => $wpdb->last_error ]);
+		}
+
+		$saved_id = $wpdb->insert_id;
+	}
+
+	$saved_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE id = %d", $saved_id ), ARRAY_A );
+
+	$action = $company_id ? 'updated' : 'added';
+	wp_send_json_success([
+		'message' => "Company has been successfully {$action}.",
+		'id'      => $saved_id,
+		'action'  => $action,
+		'data'    => $saved_row
+	]);
+}
+
+add_action('wp_ajax_wpp_save_appraiser', 'wpp_save_appraiser_callback');
+
+function wpp_save_appraiser_callback() {
+	global $wpdb;
+
+	// Security: Nonce
+	if ( ! isset( $_POST['_ajax_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['_ajax_nonce'] ) ), 'wpp_appraiser_nonce' ) ) {
+		wp_send_json_error([
+			'message' => 'Invalid or missing security token.',
+			'code'    => 'invalid_nonce'
+		], 403);
+	}
+
+	// Capability
+	if ( ! current_user_can( 'manage_options' ) ) {
+		wp_send_json_error([
+			'message' => 'You do not have permission.',
+			'code'    => 'insufficient_permissions'
+		], 403);
+	}
+
+	// Allowed fields
+	$allowed_fields = [
+		'appr_name', 'appr_address', 'appr_city', 'appr_county',
+		'appr_state', 'appr_zip', 'appr_phone', 'appr_fax',
+		'appr_email', 'appr_title', 'appr_website', 'appr_contact'
+	];
+
+	$data = [];
+	foreach ( $allowed_fields as $field ) {
+		if ( isset( $_POST[ $field ] ) ) {
+			$data[ $field ] = sanitize_text_field( wp_unslash( $_POST[ $field ] ) );
+		}
+	}
+
+	if ( empty( $data['appr_name'] ) ) {
+		wp_send_json_error([
+			'message' => 'Appraiser name is required.',
+			'field'   => 'appr_name',
+			'code'    => 'missing_required_field'
+		]);
+	}
+
+	$appraiser_id = ! empty( $_POST['appraiser_id'] ) ? absint( $_POST['appraiser_id'] ) : 0;
+	$table_name = $wpdb->prefix . 'wpp_appraiser';
+
+	if ( $appraiser_id > 0 ) {
+		// Update
+		$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM {$table_name} WHERE id = %d", $appraiser_id ) );
+		if ( ! $exists ) {
+			wp_send_json_error([ 'message' => 'Appraiser not found.', 'code' => 'not_found' ], 404 );
+		}
+
+		$data['updated_at'] = current_time( 'mysql' );
+		$result = $wpdb->update( $table_name, $data, [ 'id' => $appraiser_id ], array_fill( 0, count( $data ), '%s' ), [ '%d' ] );
+
+		if ( $result === false ) {
+			wp_send_json_error([ 'message' => 'Update failed.', 'error' => $wpdb->last_error ]);
+		}
+
+		$saved_id = $appraiser_id;
+	} else {
+		// Insert
+		$data['created_at'] = current_time( 'mysql' );
+		$data['updated_at'] = current_time( 'mysql' );
+		$result = $wpdb->insert( $table_name, $data, array_fill( 0, count( $data ), '%s' ) );
+
+		if ( $result === false ) {
+			wp_send_json_error([ 'message' => 'Insert failed.', 'error' => $wpdb->last_error ]);
+		}
+
+		$saved_id = $wpdb->insert_id;
+	}
+
+	$saved_row = $wpdb->get_row( $wpdb->prepare( "SELECT * FROM {$table_name} WHERE id = %d", $saved_id ), ARRAY_A );
+
+	$action = $appraiser_id ? 'updated' : 'added';
+	wp_send_json_success([
+		'message' => "Appraiser has been successfully {$action}.",
+		'id'      => $saved_id,
+		'action'  => $action,
+		'data'    => $saved_row
+	]);
 }

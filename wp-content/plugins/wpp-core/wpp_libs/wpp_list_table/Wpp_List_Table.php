@@ -719,27 +719,104 @@ abstract class Wpp_List_Table {
 	/**
 	 * Main method: render the full HTML table.
 	 *
-	 * Includes optional search form, table, and pagination.
+	 * Renders a fully interactive table with:
+	 * - Optional search form
+	 * - Sortable headers
+	 * - Paginated data
+	 * - Custom cell rendering (e.g., actions)
 	 *
-	 * @return string HTML output
+	 * Adds a `data-row_data` attribute to each <tr> containing the **complete database row**,
+	 * including all fields from the table, regardless of which columns are displayed.
+	 * This allows JavaScript to access full record data (e.g., for modals, edits, exports).
+	 *
+	 * This method performs two queries:
+	 * 1. $this->get_items() — for displayed columns only (performance)
+	 * 2. SELECT * — to get full row data for data-row_data (security-safe via wp_json_encode + esc_attr)
+	 *
+	 * @return string HTML output of the entire table
 	 * @since 1.0.0
 	 *
 	 * @example
-	 *     echo $table->display();
+	 *     $table = new Brokers_Table();
+	 *     echo $table->display(); // Outputs table with full row data in data-row_data
+	 *
+	 * @example (JavaScript usage)
+	 *     document.querySelectorAll('tr[data-row_data]').forEach(row => {
+	 *         const data = JSON.parse(row.getAttribute('data-row_data'));
+	 *         console.log('Full broker data:', data);
+	 *         console.log('Address:', data.brok_address);
+	 *         console.log('Created:', data.created_at);
+	 *     });
+	 *
+	 * @reference https://developer.wordpress.org/reference/functions/esc_attr/   - For safe HTML attribute output
+	 * @reference https://developer.wordpress.org/reference/functions/wp_json_encode/ - For safe JSON encoding (UTF-8 support)
+	 * @reference https://developer.wordpress.org/reference/functions/esc_html_e/   - For translatable strings
+	 * @reference https://developer.wordpress.org/reference/functions/esc_url/       - For safe URLs in links
+	 * @reference https://developer.wordpress.org/reference/classes/wpdb/prepare/   - For SQL injection protection
+	 * @reference https://developer.wordpress.org/reference/classes/wpdb/get_results/ - For fetching full row data
+	 *
+	 * @todo Optimize: Cache full_data_map if used multiple times on same page
+	 * @todo Add data-row_id attribute for faster JS selection
+	 * @todo Support for custom data attributes (e.g., data-status="active")
+	 * @todo Add hook to modify $full_query before execution
+	 *
+	 * @author WP_Panda <panda@wp-panda.pro>
 	 */
 	public function display() {
+		// Validate dependencies
 		if ( ! $this->db || ! $this->full_table_name ) {
 			return '<p>Error: Table not initialized.</p>';
 		}
 
+		// Get paginated items for display (only selected columns)
 		$items        = $this->get_items();
 		$total_pages  = $this->get_total_pages();
 		$container_id = 'wpp-table-container-' . md5( $this->table_name );
 
+		// 🔽 Build a separate query to fetch FULL row data (all columns) for data-row_data
+		$full_query = "SELECT * FROM {$this->full_table_name}";
+
+		// Apply search filter (same logic as in get_query)
+		$where_parts = array();
+		$search_like = '%' . $this->db->esc_like( $this->search ) . '%';
+
+		foreach ( $this->searchable_columns as $col ) {
+			$safe_col = preg_replace( '/[^a-zA-Z0-9_]/', '', $col ); // Sanitize column name
+			$where_parts[] = $this->db->prepare( "{$safe_col} LIKE %s", $search_like );
+		}
+
+		if ( ! empty( $this->search ) && ! empty( $where_parts ) ) {
+			$full_query .= ' WHERE (' . implode( ' OR ', $where_parts ) . ')';
+		}
+
+		// Apply sorting (same as displayed table)
+		if ( ! empty( $this->orderby ) && in_array( $this->orderby, array_keys( $this->columns ) ) && ! in_array( $this->orderby, $this->virtual_columns ) ) {
+			$orderby = preg_replace( '/[^a-zA-Z0-9_]/', '', $this->orderby );
+			$order   = $this->order === 'DESC' ? 'DESC' : 'ASC';
+			$full_query .= " ORDER BY {$orderby} {$order}";
+		} else {
+			$pk = preg_replace( '/[^a-zA-Z0-9_]/', '', $this->primary_key );
+			$full_query .= " ORDER BY {$pk} ASC";
+		}
+
+		// Apply pagination (same offset/limit)
+		$offset = ( $this->current_page - 1 ) * $this->per_page;
+		$full_query .= $this->db->prepare( " LIMIT %d OFFSET %d", $this->per_page, $offset );
+
+		// Execute full query to get ALL fields from database
+		$full_items = $this->db->get_results( $full_query, ARRAY_A );
+
+		// Map full data by primary key for fast lookup
+		$full_data_map = array();
+		foreach ( $full_items as $row ) {
+			$full_data_map[ $row[ $this->primary_key ] ] = $row;
+		}
+
+		// Start output buffering
 		ob_start();
 		?>
         <div id="<?php echo esc_attr( $container_id ); ?>" class="wpp-table-container">
-            <!-- Search Form (optional) -->
+            <!-- Optional Search Form -->
 			<?php if ( $this->show_search ): ?>
                 <form method="get" class="wpp-table-search-form">
 					<?php foreach ( $_GET as $key => $value ): ?>
@@ -787,7 +864,12 @@ abstract class Wpp_List_Table {
                 <tbody>
 				<?php if ( ! empty( $items ) ): ?>
 					<?php foreach ( $items as $item ): ?>
-                        <tr>
+						<?php
+						$id = $item[ $this->primary_key ];
+						// Use full row data if available, fallback to displayed data
+						$full_row_data = $full_data_map[ $id ] ?? $item;
+						?>
+                        <tr data-row_data="<?php echo esc_attr( wp_json_encode( $full_row_data ) ); ?>">
 							<?php foreach ( array_keys( $this->columns ) as $column ): ?>
                                 <td><?php echo $this->render_cell( $item, $column ); ?></td>
 							<?php endforeach; ?>
@@ -803,7 +885,7 @@ abstract class Wpp_List_Table {
                 </tbody>
             </table>
 
-            <!-- Pagination -->
+            <!-- Pagination Controls -->
 			<?php $this->display_pagination(); ?>
         </div>
 		<?php

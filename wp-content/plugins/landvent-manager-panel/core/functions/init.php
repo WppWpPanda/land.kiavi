@@ -9,6 +9,9 @@ require_once 'ajax.php';
 require_once 'templates.php';
 require_once 'wpp-core-filters.php';
 require_once 'brokers-table.php';
+require_once 'law-table.php';
+require_once  'companies-table.php';
+require_once  'appraisers-table.php';
 
 function debugPanel(...$data)
 {
