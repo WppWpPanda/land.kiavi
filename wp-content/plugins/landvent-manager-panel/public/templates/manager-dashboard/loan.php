@@ -4,32 +4,88 @@
  */
 
 if (!defined('ABSPATH')) exit;
+get_header();
 
-global $wp_query;
-$loan_id = isset($wp_query->query_vars['loan_id']) ? $wp_query->query_vars['loan_id'] : 0;
+global $wp_query, $loan_id;
 
-var_dump($_GET);
+$loanData = wpp_get_loan_data_r($loan_id);
+$loanData['baseAmount'] = wpp_get_total_loan_amount($loan_id);
+// Преобразуем в JSON (используем JSON_HEX_APOS и JSON_HEX_QUOT для экранирования)
+$loanDataJson = json_encode($loanData, JSON_HEX_APOS | JSON_HEX_QUOT);
 ?>
+    <script>
+        // Передаем данные в JavaScript
+        const loanData = JSON.parse('<?php echo $loanDataJson; ?>');
+        console.log(loanData); // Проверяем в консоли
+    </script>
+    <div class="container-fluid">
+        <div class="row">
 
-<div class="manager-dashboard-loan">
-	<h1>Loan Details: <?php echo esc_html($loan_id); ?></h1>
+            <nav id="sidebar" class="col-md-3 col-lg-2 d-md-block sidebar collapse">
+                <div class="wpp-iside">
+					<?php do_action( 'wpp_lmp_nav_side' ) ?>
+                </div>
+            </nav>
 
-	<!-- Ваш контент для отображения информации о займе -->
+            <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
+                <div class="loan-status-bar">
+                    <div class="loan-status-bar__left">
+                        <span class="loan-status-bar__icon"><i class="fas fa-briefcase"></i></span>
+                        <span class="loan-status-bar__title">test Standard Loan</span>
+                    </div>
+                    <div class="loan-status-bar__right">
+                        <select name="status" class="loan-status-bar__select">
+                            <option value="intake_form_lead">Intake Form Lead</option>
+                            <option value="other_status">Other Status</option>
+                        </select>
+                        <button class="loan-status-bar__button">Ledger</button>
+                        <button class="loan-status-bar__button">Fund</button>
+                        <button class="loan-status-bar__button">Terminate</button>
+                        <button class="loan-status-bar__more-actions">
+                            <i class="fas fa-ellipsis-h"></i>
+                        </button>
+                    </div>
+                </div>
 
-	<?php
-	// Здесь можно добавить логику для работы с вашей таблицей wpp_loans_full_data
-	global $wpdb;
-	$loan_data = $wpdb->get_row($wpdb->prepare(
-		"SELECT * FROM {$wpdb->prefix}wpp_loans_full_data WHERE loan_id = %s",
-		$loan_id
-	));
+				<?php
+				echo wpp_get_form_messages();
+				?>
 
-	if ($loan_data) {
-		echo '<div class="loan-details">';
-		// Отображаем данные о займе
-		echo '</div>';
-	} else {
-		echo '<p>Loan not found</p>';
-	}
-	?>
-</div>
+                <form id="wpp-sl-form" method="post">
+                    <div class="info-cards-block">
+                        <div class="wpp-loan-block closing-date-block">Closing Date<span>Sep 16, 2024</span></div>
+                        <div class="wpp-loan-block total-loan-block">Total Loan<span>-</span></div>
+                        <div class="wpp-loan-block advance-at-closing-block">Advance at Closing
+                            <span>
+                                <?php echo  format_usd_price(wpp_get_total_loan_amount()); ?>
+                            </span>
+                        </div>
+                    </div>
+
+                    <input type="hidden" value="<?php echo $loan_id ?>" name="current_loan_id">
+					<?php wp_nonce_field('wpp_save_loan_data', 'wpp_loan_nonce'); ?>
+
+					<?php
+					/**
+					 * @hooked
+					 * wpp_term_applicant - 10
+					 * wpp_term_property_details - 20
+					 * wpp_term_sheet_details - 30
+					 * wpp_term_additional_reserve - 40
+					 * wpp_term_fees - 50
+					 * wpp_term_milestones - 60
+					 * wpp_term_payments - 70
+					 * wpp_term_conditions - 80
+					 * wpp_term_investors - 90
+					 * wpp_term_attorney - 100
+					 * wpp_term_title_company - 110
+					 * wpp_term_required_documents - 120
+					 * wpp_term_required_documents - 130
+					 */
+					do_action( 'wpp_lmp_loan_content' ) ?>
+                </form>
+
+            </main>
+        </div>
+    </div>
+<?php get_footer();

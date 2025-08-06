@@ -88,7 +88,7 @@ get_header(); ?>
 										continue;
 									}
 									?>
-                                    <a href="<?php echo get_home_url(); ?>/loan?loan=<?php echo $key ?>" class="card"
+                                    <a href="<?php echo get_home_url(); ?>/manager-dashboard/loan/<?php echo $key ?>" class="card"
                                        data-card-id="<?php echo $key ?>">
                                         <div class="card-content" contenteditable="true">
                                             <div class="h-top">
@@ -177,7 +177,7 @@ get_header(); ?>
 								<?php foreach ( $ids as $key ) :
 									$value = $data[ $key ];
 									?>
-                                    <a href="<?php echo get_home_url(); ?>/loan?loan=<?php echo $key ?>" class="card"
+                                    <a href="<?php echo get_home_url(); ?>/manager-dashboard/loan/<?php echo $key ?>" class="card"
                                        data-card-id="<?php echo $key ?>">
                                         <div class="card-content" contenteditable="true">
                                             <div class="h-top">

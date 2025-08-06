@@ -116,19 +116,21 @@ function wpp_get_loan_data( $loan_ID = null ) {
 
 	if ( empty( $loan_ID ) ) {
 
-		if ( ! isset( $_GET['loan_id'] ) && !isset( $_GET['loan']) ) {
+		global $loan_id;
+
+		if ( ! isset( $loan_id) ) {
 			wp_send_json_error( [ 'message' => 'Loan ID is required' ] );
 
 			return;
 		}
 
-		$loan_ID =  isset( $_GET['loan_id'] ) ? sanitize_text_field( $_GET['loan_id'] ) : sanitize_text_field( $_GET['loan'] );
+		//$loan_ID =  isset( $_GET['loan_id'] ) ? sanitize_text_field( $_GET['loan_id'] ) : sanitize_text_field( $_GET['loan'] );
 
 	}
 
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'wpp_loans_full_data';
-	$loan_id    = sanitize_text_field( $loan_ID );
+	//$loan_id    = sanitize_text_field( $loan_ID );
 
 	$data = $wpdb->get_row(
 		$wpdb->prepare( "SELECT loan_data FROM $table_name WHERE loan_id = %s", $loan_id ),
@@ -149,14 +151,15 @@ function wpp_get_loan_data( $loan_ID = null ) {
 function wpp_get_loan_data_r( $loan_ID = null ) {
 
 	if ( empty( $loan_ID ) ) {
+		global $loan_id;
 
-		if ( ! isset( $_GET['loan_id'] )&& !isset( $_GET['loan']) ) {
+		if ( ! isset( $loan_id ) ) {
 			wp_send_json_error( [ 'message' => 'Loan ID is required' ] );
 
 			return;
 		}
 
-		$loan_ID =  isset( $_GET['loan_id'] ) ? sanitize_text_field( $_GET['loan_id'] ) : sanitize_text_field( $_GET['loan'] );
+		$loan_ID =  $loan_id;
 
 	}
 

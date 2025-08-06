@@ -1,27 +1,27 @@
-.page-template-single-loan .accordion-item:last-of-type .accordion-button:not(.collapsed),
-.page-template-single-loan .accordion-item:first-of-type .accordion-button:not(.collapsed),
-.page-template-single-loan .accordion-button:not(.collapsed),
-.page-template-single-loan .accordion-item:last-of-type .accordion-button,
-.page-template-single-loan .accordion-item:first-of-type .accordion-button,
-.page-template-single-loan .accordion-item .accordion-button,
-.page-template-single-loan .accordion-item,
-.page-template-single-loan .accordion-item:last-of-type,
-.page-template-single-loan .accordion-item:first-of-type {
+.wpp-lmd-point-loan .accordion-item:last-of-type .accordion-button:not(.collapsed),
+.wpp-lmd-point-loan .accordion-item:first-of-type .accordion-button:not(.collapsed),
+.wpp-lmd-point-loan .accordion-button:not(.collapsed),
+.wpp-lmd-point-loan .accordion-item:last-of-type .accordion-button,
+.wpp-lmd-point-loan .accordion-item:first-of-type .accordion-button,
+.wpp-lmd-point-loan .accordion-item .accordion-button,
+.wpp-lmd-point-loan .accordion-item,
+.wpp-lmd-point-loan .accordion-item:last-of-type,
+.wpp-lmd-point-loan .accordion-item:first-of-type {
     border-radius: 0;
 }
 
-.page-template-single-loan .accordion-button:focus {
+.wpp-lmd-point-loan .accordion-button:focus {
     z-index: 3;
     border-color: transparent;
     outline: 0;
     box-shadow: none;
 }
 
-.page-template-single-loan .accordion-item {
+.wpp-lmd-point-loan .accordion-item {
     border: none;
 }
 
-.page-template-single-loan .accordion-header {
+.wpp-lmd-point-loan .accordion-header {
     border-bottom:1px solid #c3c4c7;
 }
 
@@ -30,7 +30,7 @@
     height: 100%;
 }
 
-.page-template-single-loan main {
+.wpp-lmd-point-loan main {
     background-color: #efefef;
 }
 
@@ -56,18 +56,18 @@ li.nav-item a{
 
 
 /******************/
-body.page-template-single-loan .navbar {
+body.wpp-lmd-point-loan .navbar {
     position: fixed;
     width: 100vw;
     z-index: 99;
 }
 
-body.page-template-single-loan nav#sidebar {
+body.wpp-lmd-point-loan nav#sidebar {
     position: fixed;
 }
 
-body.page-template-single-loan nav#sidebar,
-body.page-template-single-loan main {
+body.wpp-lmd-point-loan nav#sidebar,
+body.wpp-lmd-point-loan main {
     margin-top: 57px;
 }
 
@@ -117,28 +117,28 @@ body.page-template-single-loan main {
     border-radius: 4px;
     cursor: pointer;
 }
-.page-template-single-loan .wpp-field {
+.wpp-lmd-point-loan .wpp-field {
     display: flex;
 }
 
-.page-template-single-loan .wpp-field label.form-label,
-.page-template-single-loan h3.wpp-content-label,
-.page-template-single-loan .wpp-wpp_datepicker_field label {
+.wpp-lmd-point-loan .wpp-field label.form-label,
+.wpp-lmd-point-loan h3.wpp-content-label,
+.wpp-lmd-point-loan .wpp-wpp_datepicker_field label {
     width: 200px;
     min-width: 200px;
     font-size: .8rem;
     font-weight: 300;
 }
 
-.page-template-single-loan .wpp-wpp_select_field select.form-control {
+.wpp-lmd-point-loan .wpp-wpp_select_field select.form-control {
     height: calc(.8em + 0.75rem + 2px);
     font-size: .8rem;
     padding: .1rem .5rem;
     font-weight: 300;
 }
 
-.page-template-single-loan .wpp-wpp-text input.form-control,
-.page-template-single-loan .wpp-wpp_datepicker_field input.form-control {
+.wpp-lmd-point-loan .wpp-wpp-text input.form-control,
+.wpp-lmd-point-loan .wpp-wpp_datepicker_field input.form-control {
     height: calc(.8em + 0.75rem + 2px);
     font-size: .8rem;
     padding: .1rem .5rem;
@@ -151,46 +151,46 @@ body.page-template-single-loan main {
     margin-bottom: 0;
 }
 
-.page-template-single-loan .wpp-field label.form-check-label {
+.wpp-lmd-point-loan .wpp-field label.form-check-label {
     width: 222px;
     min-width: 200px;
     font-size: .8rem;
     font-weight: 300;
 }
 
-.page-template-single-loan .wpp-field {
+.wpp-lmd-point-loan .wpp-field {
     margin-bottom: .5rem;
 }
 
-.page-template-single-loan .wpp-field.wpp-wpp_checkbox_field.wpp-no-label-inverse .form-check {
+.wpp-lmd-point-loan .wpp-field.wpp-wpp_checkbox_field.wpp-no-label-inverse .form-check {
     display: flex;
     flex-direction: row;
     margin-left: 220px;
 }
 
-.page-template-single-loan .wpp-field.wpp-wpp_checkbox_field.wpp-no-label-inverse.no-left .form-check {
+.wpp-lmd-point-loan .wpp-field.wpp-wpp_checkbox_field.wpp-no-label-inverse.no-left .form-check {
     display: flex;
     flex-direction: row;
     margin-left: 20px;
 }
 
-.page-template-single-loan .wpp-field.wpp-wpp_checkbox_field.wpp-no-label-inverse .form-check input {
+.wpp-lmd-point-loan .wpp-field.wpp-wpp_checkbox_field.wpp-no-label-inverse .form-check input {
     margin-right: 10px;
 }
 
-.page-template-single-loan .wpp-field.wpp-wpp_radio_field .form-check {
+.wpp-lmd-point-loan .wpp-field.wpp-wpp_radio_field .form-check {
     margin-left: 200px;
 }
 
-.page-template-single-loan .wpp-field.wpp-wpp_radio_field {
+.wpp-lmd-point-loan .wpp-field.wpp-wpp_radio_field {
     display: flex;
     flex-direction: column;
 }
 
-.page-template-single-loan .wpp-field.wpp-wpp_radio_field {
+.wpp-lmd-point-loan .wpp-field.wpp-wpp_radio_field {
 }
 
-.page-template-single-loan .wpp-field.wpp-wpp_radio_field .form-check .form-check-label {
+.wpp-lmd-point-loan .wpp-field.wpp-wpp_radio_field .form-check .form-check-label {
     width: 100%;
 }
 
@@ -346,4 +346,79 @@ button.wpp-button.wpp-button-primary:hover {
 .wpp-modal .wpp-field input[type="text"] {
     border-radius: 0;
     padding: .2rem 0.375rem;
+}
+
+.page-template-single-loan .wpp-field.wpp-top-label {
+    display: inline-block;
+}
+
+.page-template-single-loan .wpp-field.wpp-top-label label.form-label {
+    width: 100%;
+    min-width: 0;
+    margin-bottom: 1px;
+}
+
+.page-template-single-loan label.wpp-fields-block-label,
+.page-template-single-loan .wpp-wpp_textarea_field label {
+    width: 200px;
+    min-width: 200px;
+    font-size: .8rem;
+    font-weight: 300;
+}
+
+.page-template-single-loan .wpp-field i {
+    font-size: 13px;
+    color: #737373;
+}
+
+.col-full > .wpp-fields-block.row {
+    width: 100%;
+}
+
+.wpp-field.wpp-wpp_fields_block_field.col-full.col-12 {
+    padding: 0;
+    width: 100%;
+    min-width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.wpp-field.wpp-wpp_fields_block_field.col-full.with-padding.col-12 {
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+}
+
+span.mi-summ {
+    display: block;
+    width: 100%;
+    font-weight: 600;
+}
+
+
+.wpp-field.wpp-wpp_repeater_field.line-group.no-border.first-del .wpp-repeater-block.border.mb-3.position-relative.row {
+    border: none !important;
+    padding: 0;
+}
+
+.wpp-field.wpp-wpp_repeater_field.line-group.no-border.first-del .wpp-repeater-inner {
+    border: none;
+}
+
+.wpp-field.wpp-wpp_repeater_field.line-group.no-border.first-del button.btn.btn-sm.btn-danger.position-absolute.top-0.end-0.m-2.wpp-repeater-remove {
+    left: 0;
+    margin: 0 .8rem !important;
+    padding: .05rem;
+}
+
+.page-template-single-loan .wpp-field.label-min label.form-label {
+    min-width: auto;
+    width: auto;
+}
+
+@media (min-width: 768px) {
+    .col-full .wpp-fields-block-label {
+        flex: 0 0 auto;
+        width: 16.66666667% !important;
+        min-width: 16.66666667% !important;
+    }
 }

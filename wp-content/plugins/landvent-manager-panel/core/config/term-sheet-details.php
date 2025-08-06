@@ -1,6 +1,56 @@
 <?php
-function wpp_step_config_u() {
+/**
+ * Term Sheet Details Configuration for Loan Management Plugin
+ *
+ * This file defines the form structure and rendering logic for the "Term Sheet Details" step
+ * in a loan application workflow. It includes critical financial and structural terms such as:
+ * - Loan type, purpose, and position
+ * - Interest rate, repayment type, and term
+ * - Advance details, closing dates, and broker fees
+ *
+ * The UI is rendered using a single accordion component for advanced settings, with support
+ * for dynamic fields like interest reserves and conditional rendering (currently commented).
+ *
+ * @package           WPP_Loan_Management
+ * @subpackage        Step_Configuration
+ * @since             1.0.0
+ * @author            WP_Panda <panda@wp-panda.pro>
+ * @copyright         2025 WP_Panda
+ * @license           GPL-2.0-or-later
+ *
+ * @link              https://developer.wordpress.org/plugins/
+ * @link              https://www.php.net/manual/en/
+ */
 
+defined('ABSPATH') || exit;
+
+/**
+ * Generates configuration for loan term sheet fields.
+ *
+ * Builds a comprehensive array of form fields that define the financial and structural
+ * parameters of a loan. These include:
+ * - Loan type and application type
+ * - Financial values (purchase price, ARV, total loan, repair costs)
+ * - Interest settings (rate, schedule, reserve, penalties)
+ * - Closing and deadline dates
+ * - Broker information and fees
+ *
+ * This configuration is designed to be rendered within an accordion UI component.
+ *
+ * @since 1.0.0
+ *
+ * @return array Form configuration compatible with WPP form renderer.
+ *
+ * @see https://developer.wordpress.org/plugins/settings/settings-api/ For field patterns.
+ * @see https://www.php.net/manual/en/function.array.php For array handling.
+ *
+ * @example
+ *     $fields = wpp_step_config_u();
+ *     foreach ($fields as $field) {
+ *         render_field($field);
+ *     }
+ */
+function wpp_step_config_u() {
 	$form_fields = [
 		'loan_type'              => [
 			'type'    => 'select',
@@ -46,8 +96,6 @@ function wpp_step_config_u() {
 			'data-type'    => 'money',
 			'width'        => 'full'
 		],
-
-////////////////////////////Down Payment: [+]
 		'current_value'          => [
 			'type'         => 'text',
 			'element_type' => 'money',
@@ -66,7 +114,6 @@ function wpp_step_config_u() {
 			'data-type'    => 'money',
 			'width'        => 'full'
 		],
-		// Total Repair Cost
 		'total_loan_amount'      => [
 			'type'         => 'text',
 			'element_type' => 'money',
@@ -76,17 +123,6 @@ function wpp_step_config_u() {
 			'data-type'    => 'money',
 			'width'        => 'full'
 		],
-		/*'total_loan_amount'                  => [
-			'type'    => 'content',
-			'name'    => 'total_loan_amount',
-			'label'   => '',
-			'width'   => 'full',
-			'content' => '
-<div data-name="total_loan_amount" class="wpp-content-body">
-<p>Total Loan Amount: $175,000</p>
-</div>
-',
-		],*/
 		'total_repair_cost'      => [
 			'type'         => 'text',
 			'element_type' => 'money',
@@ -129,7 +165,7 @@ function wpp_step_config_u() {
 			'width'        => '1/2'
 		],
 		'enable_variable_rate'   => [
-			'classes' => [ 'wpp-no-label-inverse no-left' ],
+			'classes' => ['wpp-no-label-inverse no-left'],
 			'type'    => 'checkbox',
 			'name'    => 'enable_variable_rate',
 			'label'   => 'enable variable rate',
@@ -184,9 +220,6 @@ function wpp_step_config_u() {
 			'placeholder'  => 'e.g., 12 months',
 			'width'        => 'full'
 		],
-
-
-		// Interest Schedule
 		'interest_schedule'      => [
 			'type'    => 'radio',
 			'name'    => 'interest_schedule',
@@ -199,7 +232,6 @@ function wpp_step_config_u() {
 			'width'   => 'full',
 			'default' => 'interest_reserve'
 		],
-
 		'interest_reserve_amount'           => [
 			'type'         => 'text',
 			'element_type' => 'money',
@@ -208,7 +240,6 @@ function wpp_step_config_u() {
 			'placeholder'  => '$0.00',
 			'data-type'    => 'money',
 			'width'        => '1/2',
-			//'conditional'  => [ 'interest_schedule' => [ 'interest_reserve' ] ]
 		],
 		'interest_reserve_months'           => [
 			'type'         => 'text',
@@ -217,7 +248,6 @@ function wpp_step_config_u() {
 			'label'        => 'or',
 			'placeholder'  => 'e.g., 6',
 			'width'        => '1/2',
-			//'conditional'  => [ 'interest_schedule' => [ 'interest_reserve' ] ]
 		],
 		'interest_reserve_deduction_amount' => [
 			'type'         => 'select',
@@ -230,7 +260,6 @@ function wpp_step_config_u() {
 				'apply_at_the_end' => 'Apply at the end'
 			],
 			'width'        => '1/2',
-			//'conditional'  => [ 'interest_schedule' => [ 'interest_reserve' ] ]
 		],
 		'interest_reserve_deduction_months' => [
 			'type'         => 'text',
@@ -239,7 +268,6 @@ function wpp_step_config_u() {
 			'label'        => 'or',
 			'placeholder'  => 'e.g., 6',
 			'width'        => '1/2',
-			//'conditional'  => [ 'interest_schedule' => [ 'interest_reserve' ] ]
 		],
 		'early_term_type'                   => [
 			'type'    => 'select',
@@ -289,8 +317,6 @@ function wpp_step_config_u() {
 			'placeholder'  => '',
 			'width'        => '1/2'
 		],
-
-		// Closing Date
 		'closing_date'                      => [
 			'type'        => 'datepicker',
 			'name'        => 'closing_date',
@@ -298,8 +324,6 @@ function wpp_step_config_u() {
 			'placeholder' => 'MM/DD/YYYY',
 			'width'       => 'full'
 		],
-
-		// Deadline to Accept
 		'deadline_to_accept'                => [
 			'type'        => 'datepicker',
 			'name'        => 'deadline_to_accept',
@@ -307,37 +331,79 @@ function wpp_step_config_u() {
 			'placeholder' => 'MM/DD/YYYY',
 			'width'       => 'full'
 		],
-
 	];
 
-	return $form_fields;
+	/**
+	 * Filters the term sheet form configuration.
+	 *
+	 * Allows third-party code to modify or extend the loan terms form.
+	 *
+	 * @since 1.0.0
+	 *
+	 * @param array $form_fields The form field configuration.
+	 */
+	return apply_filters('wpp/form/step_config/term_sheet', $form_fields);
 }
 
-function wpp_term_sheet_details() { ?>
+/**
+ * Outputs the Term Sheet Details tab in the loan management portal.
+ *
+ * Displays all loan terms in a single, open accordion for easy review and editing.
+ * Hooked to `wpp_lmp_loan_content` with priority 40 to position it logically
+ * between other steps like property details and payments.
+ *
+ * @since 1.0.0
+ *
+ * @return void Outputs HTML directly.
+ *
+ * @hooked wpp_lmp_loan_content
+ * @priority 40
+ *
+ * @see wpp_step_config_u() For form field definitions.
+ * @see WPP_Accordion_Field For UI component.
+ *
+ * @example
+ *     This function is automatically called by WordPress during page rendering.
+ */
+function wpp_term_sheet_details() {
+	?>
     <div id="term-sheet-details" class="container">
         <div class="row">
 			<?php
-			$ACC = new WPP_Accordion_Field( [
+			$ACC = new WPP_Accordion_Field([
 				'type'    => 'accordion',
 				'name'    => 'advanced_settings',
 				'title'   => 'Term Sheet Details',
 				'open'    => true,
 				'content' => function () {
-					foreach ( wpp_step_config_u() as $name => $config ) {
-						$class_name = 'WPP_' . ucfirst( $config['type'] ) . '_Field';
-
-						if ( class_exists( $class_name ) ) {
-							$field = new $class_name( array_merge( $config, [ 'name' => $name ] ) );
+					foreach (wpp_step_config_u() as $name => $config) {
+						$class_name = 'WPP_' . ucfirst($config['type']) . '_Field';
+						if (class_exists($class_name)) {
+							$field = new $class_name(array_merge($config, ['name' => $name]));
 							$field->render();
 						}
 					}
 				}
-			] );
-
+			]);
 			$ACC->render();
 			?>
         </div>
     </div>
-<?php }
+	<?php
+}
+add_action('wpp_lmp_loan_content', 'wpp_term_sheet_details', 40);
 
-add_action( 'wpp_lmp_loan_content', 'wpp_term_sheet_details', 40 );
+/*
+ * @todo List
+ *
+ * 1. Implement conditional logic for `interest_reserve_*` fields (currently commented).
+ * 2. Calculate and update `_monthly_payment` dynamically via JavaScript or PHP.
+ * 3. Validate `closing_date` and `deadline_to_accept` (ensure closing <= deadline).
+ * 4. Add field sanitization and validation on save.
+ * 5. Encrypt sensitive data like broker email and fees.
+ * 6. Localize datepicker and field labels.
+ * 7. Add support for multiple brokers or co-brokers.
+ * 8. Implement real-time calculation of interest reserve based on term and rate.
+ * 9. Add ARIA labels and improve accessibility.
+ * 10. Write unit tests for form configuration and rendering logic.
+ */

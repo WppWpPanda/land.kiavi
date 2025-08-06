@@ -23,8 +23,7 @@
 function wpp_get_total_loan_amount( $loan_id = null ) {
 	// === 1. Получение и валидация $loan_id ===
 	if ( null === $loan_id ) {
-		// Пытаемся взять из GET, но безопасно
-		$loan_id = filter_input( INPUT_GET, 'loan', FILTER_SANITIZE_STRING );
+		global $loan_id;
 		if ( ! $loan_id ) {
 			return 0.0;
 		}

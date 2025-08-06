@@ -112,7 +112,7 @@ function wpp_field_value( $key, $data = null, $default = null ) {
 
 function wpp_default_value( $default, $args ) {
 
-	if ( ! empty( $_GET['loan'] ) ) {
+	if ( ! empty($loan_id ) ) {
 
 		$data = wpp_get_loan_data_r();
 
@@ -132,10 +132,11 @@ add_filter( 'wpp_form_field_default', 'wpp_default_value', 10, 2 );
 
 
 function wpp_get_loan_data_purchase_price( $default, $args ) {
-	if ( ! empty( $_GET['loan'] ) ) {
+	global $loan_id;
+	if ( ! empty( $loan_id) ) {
 		if ( empty( str_replace('$', '', $default) ) ) {
-			$data = get_colums_data( $_GET['loan'] );
-			return $data[ $_GET['loan'] ]['raw_data']->s4_purchase_price;
+			$data = get_colums_data( $loan_id );
+			return $data[$loan_id ]['raw_data']->s4_purchase_price;
 		}
 	}
 
@@ -146,11 +147,12 @@ add_filter( 'wpp_form_field_default_purchase_price', 'wpp_get_loan_data_purchase
 
 
 function wpp_get_loan_data_total_loan_amount( $default, $args ) {
-	if ( ! empty( $_GET['loan'] ) ) {
+	global $loan_id;
+	if ( ! empty( $loan_id ) ) {
 		if ( empty( str_replace('$', '', $default) ) ) {
-			$data = get_colums_data( $_GET['loan'] );
+			$data = get_colums_data( $loan_id );
 
-			return $data[ $_GET['loan'] ]['raw_data']->s4_total_loan_amount_sum;
+			return $data[$loan_id ]['raw_data']->s4_total_loan_amount_sum;
 		}
 	}
 
@@ -160,11 +162,12 @@ function wpp_get_loan_data_total_loan_amount( $default, $args ) {
 add_filter( 'wpp_form_field_default_total_loan_amount', 'wpp_get_loan_data_total_loan_amount', 10, 2 );
 
 function wpp_get_loan_data_after_repair_value( $default, $args ) {
-	if ( ! empty( $_GET['loan'] ) ) {
+	global $loan_id;
+	if ( ! empty( $loan_id) ) {
 		if ( empty( str_replace('$', '', $default) ) ) {
-			$data = get_colums_data( $_GET['loan'] );
+			$data = get_colums_data( $loan_id );
 
-			return $data[ $_GET['loan'] ]['raw_data']->s4_after_repair_value;
+			return $data[$loan_id ]['raw_data']->s4_after_repair_value;
 		}
 	}
 
@@ -174,11 +177,12 @@ function wpp_get_loan_data_after_repair_value( $default, $args ) {
 add_filter( 'wpp_form_field_default_after_repair_value', 'wpp_get_loan_data_after_repair_value', 10, 2 );
 
 function wpp_get_loan_data_total_repair_cost( $default, $args ) {
-	if ( ! empty( $_GET['loan'] ) ) {
+	global $loan_id;
+	if ( ! empty( $loan_id) ) {
 		if ( empty( str_replace('$', '', $default) ) ) {
-			$data = get_colums_data( $_GET['loan'] );
+			$data = get_colums_data( $loan_id );
 
-			return $data[ $_GET['loan'] ]['raw_data']->s4_rehab_cost;
+			return $data[$loan_id ]['raw_data']->s4_rehab_cost;
 		}
 	}
 
@@ -188,11 +192,12 @@ function wpp_get_loan_data_total_repair_cost( $default, $args ) {
 add_filter( 'wpp_form_field_default_total_repair_cost', 'wpp_get_loan_data_total_repair_cost', 10, 2 );
 
 function wpp_get_loan_data_term( $default, $args ) {
-	if ( ! empty( $_GET['loan'] ) ) {
+	global $loan_id;
+	if ( ! empty( $loan_id) ) {
 		if ( empty( trim(str_replace('Months', '', $default) )) ) {
-			$data = get_colums_data( $_GET['loan'] );
+			$data = get_colums_data($loan_id );
 
-			return trim(str_replace('Months', '', $data[ $_GET['loan'] ]['raw_data']->s4_chosen_rate_type));
+			return trim(str_replace('Months', '', $data[$loan_id ]['raw_data']->s4_chosen_rate_type));
 		}
 	}
 
@@ -203,10 +208,11 @@ add_filter( 'wpp_form_field_default_term', 'wpp_get_loan_data_term', 10, 2 );
 
 function wpp_get_loan_data_interest_rate( $default, $args ) {
 
-	if ( ! empty( $_GET['loan'] ) ) {
+	global $loan_id;
+	if ( ! empty( $loan_id) ) {
 		if ( empty(  (float)str_replace(['%'], '', $default) ) ) {
-			$data = get_colums_data( $_GET['loan'] );
-			return $data[ $_GET['loan'] ]['raw_data']->s4_chosen_rate;
+			$data = get_colums_data($loan_id );
+			return $data[$loan_id ]['raw_data']->s4_chosen_rate;
 		}
 	}
 
@@ -217,11 +223,12 @@ add_filter( 'wpp_form_field_default_interest_rate', 'wpp_get_loan_data_interest_
 
 
 function wpp_get_loan_data_loan_type( $default, $args ) {
-	if ( ! empty( $_GET['loan'] ) ) {
+	global $loan_id;
+	if ( ! empty( $loan_id) ) {
 		if ( ! empty( $default ) ) {
-			$data = get_colums_data( $_GET['loan'] );
+			$data = get_colums_data($loan_id );
 
-			if( !empty( $val = $data[ $_GET['loan'] ]['raw_data']->s4_refinance ) ){
+			if( !empty( $val = $data[$loan_id ]['raw_data']->s4_refinance ) ){
 				return 'no' ? 'purchase' : 'refinance';
 			}
 

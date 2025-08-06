@@ -1,18 +1,35 @@
 (function ($) {
     'use strict';
 
+    // === Утилита: Экранирование HTML (теперь в начале) ===
+    $.escapeHtml = function (text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    };
+
     let customFeeIndex = 0;
 
     $(document).ready(function () {
+        // Проверка наличия loanData
+        if (typeof loanData === 'undefined') {
+            console.warn('loanData is not defined');
+            loanData = { baseAmount: 0, custom_fees: [] };
+        }
 
         //*********************************************//
         // FEE
         //*********************************************//
 
         // === 1. Восстановление custom fees из loanData ===
-        if (typeof loanData !== 'undefined' && Array.isArray(loanData.custom_fees)) {
+        if (Array.isArray(loanData.custom_fees)) {
             loanData.custom_fees.forEach(function (fee) {
-                addCustomFee(fee.label, fee.money, fee.percent);
+                addCustomFee(
+                    fee.label || '',
+                    fee.money || '0.00',
+                    fee.percent || '0.00'
+                );
             });
         }
 
@@ -27,11 +44,14 @@
             const index = customFeeIndex++;
 
             const $container = $('#custom-fees-container');
+            if (!$container.length) {
+                console.error('Container #custom-fees-container not found');
+                return;
+            }
 
             const feeHtml = `
             <div class="custom-fee-item mb-2" data-index="${index}">
                 <div class="input-group input-group-sm">
-                    <!-- Название -->
                     <input type="text"
                            name="custom_fees[${index}][label]"
                            class="form-control fee-label"
@@ -41,7 +61,6 @@
                            data-index="${index}">
 
                     <div class="wpp-percent-money-field d-flex align-items-center gap-2 flex-grow-1">
-                        <!-- Сумма -->
                         <div class="wpp-money-input input-group input-group-sm">
                             <span class="input-group-text wpp-prefix">$</span>
                             <input type="number"
@@ -57,7 +76,6 @@
 
                         <span class="mx-1">or</span>
 
-                        <!-- Процент -->
                         <div class="wpp-percent-input input-group input-group-sm">
                             <input type="number"
                                    step="any"
@@ -72,7 +90,6 @@
                             <span class="input-group-text wpp-suffix">%</span>
                         </div>
 
-                        <!-- Удалить -->
                         <button type="button"
                                 class="btn btn-sm btn-outline-danger remove-custom-fee"
                                 data-index="${index}">
@@ -84,11 +101,9 @@
 
             $container.append(feeHtml);
 
-            // Запускаем пересчёт, если есть значения
             const $moneyInput = $(`.custom-fee-item[data-index="${index}"] .money`);
             const $percentInput = $(`.custom-fee-item[data-index="${index}"] .percent`);
 
-            // Принудительно обновляем значения
             if (money !== '0.00' && !isNaN(parseFloat(money))) {
                 $moneyInput.trigger('input');
             } else if (percent !== '0.00' && !isNaN(parseFloat(percent))) {
@@ -129,51 +144,38 @@
         $(document).on('blur', '.custom-fee-item input', function () {
             if ($(this).val() === '' || isNaN($(this).val())) {
                 $(this).val('0.00');
-                $(this).trigger('input'); // Пересчитываем
+                $(this).trigger('input');
             }
         });
 
-
-        // === Утилита: Экранирование HTML ===
-        $.escapeHtml = function (text) {
-            const div = document.createElement('div');
-            div.textContent = text;
-            return div.innerHTML;
-        };
         //*********************************************//
         // Скачивание
         //*********************************************//
 
-        // Обработка клика на ссылку для скачивания всех документов
         $(document).on('click', '.wpp-download-docs', function (e) {
-            e.preventDefault(); // Предотвращаем стандартное поведение ссылки
+            e.preventDefault();
 
-            // Получаем loan_id из параметра GET в URL
             let urlParams = new URLSearchParams(window.location.search);
             let loanId = urlParams.get('loan');
 
-            // Проверяем, есть ли loan_id
             if (!loanId) {
                 alert('Loan ID not found in the URL (e.g., ?loan=123).');
-                console.error('wpp-download-docs: Loan ID is missing from the URL parameters.');
+                console.error('wpp-download-docs: Loan ID is missing');
                 return;
             }
 
-            // Очищаем loanId от недопустимых символов (на всякий случай, хотя intval в PHP тоже поможет)
             loanId = parseInt(loanId, 10);
             if (isNaN(loanId) || loanId <= 0) {
                 alert('Invalid Loan ID in the URL.');
-                console.error('wpp-download-docs: Invalid Loan ID found in URL:', urlParams.get('loan'));
+                console.error('wpp-download-docs: Invalid Loan ID:', urlParams.get('loan'));
                 return;
             }
 
-            // Создаем временную форму для отправки запроса
             var $form = $('<form>', {
-                'action': wpp_ajax.ajax_url, // URL для обработки запроса
+                'action': wpp_ajax.ajax_url,
                 'method': 'POST'
-            }).hide(); // Скрываем форму
+            }).hide();
 
-            // Добавляем скрытые поля с данными
             $form.append($('<input>', {
                 'type': 'hidden',
                 'name': 'action',
@@ -192,34 +194,20 @@
                 'value': wpp_ajax.nonce
             }));
 
-            // Добавляем форму в DOM, отправляем и удаляем
             $('body').append($form);
             $form.submit();
             $form.remove();
         });
 
-
         //*********************************************//
         // БРОКЕРЫ
         //*********************************************//
 
-        // Открытие модального окна
-
-
-
-        //*********************************************//
-        // ФИРМЫ
-        //*********************************************//
-
-        // Открытие модального окна
-        $('#wpp-open-law-firm-modal').on('click', function(e) {
+        $('.wpp-save-loan').click(function (e) {
             e.preventDefault();
-            $('#wpp-law-firm-modal').fadeIn();
+           $('#wpp-sl-form').submit();
         });
 
 
-    })
-
-
+    });
 })(jQuery);
-

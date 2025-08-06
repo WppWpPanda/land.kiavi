@@ -1,6 +1,6 @@
 <?php
 /**
- * Loan Manager Pro - Main Plugin Bootstrap File
+ * Loan Manager Bootstrap File
  *
  * Initializes the plugin by loading required modules, managing action hooks,
  * and handling database updates. This file serves as the entry point for the

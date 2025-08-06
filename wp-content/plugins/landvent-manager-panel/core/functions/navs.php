@@ -114,11 +114,11 @@ function lmp_render_sidebar_menu() {
 		 * @var array
 		 */
 		$main_menu_items = [
-			'main'             => [ 'title' => 'Home',               'icon' => 'home' ],
+			'main'             => [ 'title' => 'Home', 'icon' => 'home' ],
 			'law-firms-clerks' => [ 'title' => 'Law Firms & Clerks', 'icon' => 'users' ],
-			'title-companies'  => [ 'title' => 'Title Companies',    'icon' => 'building' ],
-			'brokers'          => [ 'title' => 'Brokers',            'icon' => 'exchange-alt' ],
-			'appraisers'       => [ 'title' => 'Appraisers',         'icon' => 'search-dollar' ],
+			'title-companies'  => [ 'title' => 'Title Companies', 'icon' => 'building' ],
+			'brokers'          => [ 'title' => 'Brokers', 'icon' => 'exchange-alt' ],
+			'appraisers'       => [ 'title' => 'Appraisers', 'icon' => 'search-dollar' ],
 		];
 
 		foreach ( $main_menu_items as $slug => $item ) {
@@ -194,6 +194,9 @@ function lmp_render_sidebar_menu() {
 	 *
 	 * @see https://getbootstrap.com/docs/5.3/components/navs-tabs/ - Bootstrap nav styles
 	 */
+	if ( $current_endpoint === 'loan' ) {
+		printf( '<div class="wpp-save-button-panel"><a href="javascript:void(0);" class="wpp-save-button wpp-save-loan">%s</a></div>', 'Save' );
+	}
 	if ( ! empty( $menu_items ) ) {
 		echo '<ul class="nav flex-column">';
 

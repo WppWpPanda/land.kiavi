@@ -202,18 +202,18 @@
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23dc3232' d='M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z'/%3E%3C/svg%3E");
 }
 
-body.page-template-single-loan .navbar {
+body.wpp-lmd-point-loan .navbar {
     position: fixed;
     width: 100vw;
     z-index: 99;
 }
 
-body.page-template-single-loan nav#sidebar {
+body.wpp-lmd-point-loan nav#sidebar {
     position: fixed;
 }
 
-body.page-template-single-loan nav#sidebar,
-body.page-template-single-loan main {
+body.wpp-lmd-point-loan nav#sidebar,
+body.wpp-lmd-point-loan main {
     margin-top: 57px;
 }
 
@@ -333,31 +333,32 @@ button#confirm-column-btn:hover {
     border-bottom: 1px solid #c3c4c7;
     left: 0;
     z-index: 99;
-    margin-top: -83px;
+    margin-top: -50px;
     width: 16.6%;
     text-align: center;
 }
 
-button.wpp-save-button {
+.wpp-save-button {
     border: 2px solid #29bf7a;
     border-radius: 5px;
     background-color: #29bf7a;
     color: #fff;
     min-width: 54px;
     padding: 3px 15px;
-    font-weight: 600;
-    text-transform: uppercase;
+    font-weight: 400;;
     transition: .5s all;
     width: 100%;
+    display: block;
+    text-decoration: none;
 }
 
-button.wpp-save-button:hover {
+.wpp-save-button:hover {
     border-color: #198754;
     background-color: #198754;
 }
 
 
-.page-template-single-loan .wpp-iside {
+.wpp-lmd-point-loan .wpp-iside {
     margin-top: 50px;
 }
 
@@ -365,7 +366,7 @@ form#wpp-sl-form {
     position: relative;
 }
 
-.page-template-single-loan .wpp-field.vertical-orient {
+.wpp-lmd-point-loan .wpp-field.vertical-orient {
     flex-direction: column;
 }
 

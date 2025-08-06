@@ -83,8 +83,11 @@ class WPP_Documents_Upload_Field extends WPP_Form_Field {
 			$allowed_types_attr = 'data-allowed-types="' . esc_attr(implode(',', $this->args['allowed_types'])) . '"';
 		}
 
-		// Получаем ID займа из GET-параметра
-		$loan_id = isset($_GET['loan']) ? intval($_GET['loan']) : 0;
+		global $loan_id;
+		if(empty($loan_id)) {
+			// Получаем ID займа из GET-параметра
+			$loan_id = isset( $_GET['loan'] ) ? intval( $_GET['loan'] ) : 0;
+		}
 
 		// Получаем уже загруженные файлы ТОЛЬКО для ЭТОГО поля
 		$uploaded_files = $this->get_uploaded_files($loan_id);
@@ -289,8 +292,11 @@ class WPP_Documents_Upload_Field extends WPP_Form_Field {
 			return call_user_func($this->args['validation'], $value);
 		}
 
-		// Получаем ID займа
-		$loan_id = isset($_GET['loan']) ? intval($_GET['loan']) : 0;
+		global $loan_id;
+		if(empty($loan_id)) {
+			// Получаем ID займа
+			$loan_id = isset( $_GET['loan'] ) ? intval( $_GET['loan'] ) : 0;
+		}
 
 		if (!$loan_id) {
 			return new WP_Error('invalid_loan_id', 'Loan ID is required');
