@@ -1,5 +1,0 @@
-[23-Jul-2025 16:42:17 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
-[23-Jul-2025 16:42:20 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189
-[23-Jul-2025 16:42:21 UTC] Automatic updates starting...
-[23-Jul-2025 16:42:22 UTC] Automatic updates complete.
-[23-Jul-2025 16:42:23 UTC] PHP Warning:  foreach() argument must be of type array|object, string given in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-loan-application\includes\functions\wpp-helper.php on line 189

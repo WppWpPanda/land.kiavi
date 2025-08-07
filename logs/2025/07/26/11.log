@@ -1,6 +1,0 @@
-[26-Jul-2025 08:48:39 UTC] PHP Deprecated:  strpos(): Passing null to parameter #1 ($haystack) of type string is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-includes\functions.php on line 7360
-[26-Jul-2025 08:48:39 UTC] PHP Deprecated:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-includes\functions.php on line 2195
-[26-Jul-2025 08:48:40 UTC] PHP Deprecated:  basename(): Passing null to parameter #1 ($path) of type string is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-dev\libs\show-current-template\show-current-template.php on line 20
-[26-Jul-2025 08:48:40 UTC] PHP Deprecated:  str_replace(): Passing null to parameter #3 ($subject) of type array|string is deprecated in F:\os\OSPanel\domains\land.kiavi\wp-content\plugins\wpp-dev\libs\show-current-template\show-current-template.php on line 21
-[26-Jul-2025 08:48:41 UTC] Automatic updates starting...
-[26-Jul-2025 08:48:41 UTC] Automatic updates complete.

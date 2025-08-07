@@ -16,14 +16,24 @@ function wpp_term_documents() { ?>
 				'name'    => 'info_documents',
 				'title'   => 'Documents',
 				'content' =>  function () {
-					foreach ( wpp_step_config_documents() as $name => $config ) {
+                ?>
+                    <a href="<?php echo esc_url(add_query_arg('download_pdf', 'deal_worksheet_600', home_url())); ?>"
+                       class="button">Скачать Deal Worksheet (PDF)</a>
+
+                    <a href="<?= esc_url(add_query_arg([
+						'download_commitment_pdf' => '1'
+					], home_url())) ?>">
+                        Скачать Commitment (PDF)
+                    </a>
+                        <?php
+					/*foreach ( wpp_step_config_documents() as $name => $config ) {
 						$class_name = 'WPP_' . ucfirst( $config['type'] ) . '_Field';
 
 						if ( class_exists( $class_name ) ) {
 							$field = new $class_name( array_merge( $config, [ 'name' => $name ] ) );
 							$field->render();
 						}
-					}
+					}*/
 				}
 			] );
 			$cont->render();

@@ -49,8 +49,3 @@ function removeEmptySubarrays($array) {
 		return !is_array($item) || !empty($item);
 	});
 }
-
-$auth = new Wpp_Auth([
-	'login_slug'  => 'my-login',        // будет /my-login вместо /wpp-login
-	'redirect_to' => admin_url('profile.php')  // можно настроить редирект
-]);

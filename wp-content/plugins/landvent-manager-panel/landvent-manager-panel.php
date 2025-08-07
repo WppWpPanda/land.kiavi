@@ -96,6 +96,9 @@ register_activation_hook(__FILE__, function () {
 	trello_create_db_tables();
 });
 
+
+require_once WPP_LOAN_MANAGER_PATH . 'core/vendor/autoload.php';
+
 /**
  * Load Core Module Files
  *

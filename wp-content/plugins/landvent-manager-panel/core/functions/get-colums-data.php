@@ -97,37 +97,110 @@ function get_all_columns_with_cards() {
 	return $columns;
 }
 
+/**
+ * Retrieves a specific field value from loan data, with fallback to default.
+ *
+ * This function safely fetches a value by key from provided data or from
+ * the current loan's data (via `wpp_get_loan_data_r()`). If the key is not found,
+ * it returns a specified default value.
+ *
+ * @since 1.0.0
+ *
+ * @author WP_Panda <panda@wp-panda.pro>
+ *
+ * @link https://developer.wordpress.org/reference/functions/apply_filters/ Consider adding filter hooks for extensibility
+ * @link https://www.php.net/manual/en/function.isset.php On usage of `isset()` vs `array_key_exists()`
+ *
+ * @param string $key     The field key to retrieve (e.g., 'loan_amount', 'status').
+ * @param array|null $data Optional. Associative array of data. If null, loads loan data.
+ * @param mixed  $default Optional. Default value to return if key is not found.
+ *
+ * @return mixed The value if found; otherwise, the default.
+ *
+ * @example
+ * $amount = wpp_field_value( 'loan_amount', null, 0 ); // Uses current loan data
+ * $status = wpp_field_value( 'status', $custom_data, 'pending' );
+ */
 function wpp_field_value( $key, $data = null, $default = null ) {
+	// Ensure key is a non-empty string
+	if ( ! is_string( $key ) || '' === trim( $key ) ) {
+		return $default;
+	}
 
-	if ( empty( $data ) ) {
+	// Use provided data or fallback to loan data
+	if ( null === $data ) {
 		$data = wpp_get_loan_data_r();
 	}
 
-	$default = ! isset( $default ) ? '' : $default;
+	// Ensure $data is an array to prevent warnings
+	if ( ! is_array( $data ) ) {
+		$data = array();
+	}
 
-	return isset( $data[ $key ] ) ? $data[ $key ] : $default;
-
+	// Return the value if exists, otherwise return default
+	// Using array_key_exists() allows 'null', 'false', '0', '' to be valid values
+	return array_key_exists( $key, $data ) ? $data[ $key ] : $default;
 }
 
-
+/**
+ * Filters the default value for a form field, using loan data if available.
+ *
+ * If a loan ID is set and the requested field exists in the loan data,
+ * this function returns the saved value instead of the default.
+ *
+ * @since 1.0.0
+ *
+ * @author WP_Panda <panda@wp-panda.pro>
+ *
+ * @link https://developer.wordpress.org/reference/functions/add_filter/ For info on filters
+ * @link https://developer.wordpress.org/reference/functions/apply_filters/ About `wpp_form_field_default`
+ *
+ * @param mixed $default Default value for the form field.
+ * @param array $args    Field arguments, expected to contain 'name' key.
+ *
+ * @return mixed The value from loan data if available; otherwise, the original default.
+ */
 function wpp_default_value( $default, $args ) {
-
-	if ( ! empty($loan_id ) ) {
-
-		$data = wpp_get_loan_data_r();
-
-		if ( ! empty( $data[ $args['name'] ] ) ) {
-
-			//var_dump($data[ $args['name'] ]);
-			return $data[ $args['name'] ];
-		}
+	// Ensure required parameter 'name' is present and valid
+	if ( ! isset( $args['name'] ) || ! is_string( $args['name'] ) ) {
+		return $default;
 	}
 
+	// Access global loan ID (set by the dashboard/router logic)
+	global $loan_id;
 
-	return $default;
+	// Return early if no loan ID is set
+	if ( empty( $loan_id ) ) {
+		return $default;
+	}
 
+	/**
+	 * Retrieve loan data from storage or cache.
+	 *
+	 * Assumed to return an array of key-value pairs for the current loan.
+	 * Consider caching this result (e.g., using wp_cache_set/get) if called multiple times.
+	 *
+	 * @see wpp_get_loan_data_r() - Should be defined elsewhere in the plugin
+	 */
+	$loan_data = wpp_get_loan_data_r();
+
+	// Return early if data is not an array or field doesn't exist
+	if ( ! is_array( $loan_data ) || ! array_key_exists( $args['name'], $loan_data ) ) {
+		return $default;
+	}
+
+	$value = $loan_data[ $args['name'] ];
+
+	// Avoid returning empty string, null, or false if default should prevail
+	// Optional: Uncomment next lines if you want to fallback on "empty" values
+	// if ( empty( $value ) && ! is_numeric( $value ) ) {
+	//     return $default;
+	// }
+
+	return $value;
 }
 
+// Hook into the form field default filter
 add_filter( 'wpp_form_field_default', 'wpp_default_value', 10, 2 );
 
 

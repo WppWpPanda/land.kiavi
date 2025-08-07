@@ -21,6 +21,7 @@
  *   wpp_get_total_loan_amount('invalid');  // → 0
  */
 function wpp_get_total_loan_amount( $loan_id = null ) {
+
 	// === 1. Получение и валидация $loan_id ===
 	if ( null === $loan_id ) {
 		global $loan_id;
@@ -32,6 +33,7 @@ function wpp_get_total_loan_amount( $loan_id = null ) {
 	// Приводим к строке/числу, убираем возможные пробелы
 	$loan_id = trim( (string) $loan_id );
 	if ( '' === $loan_id ) {
+
 		return 0.0;
 	}
 
@@ -39,6 +41,7 @@ function wpp_get_total_loan_amount( $loan_id = null ) {
 	$default = wpp_get_loan_data_r( $loan_id );
 
 	if ( ! empty( $default['total_loan_amount'] ) ) {
+
 		$raw_amount = $default['total_loan_amount'];
 
 		// Очищаем от типичных "мусорных" символов: $, запятые, пробелы, неразрывные пробелы и табы
@@ -53,7 +56,7 @@ function wpp_get_total_loan_amount( $loan_id = null ) {
 	}
 
 	// === 3. Источник 2: get_columns_data ===
-	$data = get_columns_data( $loan_id );
+	$data = get_colums_data( $loan_id );
 
 	if (
 		! empty( $data[ $loan_id ] ) &&

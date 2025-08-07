@@ -109,28 +109,27 @@ function wpp_get_form_messages() {
 }
 
 
-add_action( 'wp_ajax_wpp_get_loan_data', 'wpp_get_loan_data' );
-add_action( 'wp_ajax_nopriv_wpp_get_loan_data', 'wpp_get_loan_data' );
+/*add_action( 'wp_ajax_wpp_get_loan_data', 'wpp_get_loan_data' );
+add_action( 'wp_ajax_nopriv_wpp_get_loan_data', 'wpp_get_loan_data' );*/
 
-function wpp_get_loan_data( $loan_ID = null ) {
+function wpp_get_loan_data( $loan_id = null ) {
 
-	if ( empty( $loan_ID ) ) {
+	if ( empty( $loan_id ) ) {
 
 		global $loan_id;
 
-		if ( ! isset( $loan_id) ) {
-			wp_send_json_error( [ 'message' => 'Loan ID is required' ] );
-
-			return;
+		if ( ! isset( $loan_id ) ) {
+			if ( wp_doing_ajax() ) {
+				wp_send_json_error( [ 'message' => 'Loan ID is required' ] );
+			} else {
+				return false;
+			}
 		}
-
-		//$loan_ID =  isset( $_GET['loan_id'] ) ? sanitize_text_field( $_GET['loan_id'] ) : sanitize_text_field( $_GET['loan'] );
 
 	}
 
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'wpp_loans_full_data';
-	//$loan_id    = sanitize_text_field( $loan_ID );
 
 	$data = $wpdb->get_row(
 		$wpdb->prepare( "SELECT loan_data FROM $table_name WHERE loan_id = %s", $loan_id ),
@@ -138,9 +137,11 @@ function wpp_get_loan_data( $loan_ID = null ) {
 	);
 
 	if ( ! $data ) {
-		wp_send_json_error( [ 'message' => 'Data not found' ] );
-
-		return;
+		if ( wp_doing_ajax() ) {
+			wp_send_json_error( [ 'message' => 'Data not found' ] );
+		} else {
+			return false;
+		}
 	}
 
 	$loan_data = maybe_unserialize( $data['loan_data'] );
@@ -154,12 +155,14 @@ function wpp_get_loan_data_r( $loan_ID = null ) {
 		global $loan_id;
 
 		if ( ! isset( $loan_id ) ) {
-			wp_send_json_error( [ 'message' => 'Loan ID is required' ] );
-
-			return;
+			if ( wp_doing_ajax() ) {
+				wp_send_json_error( [ 'message' => 'Loan ID is required' ] );
+			} else {
+				return false;
+			}
 		}
 
-		$loan_ID =  $loan_id;
+		$loan_ID = $loan_id;
 
 	}
 
@@ -173,9 +176,12 @@ function wpp_get_loan_data_r( $loan_ID = null ) {
 	);
 
 	if ( ! $data ) {
-		wp_send_json_error( [ 'message' => 'Data not found' ] );
+		if ( wp_doing_ajax() ) {
+			wp_send_json_error( [ 'message' => 'Data not found 2' ] );
 
-		return;
+		} else {
+			return false;
+		}
 	}
 
 	$loan_data = maybe_unserialize( $data['loan_data'] );

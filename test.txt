@@ -1,0 +1,356 @@
+Есть класс
+
+<?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Защита от прямого доступа
+}
+
+/**
+ * Класс Wpp_Auth — простая авторизация, регистрация и восстановление пароля в модальном окне
+ * Поддерживает настройку: какие формы разрешены к использованию
+ */
+class Wpp_Auth {
+	private $login_slug;
+	private $redirect_to;
+	private $allowed_forms; // Новое свойство
+
+	/**
+	 * Конструктор с настройками
+	 *
+	 * @param array $args
+	 */
+	public function __construct( $args = [] ) {
+		$defaults = [
+			'login_slug'    => 'wpp-login',
+			'redirect_to'   => admin_url(),
+			'allowed_forms' => ['login', 'register', 'forgot-password'], // Все формы разрешены по умолчанию
+		];
+
+
+
+		$args              = wp_parse_args( $args, $defaults );
+		$this->login_slug  = sanitize_title( $args['login_slug'] );
+		$this->redirect_to = esc_url_raw( $args['redirect_to'] );
+		$this->allowed_forms = array_map('sanitize_key', (array) $args['allowed_forms']); // Очищаем список форм
+
+		// Добавляем хуки
+		add_action( 'init', [ $this, 'add_rewrite_rule' ] );
+		//add_action( 'template_redirect', [ $this, 'handle_custom_login_page' ] );
+		add_action( 'wp_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
+		add_action( 'wp_ajax_wpp_auth_load_form', [ $this, 'ajax_load_form' ] );
+		add_action( 'wp_ajax_nopriv_wpp_auth_load_form', [ $this, 'ajax_load_form' ] );
+		add_action( 'wp_ajax_wpp_auth_login', [ $this, 'ajax_login' ] );
+		add_action( 'wp_ajax_nopriv_wpp_auth_login', [ $this, 'ajax_login' ] );
+		//add_action( 'wp_ajax_wpp_auth_register', [ $this, 'ajax_register' ] );
+		//add_action( 'wp_ajax_nopriv_wpp_auth_register', [ $this, 'ajax_register' ] );
+		//add_action( 'wp_ajax_wpp_auth_forgot_password', [ $this, 'ajax_forgot_password' ] );
+		//add_action( 'wp_ajax_nopriv_wpp_auth_forgot_password', [ $this, 'ajax_forgot_password' ] );
+		add_filter( 'login_url', [ $this, 'custom_login_url' ], 10, 2 );
+		add_action( 'wp_footer', [ $this, 'render_modal_in_footer' ] );
+
+
+	}
+
+	/**
+	 * Добавляем правило ЧПУ: /wpp-login → кастомная страница входа
+	 */
+	public function add_rewrite_rule() {
+		add_rewrite_rule(
+			"^{$this->login_slug}/?$",
+			'index.php?wpp_login=1',
+			'top'
+		);
+		add_rewrite_tag( '%wpp_login%', '([^&]+)' );
+	}
+
+	/**
+	 * Обработка запроса к /wpp-login
+	 */
+	public function handle_custom_login_page() {
+		global $wp_query;
+
+		if ( get_query_var( 'wpp_login' ) && ! is_user_logged_in() ) {
+			$this->show_login_modal();
+			exit;
+		}
+	}
+
+	/**
+	 * Показываем модальное окно с формой входа
+	 */
+	public function show_login_modal() {
+		header( 'HTTP/1.1 200 OK' );
+		get_header();
+
+		echo '<div class="wpp-auth-modal" style="display:none;">';
+		echo '<div class="wpp-auth-modal-content">';
+
+		// Крестик закрытия
+		echo '<span class="close-modal">&times;</span>';
+
+		// Подгружаем форму входа по умолчанию, если разрешена
+		if ( $this->is_form_allowed('login') ) {
+			$this->load_form( 'login' );
+		} else {
+			echo '<p>' . __( 'Форма входа временно недоступна.', 'wpp-auth' ) . '</p>';
+		}
+
+		echo '</div></div>';
+
+		get_footer();
+	}
+
+	public function render_modal_in_footer() {
+		if ( is_user_logged_in() ) {
+			return; // Не показываем для авторизованных
+		}
+		?>
+		<div class="wpp-auth-modal" style="display:none;">
+			<div class="wpp-auth-modal-content">
+				<span class="close-modal">&times;</span>
+				<?php $this->load_form('login'); ?>
+			</div>
+		</div>
+		<?php
+	}
+
+	/**
+	 * Загрузка формы из шаблона
+	 *
+	 * @param string $form_type
+	 */
+	private function load_form( $form_type ) {
+		if ( ! $this->is_form_allowed( $form_type ) ) {
+			return; // Форма запрещена
+		}
+
+		$template_path = plugin_dir_path( __FILE__ ) . 'templates/';
+		$file          = $template_path . $form_type . '.php';
+
+		if ( file_exists( $file ) ) {
+			include $file;
+		} else {
+			echo '<p>' . __( 'Форма не найдена.', 'wpp-auth' ) . '</p>';
+		}
+	}
+
+	/**
+	 * Проверяет, разрешена ли форма
+	 *
+	 * @param string $form_type
+	 * @return bool
+	 */
+	private function is_form_allowed( $form_type ) {
+		return in_array( sanitize_key( $form_type ), $this->allowed_forms, true );
+	}
+
+	/**
+	 * Подключаем стили и скрипты
+	 */
+	public function enqueue_scripts() {
+		wp_enqueue_style( 'wpp-auth-css', plugins_url( 'assets/css/wpp-auth.css', __FILE__ ), [], '1.8' );
+		wp_enqueue_script( 'wpp-auth-js', plugins_url( 'assets/js/wpp-auth.js', __FILE__ ), [ 'jquery' ], '1.9', true );
+
+		wp_localize_script( 'wpp-auth-js', 'wppAuthAjax', [
+			'ajaxUrl'     => admin_url( 'admin-ajax.php' ),
+			'nonce'       => wp_create_nonce( 'wpp-auth-nonce' ),
+			'redirectUrl' => $this->redirect_to,
+			'allowedForms' => $this->allowed_forms // Передаём в JS, чтобы скрыть кнопки
+		] );
+	}
+
+	/**
+	 * Переопределяем стандартный URL входа
+	 */
+	public function custom_login_url( $login_url, $redirect ) {
+		$login_url = home_url( '/' ) . $this->login_slug;
+		if ( $redirect ) {
+			$login_url = add_query_arg( 'redirect_to', urlencode( $redirect ), $login_url );
+		}
+
+		return $login_url;
+	}
+
+	/**
+	 * AJAX: Подгрузка формы (login, register, forgot-password)
+	 */
+	public function ajax_load_form() {
+		check_ajax_referer( 'wpp-auth-nonce', 'security' );
+
+		$form_type = sanitize_text_field( $_POST['form_type'] );
+
+		if ( ! $this->is_form_allowed( $form_type ) ) {
+			wp_send_json_error( [ 'message' => __( 'Эта форма отключена.', 'wpp-auth' ) ] );
+		}
+
+		$allowed = [ 'login', 'register', 'forgot-password' ];
+		if ( ! in_array( $form_type, $allowed, true ) ) {
+			wp_send_json_error( [ 'message' => __( 'Недопустимая форма.', 'wpp-auth' ) ] );
+		}
+
+		ob_start();
+		$this->load_form( $form_type );
+		$html = ob_get_clean();
+
+		wp_send_json_success( [ 'html' => $html ] );
+	}
+
+	/**
+	 * AJAX: Вход пользователя
+	 */
+	public function ajax_login() {
+		check_ajax_referer( 'wpp-auth-nonce', 'security' );
+
+		if ( ! $this->is_form_allowed('login') ) {
+			wp_send_json_error( [ 'message' => __( 'Вход временно отключён.', 'wpp-auth' ) ] );
+		}
+
+		$username = sanitize_text_field( $_POST['username'] );
+		$password = sanitize_text_field( $_POST['password'] );
+
+		$user = wp_signon( [ 'user_login' => $username, 'user_password' => $password ], false );
+
+		if ( is_wp_error( $user ) ) {
+			wp_send_json_error( [ 'message' => __( 'Неверное имя пользователя или пароль.', 'wpp-auth' ) ] );
+		} else {
+			wp_send_json_success( [
+				'message'  => __( 'Вы успешно вошли.', 'wpp-auth' ),
+				'redirect' => $this->redirect_to
+			] );
+		}
+	}
+
+	/**
+	 * AJAX: Регистрация пользователя
+	 */
+	public function ajax_register() {
+		check_ajax_referer( 'wpp-auth-nonce', 'security' );
+
+		if ( ! $this->is_form_allowed('register') ) {
+			wp_send_json_error( [ 'message' => __( 'Регистрация временно отключена.', 'wpp-auth' ) ] );
+		}
+
+		$username = sanitize_text_field( $_POST['username'] );
+		$email    = sanitize_email( $_POST['email'] );
+		$password = sanitize_text_field( $_POST['password'] );
+
+		$errors = [];
+
+		if ( empty( $username ) ) {
+			$errors[] = __( 'Имя пользователя обязательно.', 'wpp-auth' );
+		}
+
+		if ( empty( $email ) || ! is_email( $email ) ) {
+			$errors[] = __( 'Введите корректный email.', 'wpp-auth' );
+		}
+
+		if ( empty( $password ) ) {
+			$errors[] = __( 'Пароль обязателен.', 'wpp-auth' );
+		}
+
+		if ( ! empty( $errors ) ) {
+			wp_send_json_error( [ 'errors' => $errors ] );
+		}
+
+		$user_id = wp_create_user( $username, $password, $email );
+
+		if ( is_wp_error( $user_id ) ) {
+			wp_send_json_error( [ 'message' => __( 'Ошибка регистрации. Возможно, пользователь уже существует.', 'wpp-auth' ) ] );
+		} else {
+			wp_send_json_success( [
+				'message'  => __( 'Вы успешно зарегистрированы!', 'wpp-auth' ),
+				'redirect' => $this->redirect_to
+			] );
+		}
+	}
+
+	/**
+	 * AJAX: Восстановление пароля
+	 */
+	public function ajax_forgot_password() {
+		check_ajax_referer( 'wpp-auth-nonce', 'security' );
+
+		if ( ! $this->is_form_allowed('forgot-password') ) {
+			wp_send_json_error( [ 'message' => __( 'Восстановление пароля временно недоступно.', 'wpp-auth' ) ] );
+		}
+
+		$email = sanitize_email( $_POST['email'] );
+
+		if ( empty( $email ) || ! is_email( $email ) ) {
+			wp_send_json_error( [ 'message' => __( 'Введите корректный email.', 'wpp-auth' ) ] );
+		}
+
+		$user = get_user_by( 'email', $email );
+
+		if ( ! $user ) {
+			wp_send_json_error( [ 'message' => __( 'Пользователь с таким email не найден.', 'wpp-auth' ) ] );
+		}
+
+		$new_pass = wp_generate_password();
+		wp_set_password( $new_pass, $user->ID );
+
+		$subject = __( 'Восстановление пароля', 'wpp-auth' );
+		$message = sprintf( __( 'Ваш новый пароль: %s', 'wpp-auth' ), $new_pass );
+		wp_mail( $email, $subject, $message );
+
+		wp_send_json_success( [
+			'message'  => __( 'Новый пароль отправлен на ваш email.', 'wpp-auth' ),
+			'redirect' => home_url( '/' . $this->login_slug )
+		] );
+	}
+}
+
+
+есть его инициализазия
+
+/**
+ * Инициализирует систему аутентификации и выводит кнопку Login/Logout
+ */
+function wpp_setup_auth_and_button() {
+	// Проверяем, загружен ли класс Wpp_Auth
+	if ( ! class_exists('Wpp_Auth') ) {
+		return;
+	}
+
+	// Проверка на дублирование инициализации
+	static $initialized = false;
+
+
+
+	if ( $initialized ) {
+		// Кнопка всё равно может понадобиться
+		$is_logged_in = is_user_logged_in();
+		echo '<a href="#" class="wpp-auth-button ' . ($is_logged_in ? 'logout' : 'login') . '">';
+		echo $is_logged_in ? 'Logout' : 'Login';
+		echo '</a>';
+		return;
+	}
+
+	// Настройки для Wpp_Auth
+	$auth = new Wpp_Auth([
+		'login_slug'    => 'wpp-login',
+		'redirect_to'   => home_url('/manager-dashboard'),
+		'allowed_forms' => ['login'] // Только вход
+	]);
+
+	// Помечаем как инициализированное
+	$initialized = true;
+
+	// Определяем текст и класс кнопки
+	$is_logged_in = is_user_logged_in();
+	$button_text = $is_logged_in ? 'Logout' : 'Login';
+	$button_class = $is_logged_in ? 'logout' : 'login';
+	$url = $is_logged_in ? wp_logout_url() : '#';
+
+	// Выводим кнопку
+	printf(
+		'<a href="%s" class="open-auth-modal wpp-auth-button %s">%s</a>',
+		$url,
+		esc_attr($button_class),
+		$button_text
+	);
+
+}
+
+
+не подключаются скрипты и стили, вообще не подключаются даже с 404

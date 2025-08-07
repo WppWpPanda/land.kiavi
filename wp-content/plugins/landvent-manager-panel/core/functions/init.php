@@ -51,6 +51,7 @@ require_once 'brokers-table.php';
 require_once 'law-table.php';
 require_once 'companies-table.php';
 require_once 'appraisers-table.php';
+require_once 'login.php';
 
 /**
  * Remove Default Loan Content Sections
@@ -88,7 +89,7 @@ add_action( 'init', function () {
 	remove_action( 'wpp_lmp_loan_content', 'wpp_term_conditions', 80 );
 	remove_action( 'wpp_lmp_loan_content', 'wpp_term_investors', 90 );
 	remove_action( 'wpp_lmp_loan_content', 'wpp_term_attorney', 100 );
-	// remove_action( 'wpp_lmp_loan_content', 'wpp_term_title_company', 110 ); // Title company kept active
+	 remove_action( 'wpp_lmp_loan_content', 'wpp_term_title_company', 110 ); // Title company kept active
 	// remove_action( 'wpp_lmp_loan_content', 'wpp_term_required_documents', 120 ); // Kept at 120?
 	remove_action( 'wpp_lmp_loan_content', 'wpp_term_required_documents', 130 );
 }, 50 );
@@ -172,3 +173,24 @@ function check_db_updates() {
  *
  * This prevents unnecessary database queries on every page load.
  */
+
+
+
+add_action('init', 'handle_pdf_download');
+
+function handle_pdf_download() {
+	global $loan_id;
+	if (isset($_GET['download_pdf']) && $_GET['download_pdf'] == 'deal_worksheet_600') {
+		require_once WPP_LOAN_MANAGER_PATH . 'public/templates/documents/generate-deal-pdf.php';
+		generate_deal_worksheet_pdf();
+	}
+}
+
+add_action('init', function () {
+	global $loan_id;
+
+	if (isset($_GET['download_commitment_pdf'])) {
+		require_once WPP_LOAN_MANAGER_PATH .  'public/templates/documents/generate-commitment-pdf.php';
+		generate_commitment_pdf();
+	}
+});

@@ -214,6 +214,19 @@ function trello_create_db_tables() {
 		LandVent_Manager_Endpoints::get_instance()->add_endpoints();
 	}
 
+	add_role(
+		'loans_manager',
+		'Loans Manager',
+		array(
+			'read' => true,
+			'edit_posts' => true,
+			'delete_posts' => false,
+			'publish_posts' => true,
+			'upload_files' => true,
+			// Дополнительные права по необходимости
+		)
+	);
+
 	// -------------------------------
 	// 8. Flush Rewrite Rules
 	// -------------------------------

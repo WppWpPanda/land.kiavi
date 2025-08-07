@@ -422,3 +422,67 @@ span.mi-summ {
         min-width: 16.66666667% !important;
     }
 }
+
+
+/* === Кнопка авторизации === */
+.wpp-auth-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    border: 1px solid transparent;
+    cursor: pointer;
+}
+
+/* Стиль для Login */
+.wpp-auth-login-btn {
+    background-color: #4CAF50;
+    color: white;
+    border-color: #45a049;
+}
+
+.wpp-auth-login-btn:hover {
+    background-color: #43a047;
+    border-color: #3d9040;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Стиль для Logout */
+.wpp-auth-logout-btn {
+    background-color: #f44336;
+    color: white;
+    border-color: #da190b;
+}
+
+.wpp-auth-logout-btn:hover {
+    background-color: #e53935;
+    border-color: #c62828;
+    transform: translateY(-1px);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+/* Иконка */
+.wpp-auth-button i {
+    font-size: 16px;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .wpp-auth-button {
+        font-size: 13px;
+        padding: 8px 12px;
+        gap: 6px;
+    }
+    .wpp-auth-button span {
+        display: none; /* Скрыть текст на мобильных, оставить только иконку */
+    }
+    .wpp-auth-button i {
+        font-size: 18px;
+    }
+}
