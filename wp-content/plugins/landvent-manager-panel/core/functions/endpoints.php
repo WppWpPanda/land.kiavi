@@ -190,6 +190,7 @@ class LandVent_Manager_Endpoints {
 
 		// Load the appropriate template based on the requested page
 		$this->load_template( $dashboard_page );
+		exit;
 	}
 
 	/**

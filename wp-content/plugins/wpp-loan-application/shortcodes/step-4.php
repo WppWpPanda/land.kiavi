@@ -279,6 +279,7 @@ function wpp_step_config_4() {
 		'total_loan_amount_sum' => [
 			'type'    => 'text',
 			'name'    => 'total_loan_amount_sum',
+			//'element_type'    => 'hidden',
 			'label'   => '',
 			'width'   => 'full',
             'default' => '175000',

@@ -49,7 +49,8 @@ function wpp_step_config_2() {
 				'existing_1' => 'Existing Entity #1',
 				'existing_2' => 'Existing Entity #2'
 			],
-			'width'   => 'full'
+			'width'   => 'full',
+            'required' => true,
 		],
 
 		'entity_name' => [

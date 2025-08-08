@@ -56,7 +56,7 @@ if (!class_exists('WPP_Accordion_Field') && class_exists('WPP_Form_Field')) :
             <div class="accordion" id="<?php echo $id; ?>-accordion">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="<?php echo $id; ?>-header">
-                        <button class="accordion-button <?php echo $open ? '' : 'collapsed'; ?>"
+                        <button class="accordion-button<?php echo $open ? '' : ' collapsed'; ?>"
                                 type="button"
                                 data-bs-toggle="collapse"
                                 data-bs-target="#<?php echo $id; ?>-collapse"

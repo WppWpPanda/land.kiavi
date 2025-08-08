@@ -144,7 +144,7 @@ body.wpp-lmd-point-loan main {
     padding: .1rem .5rem;
 }
 
-.wpp-field.wpp-wpp_checkbox_field .form-check {
+.wpp-lmd-point-loan .wpp-field.wpp-wpp_checkbox_field .form-check {
     display: flex;
     flex-direction: row-reverse;
     padding: 0;

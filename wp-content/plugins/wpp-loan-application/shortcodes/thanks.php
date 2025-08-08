@@ -83,9 +83,9 @@ function wpp_render_loan_thanks() {
 
         <!-- Application Summary -->
         <div class="row mt-5">
-            <div class="col-md-12">
-                <h2 class="mb-4"><?php echo 'Application Summary'; ?></h2>
-            </div>
+           <!-- <div class="col-md-12">
+                <h2 class="mb-4"><?php /*echo 'Application Summary'; */?></h2>
+            </div>-->
 
 			<?php foreach ( $steps_data as $step_number => $step_data ):
 
@@ -217,10 +217,10 @@ function wpp_thanks_init() {
 			}
 		}
 
-        if(empty($steps_data)) {
+       /* if(empty($steps_data)) {
             wp_safe_redirect(get_home_url());
-	        exit; // Обязательно!
-        }
+	        exit;
+        }*/
 
         $GLOBALS['wpp_raw_data'] = $steps_data;
 

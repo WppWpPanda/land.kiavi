@@ -215,10 +215,11 @@ function wpp_has_shortcode_on_page() {
 		if ( is_singular() && has_shortcode( $post->post_content, $shortcode_name ) ) {
 
 			$step_data = WPP_Loan_Session_Handler::get_step_data($key);
-			if(empty($step_data)) {
-				wp_safe_redirect(get_home_url());
+
+			/*if(empty($step_data)) {
+				wp_safe_redirect(get_home_url()); /////////////////////////////////////////////////
 				exit; // Always use exit after wp_safe_redirect
-			}
+			}*/
 		}
 	}
 

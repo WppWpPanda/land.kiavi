@@ -11,7 +11,7 @@ function wpp_step_config_8( $step = false ) {
                     <li>If you've recently applied for another loan with us, we will use the credit decision on file.</li>
                     <li>To ensure the most accurate pricing, we recommend the guarantor submit the loan application. This guarantor must have owned at least 25% of this entity for at least 180 days or since inception.</li>
                     <li>If you need to correct the guarantor for this loan, please go back and make that change.</li>
-                    <li>If you need to change entities for this loan application, please contact <a href="mailto:support@hello.kiavi.com">support@hello.kiavi.com</a>.</li>
+                    <li>If you need to change entities for this loan application, please contact <a href="mailto:support@lendvent.com">support@lendvent.com</a>.</li>
                 </ul>
 CON;
 	$content_n = <<<CON
@@ -20,7 +20,7 @@ CON;
                     <li>If you've recently applied for another loan with us, we will use the credit decision on file.</li>
                     <li>To ensure the most accurate pricing, we recommend the guarantor submit the loan application. This guarantor must have owned at least 25% of this entity for at least 180 days or since inception.</li>
                     <li>If you need to correct the guarantor for this loan, please go back and make that change.</li>
-                    <li>If you need to change entities for this loan application, please contact <a href="mailto:support@hello.kiavi.com">support@hello.kiavi.com</a>.</li>
+                    <li>If you need to change entities for this loan application, please contact <a href="mailto:support@lendvent.com">support@lendvent.com</a>.</li>
                 </ul>
 CON;
 

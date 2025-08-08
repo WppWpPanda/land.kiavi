@@ -104,7 +104,7 @@ class WPP_Assets {
 
         // Подключаем JavaScript Bootstrap 5 (с Popper)
         wp_enqueue_script(
-            'bootstrap-bundle',
+            'bootstrap-js',
             'https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js',
             [],
             '5.3.0',

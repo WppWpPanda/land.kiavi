@@ -14,8 +14,8 @@
     $(document).ready(function () {
         // Проверка наличия loanData
         if (typeof loanData === 'undefined') {
-            console.warn('loanData is not defined');
-            loanData = { baseAmount: 0, custom_fees: [] };
+            //console.warn('loanData is not defined');
+            var loanData = { baseAmount: 0, custom_fees: [] };
         }
 
         //*********************************************//
@@ -203,7 +203,7 @@
         // БРОКЕРЫ
         //*********************************************//
 
-        $('.wpp-save-loan').click(function (e) {
+        $(document).on( 'click','.wpp-save-loan',function (e) {
             e.preventDefault();
            $('#wpp-sl-form').submit();
         });

@@ -50,7 +50,8 @@ if (!class_exists('WPP_Checkbox_Field') && class_exists('WPP_Form_Field')) :
             $id = sanitize_key($this->get_name());
             $name = esc_attr($this->get_name());
             $checked = !empty($this->get_value()) ? 'checked' : '';
-            $required = $this->args['required'] ? 'required' : '';
+            $required = $this->args['required'] ? ' required="required"' : '';
+            $classes = !empty( $this->args['classes'] ) ? ' ' . trim(esc_attr(implode(' ', $this->args['classes']))) : '';
 
             ?>
             <div class="form-check">
@@ -58,7 +59,7 @@ if (!class_exists('WPP_Checkbox_Field') && class_exists('WPP_Form_Field')) :
                        id="<?php echo $id; ?>"
                        name="<?php echo $name; ?>"
                        value="1"
-                       class="form-check-input <?php echo esc_attr(implode(' ', $this->args['classes'])); ?>"
+                       class="form-check-input<?php echo $classes; ?>"
                     <?php echo $checked; ?>
                     <?php echo $required; ?>>
                 <?php if (!empty($this->args['label'])): ?>

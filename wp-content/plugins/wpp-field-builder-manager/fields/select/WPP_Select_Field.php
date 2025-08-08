@@ -55,10 +55,10 @@ if ( ! class_exists( 'WPP_Select_Field' ) && class_exists( 'WPP_Form_Field' ) ) 
 
 				wp_enqueue_style(
 					'wpp-select',
-					WPP_FIELD_BUILDER_URL . 'fields/select/ssstyle.css',
+					WPP_FIELD_BUILDER_URL . 'fields/select/style.css',
 					[],
-					file_exists( WPP_FIELD_BUILDER_PATH . 'fields/select/ssstyle.css' )
-						? filemtime( WPP_FIELD_BUILDER_PATH . 'fields/select/ssstyle.css' )
+					file_exists( WPP_FIELD_BUILDER_PATH . 'fields/select/style.css' )
+						? filemtime( WPP_FIELD_BUILDER_PATH . 'fields/select/style.css' )
 						: time(),
 					'all'
 				);
@@ -113,7 +113,9 @@ if ( ! class_exists( 'WPP_Select_Field' ) && class_exists( 'WPP_Form_Field' ) ) 
             <select name="<?php echo $field_name; ?>"
                     id="<?php echo $id; ?>"
                     class="<?php echo esc_attr( $select_class ); ?>"
-				<?php echo $is_multiple ? 'multiple' : ''; ?>>
+				<?php echo $is_multiple ? 'multiple' : ''; ?>
+                    <?php if($this->args['required']) { echo ' required="required"'; } ?>
+            >
 				<?php foreach ( $options as $value => $label ):
 					$isSelected = $is_multiple
 						? in_array( $value, (array) $selected )

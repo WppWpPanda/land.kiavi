@@ -28,27 +28,19 @@ landvent_manager_header_main() ?>
     </div>
 <?php
 $data  = get_colums_data();
-$array = wpp_get_all_trello_columns(); // колонки трело
-
+$array = wpp_get_all_trello_columns();
 
 $all_card_ids = array();
 
 foreach ( $array as $item ) {
-	// Декодируем JSON строку в массив
 	$card_ids = json_decode( $item->card_ids, true );
 
-	// Объединяем с общим массивом
 	if ( is_array( $card_ids ) ) {
 		$all_card_ids = array_merge( $all_card_ids, $card_ids );
 	}
 }
-
-// Теперь $all_card_ids содержит все ID карт
-
-
 //debugPanel( $data );
 ?>
-
     <div class="trello-board">
 
 
@@ -92,7 +84,9 @@ foreach ( $array as $item ) {
                             <div class="money-data">
                                 <div class="amount-info">
                                     <div class="st-1">
-                                        <b>$<?php echo number_format( $value['raw_data']->s4_total_loan_amount_sum, 2 ); ?></b>
+                                        <?php wpp_d_log($key); ?>
+                                        <?php wpp_d_log($value['raw_data']); ?>
+                                        <b>$<?php echo number_format( $value['raw_data']->s4_total_loan_amount_sum, 2 ); ?>***</b>
                                     </div>
                                     <div class="st-2">@</div>
                                     <div class="st-3">
@@ -135,8 +129,6 @@ foreach ( $array as $item ) {
 			foreach ( $array as $item ) {
 				if ( ! empty( $item->card_ids ) ) {
 					$ids = json_decode( $item->card_ids );
-
-
 				}
 				?>
             <div class="column" data-column-id="<?php echo $item->id; ?>">
@@ -224,7 +216,6 @@ foreach ( $array as $item ) {
 
         </div>
     </div>
-
 <?php
 /**
  * @hooked

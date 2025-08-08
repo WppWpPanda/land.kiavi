@@ -20,6 +20,7 @@
     max-width: 90%;
     max-height: 90vh;
     overflow-y: auto;
+    position: relative;
 }
 
 .wpp-auth-modal-content h3 {
@@ -77,13 +78,14 @@
 /* Крестик для закрытия */
 .close-modal {
     position: absolute;
-    top: 10px;
+    top: -13px;
     right: 10px;
-    font-size: 20px;
-    color: #aaa;
+    color: #d63638;
     cursor: pointer;
+    font-size: 37px;
+    transition: all .3s;
 }
 
 .close-modal:hover {
-    color: #000;
+    color: #e11619;
 }

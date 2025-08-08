@@ -89,3 +89,30 @@
     font-size: 40px;
     color: #007bff;
 }
+
+.page-template-default .accordion-body.row ul {
+    padding-left: 2rem;
+}
+
+.page-template-default .accordion-header {
+    border-radius: 0!important;
+}
+
+.page-template-default .accordion-item {
+    border-radius: 0!important;
+    border-left: none!important;
+    border-right: none!important;
+}
+
+.page-template-default button.accordion-button {
+    border-radius: 0!important;
+    box-shadow: none!important;
+}
+
+.page-template-default .accordion-button:not(.collapsed) {
+    background-color: #ced4da!important;
+}
+
+.accordion-item .accordion-button.collapsed::after {
+    content: "";
+}

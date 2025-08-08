@@ -3,15 +3,27 @@
  * Manager Dashboard - Loan Template
  */
 
-if (!defined('ABSPATH')) exit;
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
 get_header();
 
 global $wp_query, $loan_id;
 
-$loanData = wpp_get_loan_data_r($loan_id);
-$loanData['baseAmount'] = wpp_get_total_loan_amount($loan_id);
+$loanData = wpp_get_loan_data_r( $loan_id );
+if ( empty( $loanData ) ) {
+	$loanData = [];
+}
+$total = wpp_get_total_loan_amount( $loan_id );
+
+if ( $total === false ) {
+	error_log( "wpp_get_total_loan_amount вернул false для loan_id = $loan_id" );
+	$total = 0;
+}
+
+$loanData['baseAmount'] = $total;
 // Преобразуем в JSON (используем JSON_HEX_APOS и JSON_HEX_QUOT для экранирования)
-$loanDataJson = json_encode($loanData, JSON_HEX_APOS | JSON_HEX_QUOT);
+$loanDataJson = json_encode( $loanData, JSON_HEX_APOS | JSON_HEX_QUOT );
 ?>
     <script>
         // Передаем данные в JavaScript
@@ -57,13 +69,13 @@ $loanDataJson = json_encode($loanData, JSON_HEX_APOS | JSON_HEX_QUOT);
                         <div class="wpp-loan-block total-loan-block">Total Loan<span>-</span></div>
                         <div class="wpp-loan-block advance-at-closing-block">Advance at Closing
                             <span>
-                                <?php echo  format_usd_price(wpp_get_total_loan_amount()); ?>
+                                <?php echo format_usd_price( wpp_get_total_loan_amount() ); ?>
                             </span>
                         </div>
                     </div>
 
                     <input type="hidden" value="<?php echo $loan_id ?>" name="current_loan_id">
-					<?php wp_nonce_field('wpp_save_loan_data', 'wpp_loan_nonce'); ?>
+					<?php wp_nonce_field( 'wpp_save_loan_data', 'wpp_loan_nonce' ); ?>
 
 					<?php
 					/**

@@ -76,8 +76,6 @@ class WPP_Loan_Session_Handler {
 	 *
 	 * @return bool|int Возвращает ID записи или false при ошибке
 	 */
-
-
 	public static function save_step_data( $step, $data ) {
 		self::start_session();
 

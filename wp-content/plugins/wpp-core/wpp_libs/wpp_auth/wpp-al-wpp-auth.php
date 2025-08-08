@@ -302,7 +302,7 @@ class Wpp_Auth {
 			'wpp-auth-css',
 			plugins_url( 'assets/css/wpp-auth.css', __FILE__ ),
 			[],
-			'1.8'
+			'1.9'
 		);
 
 		wp_enqueue_script(
