@@ -59,7 +59,7 @@ function wpp_setup_auth_and_button() {
 	$button_text  = $is_logged_in ? 'Logout' : 'Login';
 	$icon  = $is_logged_in ? 'out' : 'in';
 	$button_class = $is_logged_in ? 'logout' : 'login';
-	$url          = $is_logged_in ? wp_logout_url() : '#';
+	$url          = $is_logged_in ? wp_logout_url( home_url() . '/manager-dashboard' ) : '#';
 
 	/**
 	 * Outputs the formatted button HTML.

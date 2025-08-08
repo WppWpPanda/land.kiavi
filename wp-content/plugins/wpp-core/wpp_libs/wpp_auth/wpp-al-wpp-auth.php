@@ -280,48 +280,100 @@ class Wpp_Auth {
 	}
 
 	/**
-	 * Enqueues required CSS and JavaScript assets.
+	 * Enqueues required CSS and JavaScript assets for the authentication modal.
 	 *
-	 * Loads:
-	 * - `wpp-auth.css`: Styles for the modal and forms.
-	 * - `wpp-auth.js`: Handles modal open/close, AJAX submission.
+	 * This method is responsible for:
+	 * - Loading the `wpp-auth.css` stylesheet for styling the modal and forms.
+	 * - Enqueuing the `wpp-auth.js` script (with jQuery dependency) to handle:
+	 *   - Modal open/close logic
+	 *   - AJAX form submission
+	 *   - Nonce validation
+	 * - Localizing PHP data into JavaScript via `wp_localize_script()` so that:
+	 *   - AJAX URL
+	 *   - Security nonce
+	 *   - Redirect URL
+	 *   - Allowed forms
+	 *   are safely accessible in the frontend JavaScript.
 	 *
-	 * Also localizes script data (`wppAuthAjax`) for use in JavaScript.
+	 * The method uses file modification time (`filemtime`) as version number to ensure cache busting
+	 * upon asset updates. Scripts are loaded in the footer for performance.
+	 *
+	 * 🔗 References:
+	 * - {@see https://developer.wordpress.org/reference/functions/wp_enqueue_style/}  `wp_enqueue_style()`
+	 * - {@see https://developer.wordpress.org/reference/functions/wp_enqueue_script/} `wp_enqueue_script()`
+	 * - {@see https://developer.wordpress.org/reference/functions/wp_localize_script/} `wp_localize_script()`
+	 * - {@see https://developer.wordpress.org/reference/functions/plugin_dir_path/}  `plugin_dir_path()`
+	 * - {@see https://developer.wordpress.org/reference/functions/plugins_url/}      `plugins_url()`
+	 * - {@see https://developer.wordpress.org/reference/functions/file_exists/}     `file_exists()`
+	 * - {@see https://www.php.net/manual/en/function.filemtime.php}                 `filemtime()`
+	 *
+	 * 🔧 Example Usage:
+	 * This method is automatically hooked to `wp_enqueue_scripts`:
+	 * ```php
+	 * add_action('wp_enqueue_scripts', [$this, 'enqueue_scripts']);
+	 * ```
+	 *
+	 * ✅ Best Practices Applied:
+	 * - Cache-busting via file modification time
+	 * - Proper dependency management
+	 * - Secure localization with nonce
+	 * - Footer loading for performance
+	 * - Graceful fallback versioning
 	 *
 	 * @since 1.0
+	 * @author WP_Panda <panda@wp-panda.pro>
+	 *
 	 * @return void
-	 * @hook  wp_enqueue_scripts
-	 * @see   wp_enqueue_style()     https://developer.wordpress.org/reference/functions/wp_enqueue_style/
-	 * @see   wp_enqueue_script()    https://developer.wordpress.org/reference/functions/wp_enqueue_script/
-	 * @see   wp_localize_script()   https://developer.wordpress.org/reference/functions/wp_localize_script/
-	 * @see   plugins_url()          https://developer.wordpress.org/reference/functions/plugins_url/
+	 * @hook wp_enqueue_scripts
+	 *
+	 * @todo Allow dynamic asset paths via filter (e.g., `wpp_auth_asset_path`).
+	 * @todo Introduce a minified version check (e.g., `.min.css` / `.min.js`) in production.
+	 * @todo Add error logging if assets fail to load (optional debug mode).
 	 */
 	public function enqueue_scripts() {
 
+		$plugin_path = plugin_dir_path(__FILE__);
+
+		// === CSS Asset: wpp-auth.css ===
+		$css_file = $plugin_path . 'assets/css/wpp-auth.css';
+
+		// Use file modification time as version number to force browser cache refresh on update.
+		// If file doesn't exist (e.g., during deployment), fallback to '1.0'.
+		$css_ver = file_exists($css_file) ? filemtime($css_file) : '1.0';
+
+		// Enqueue the CSS file with proper handle, URL, no dependencies, and dynamic version.
+		// Loaded in header by default (no fifth parameter).
 		wp_enqueue_style(
 			'wpp-auth-css',
-			plugins_url( 'assets/css/wpp-auth.css', __FILE__ ),
+			plugins_url('assets/css/wpp-auth.css', __FILE__),
 			[],
-			'1.9'
+			$css_ver
 		);
 
+		// === JavaScript Asset: wpp-auth.js ===
+		$js_file = $plugin_path . 'assets/js/wpp-auth.js';
+
+		// Use file modification time as version; fallback to '1.0' if missing.
+		$js_ver = file_exists($js_file) ? filemtime($js_file) : '1.0';
+
+		// Enqueue the JS file with jQuery as dependency and load in footer for performance.
 		wp_enqueue_script(
 			'wpp-auth-js',
-			plugins_url( 'assets/js/wpp-auth.js', __FILE__ ),
-			[ 'jquery' ],
-			'1.9',
-			true // In footer
+			plugins_url('assets/js/wpp-auth.js', __FILE__),
+			['jquery'],
+			$js_ver,
+			true
 		);
 
-		// Make PHP variables available in JavaScript
+		// === Localize Script: Make PHP Data Available in JavaScript ===
 		wp_localize_script(
 			'wpp-auth-js',
 			'wppAuthAjax',
 			[
-				'ajaxUrl'      => admin_url( 'admin-ajax.php' ),
-				'nonce'        => wp_create_nonce( 'wpp-auth-nonce' ),
+				'ajaxUrl'      => admin_url('admin-ajax.php'),
+				'nonce'        => wp_create_nonce('wpp-auth-nonce'),
 				'redirectUrl'  => $this->redirect_to,
-				'allowedForms' => $this->allowed_forms, // Allow JS to hide disabled buttons
+				'allowedForms' => $this->allowed_forms
 			]
 		);
 	}

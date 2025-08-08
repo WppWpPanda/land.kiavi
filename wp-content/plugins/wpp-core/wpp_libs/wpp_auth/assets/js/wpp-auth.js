@@ -1,8 +1,10 @@
 jQuery(document).ready(function ($) {
     // Открытие модального окна
     $('.open-auth-modal').on('click', function (e) {
-        e.preventDefault();
-        $('.wpp-auth-modal').fadeIn();
+        if (!$(this).hasClass('logout')) {
+            e.preventDefault();
+            $('.wpp-auth-modal').fadeIn();
+        }
     });
 
     // Закрытие модального окна
@@ -10,13 +12,13 @@ jQuery(document).ready(function ($) {
         $('.wpp-auth-modal').fadeOut();
     });
 
-   // Закрытие модального окна при клике вне окна
-  /*  $(document).on('click', function (e) {
-        e.preventDefault();
-        if ($(e.target).closest('.wpp-auth-modal-content').length === 0) {
-            $('.wpp-auth-modal').fadeOut();
-        }
-    })*/
+    // Закрытие модального окна при клике вне окна
+    /*  $(document).on('click', function (e) {
+          e.preventDefault();
+          if ($(e.target).closest('.wpp-auth-modal-content').length === 0) {
+              $('.wpp-auth-modal').fadeOut();
+          }
+      })*/
 
     // Переключение форм через AJAX
     $(document).on('click', '[data-form]', function (e) {

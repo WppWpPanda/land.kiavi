@@ -31,3 +31,19 @@ function wpp_time_ago($datetime) {
 		return $days . ' day' . ($days !== 1 ? 's' : '') . ' ago';
 	}
 }
+
+
+function normalizeClassName(string $input): string
+{
+	// Разделяем строку по символам подчеркивания или заглавным буквам
+	$parts = preg_split('/(_|(?=[A-Z]))/', $input, -1, PREG_SPLIT_NO_EMPTY);
+
+	// Обрабатываем каждую часть
+	$normalized = array_map(function($part) {
+		// Делаем первую букву заглавной, остальные - строчными
+		return ucfirst(strtolower($part));
+	}, $parts);
+
+	// Собираем обратно через подчеркивание
+	return implode('_', $normalized);
+}

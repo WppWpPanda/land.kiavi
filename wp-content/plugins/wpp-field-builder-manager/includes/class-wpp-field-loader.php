@@ -59,7 +59,7 @@ class WPP_Field_Loader {
 
         foreach ($field_dirs as $dir) {
             $folder_name = basename($dir);
-            $class_name = 'WPP_' . ucfirst($folder_name) . '_Field';
+            $class_name = 'WPP_' . normalizeClassName($folder_name) . '_Field';
             $file_path = $dir . '/' . $class_name . '.php';
 
             if (file_exists($file_path)) {

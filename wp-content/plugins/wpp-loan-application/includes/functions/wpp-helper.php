@@ -21,6 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
+
 // ----------------------
 // 🔧 Форма и рендеринг
 // ----------------------
@@ -53,7 +54,7 @@ function wpp_render_form( string $form_id, array $form_fields, string $method = 
 	echo '>';
 
 	foreach ( $form_fields as $name => $config ) {
-		$class_name = 'WPP_' . ucfirst( $config['type'] ) . '_Field';
+		$class_name = 'WPP_' . normalizeClassName( $config['type'] ) . '_Field';
 
 		if ( class_exists( $class_name ) ) {
 			$field = new $class_name( array_merge( $config, [ 'name' => $name ] ) );
