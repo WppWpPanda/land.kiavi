@@ -12,6 +12,7 @@ jQuery(document).ready(function ($) {
     const $appr_form        = $('#wpp-appraiser-form');
     const $appr_overlay     = $appr_modal.find('.wpp-modal-overlay');
     const $appr_closeBtn    = $appr_modal.find('.wpp-modal-close');
+    const $appr_submitBtn   = $appr_form.find('button[type="submit"]'); // Кнопка отправки
 
     /**
      * Открытие модального окна для редактирования оценщика
@@ -27,17 +28,27 @@ jQuery(document).ready(function ($) {
             return;
         }
 
+        // --- Сохраняем старый текст заголовка (если ещё не сохранён) ---
         if (!$appr_modalHeader.attr('data-old')) {
             $appr_modalHeader.attr('data-old', $appr_modalHeader.text().trim());
         }
 
+        // --- Сохраняем старый текст кнопки (если ещё не сохранён) ---
+        if (!$appr_submitBtn.attr('data-old')) {
+            $appr_submitBtn.attr('data-old', $appr_submitBtn.text().trim());
+        }
+
+        // --- Меняем текст на "Save Changes" ---
         $appr_modalHeader.text('Edit Appraiser');
+        $appr_submitBtn.text('Save Changes');
+
+        // --- Очищаем предыдущий ID и заполняем форму ---
         $appr_form.find('input[name="appraiser_id"]').remove();
 
         $.each(appr_rowData, function (key, value) {
-            const $appr_input = $appr_form.find(`[name="${key}"]`);
-            if ($appr_input.length) {
-                $appr_input.val(value);
+            const $input = $appr_form.find(`[name="${key}"]`);
+            if ($input.length) {
+                $input.val(value);
             }
         });
 
@@ -50,15 +61,24 @@ jQuery(document).ready(function ($) {
      */
     function appr_closeModal() {
         const oldTitle = $appr_modalHeader.attr('data-old');
+        const oldBtnText = $appr_submitBtn.attr('data-old');
+
         if (oldTitle) {
-            $appr_form.find('input[name="appraiser_id"]').remove();
-            $appr_form[0].reset();
             $appr_modalHeader.text(oldTitle);
             $appr_modalHeader.removeAttr('data-old');
         }
+
+        if (oldBtnText) {
+            $appr_submitBtn.text(oldBtnText);
+            $appr_submitBtn.removeAttr('data-old');
+        }
+
+        $appr_form.find('input[name="appraiser_id"]').remove();
+        $appr_form[0].reset();
         $appr_modal.fadeOut();
     }
 
+    // Закрытие по крестику, оверлею, ESC
     $appr_closeBtn.add($appr_overlay).on('click', function (e) {
         e.preventDefault();
         appr_closeModal();
@@ -81,8 +101,8 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
 
         const form = $(this);
-        const submitBtn = form.find('button[type="submit"]');
-        const originalText = submitBtn.text();
+        const submitBtn = $appr_submitBtn;
+        const originalText = submitBtn.text(); // "Save Changes"
 
         const data = form.serializeArray();
         data.push({
@@ -90,12 +110,12 @@ jQuery(document).ready(function ($) {
             value: 'wpp_save_appraiser'
         });
 
+        // Показываем лоадер
         submitBtn.text('Saving...').prop('disabled', true);
 
         $.post(trello_vars.ajax_url, data, function (response) {
             if (response.success) {
                 alert('✅ ' + response.data.message);
-                form[0].reset();
                 $appr_modal.fadeOut();
                 window.location.reload();
             } else {
@@ -106,6 +126,7 @@ jQuery(document).ready(function ($) {
                 alert('❌ Connection error. Please try again.');
             })
             .always(function () {
+                // Возвращаем "Save Changes" (не исходный!)
                 submitBtn.text(originalText).prop('disabled', false);
             });
     });

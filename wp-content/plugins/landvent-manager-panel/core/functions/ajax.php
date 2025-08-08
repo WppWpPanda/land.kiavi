@@ -235,7 +235,7 @@ function wpp_save_brokerage_callback() {
 	// Change to 'edit_posts', 'publish_pages', etc., if needed.
 	//
 	// @link https://developer.wordpress.org/plugins/users/capabilities/
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! wpp_is_user_dashboard_allowed() ) {
 		wp_send_json_error( [
 			'message' => 'You do not have permission to perform this action.',
 			'code'    => 'insufficient_permissions'
@@ -386,7 +386,7 @@ function wpp_save_law_firm_callback() {
 	}
 
 	// Capability
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! wpp_is_user_dashboard_allowed() ) {
 		wp_send_json_error([
 			'message' => 'You do not have permission.',
 			'code'    => 'insufficient_permissions'
@@ -471,7 +471,7 @@ function wpp_save_company_callback() {
 	}
 
 	// Capability
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! wpp_is_user_dashboard_allowed() ) {
 		wp_send_json_error([
 			'message' => 'You do not have permission.',
 			'code'    => 'insufficient_permissions'
@@ -555,7 +555,7 @@ function wpp_save_appraiser_callback() {
 	}
 
 	// Capability
-	if ( ! current_user_can( 'manage_options' ) ) {
+	if ( ! wpp_is_user_dashboard_allowed() ) {
 		wp_send_json_error([
 			'message' => 'You do not have permission.',
 			'code'    => 'insufficient_permissions'

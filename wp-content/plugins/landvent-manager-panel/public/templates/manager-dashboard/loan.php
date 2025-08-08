@@ -22,6 +22,7 @@ if ( $total === false ) {
 }
 
 $loanData['baseAmount'] = $total;
+$loanData['LOAN_ID'] = $loan_id;
 // Преобразуем в JSON (используем JSON_HEX_APOS и JSON_HEX_QUOT для экранирования)
 $loanDataJson = json_encode( $loanData, JSON_HEX_APOS | JSON_HEX_QUOT );
 ?>
@@ -46,16 +47,16 @@ $loanDataJson = json_encode( $loanData, JSON_HEX_APOS | JSON_HEX_QUOT );
                         <span class="loan-status-bar__title">test Standard Loan</span>
                     </div>
                     <div class="loan-status-bar__right">
-                        <select name="status" class="loan-status-bar__select">
+                        <!--<select name="status" class="loan-status-bar__select">
                             <option value="intake_form_lead">Intake Form Lead</option>
                             <option value="other_status">Other Status</option>
                         </select>
                         <button class="loan-status-bar__button">Ledger</button>
-                        <button class="loan-status-bar__button">Fund</button>
-                        <button class="loan-status-bar__button">Terminate</button>
-                        <button class="loan-status-bar__more-actions">
+                        <button class="loan-status-bar__button">Fund</button>-->
+                        <button class="loan-status-bar__button"><i class="fas fa-trash"></i>Delete</button>
+                       <!-- <button class="loan-status-bar__more-actions">
                             <i class="fas fa-ellipsis-h"></i>
-                        </button>
+                        </button>-->
                     </div>
                 </div>
 

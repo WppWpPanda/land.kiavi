@@ -12,6 +12,7 @@ jQuery(document).ready(function ($) {
     const $comp_form        = $('#wpp-title-company-form');
     const $comp_overlay     = $comp_modal.find('.wpp-modal-overlay');
     const $comp_closeBtn    = $comp_modal.find('.wpp-modal-close');
+    const $comp_submitBtn   = $comp_form.find('button[type="submit"]'); // Кнопка отправки
 
     /**
      * Открытие модального окна для редактирования компании
@@ -27,13 +28,24 @@ jQuery(document).ready(function ($) {
             return;
         }
 
+        // --- Сохраняем оригинальный текст заголовка (если ещё не сохранён) ---
         if (!$comp_modalHeader.attr('data-old')) {
             $comp_modalHeader.attr('data-old', $comp_modalHeader.text().trim());
         }
 
+        // --- Сохраняем оригинальный текст кнопки (если ещё не сохранён) ---
+        if (!$comp_submitBtn.attr('data-old')) {
+            $comp_submitBtn.attr('data-old', $comp_submitBtn.text().trim());
+        }
+
+        // --- Меняем заголовок и текст кнопки ---
         $comp_modalHeader.text('Edit Company');
+        $comp_submitBtn.text('Save Changes');
+
+        // Удаляем старый ID
         $comp_form.find('input[name="company_id"]').remove();
 
+        // Заполняем форму
         $.each(comp_rowData, function (key, value) {
             const $comp_input = $comp_form.find(`[name="${key}"]`);
             if ($comp_input.length) {
@@ -41,35 +53,55 @@ jQuery(document).ready(function ($) {
             }
         });
 
+        // Добавляем ID компании
         $comp_form.append(`<input type="hidden" name="company_id" value="${comp_rowData.id}" />`);
+
+        // Показываем модальное окно
         $comp_modal.fadeIn();
     });
 
     /**
      * Закрытие модального окна
+     * Восстанавливает заголовок и текст кнопки, сбрасывает форму
      */
     function comp_closeModal() {
         const oldTitle = $comp_modalHeader.attr('data-old');
+        const oldBtnText = $comp_submitBtn.attr('data-old');
+
+        // Восстанавливаем заголовок
         if (oldTitle) {
-            $comp_form.find('input[name="company_id"]').remove();
-            $comp_form[0].reset();
             $comp_modalHeader.text(oldTitle);
             $comp_modalHeader.removeAttr('data-old');
         }
+
+        // Восстанавливаем текст кнопки
+        if (oldBtnText) {
+            $comp_submitBtn.text(oldBtnText);
+            $comp_submitBtn.removeAttr('data-old');
+        }
+
+        // Очищаем форму и удаляем ID
+        $comp_form.find('input[name="company_id"]').remove();
+        $comp_form[0].reset();
+
+        // Скрываем модальное окно
         $comp_modal.fadeOut();
     }
 
+    // Закрытие по крестику или оверлею
     $comp_closeBtn.add($comp_overlay).on('click', function (e) {
         e.preventDefault();
         comp_closeModal();
     });
 
+    // Закрытие по клавише ESC
     $(document).on('keyup', function (e) {
         if (e.key === "Escape") {
             comp_closeModal();
         }
     });
 
+    // Закрытие при клике на оверлей (но не на форму)
     $comp_overlay.on('click', function (e) {
         if (e.target === this) {
             comp_closeModal();
@@ -81,8 +113,8 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
 
         const form = $(this);
-        const submitBtn = form.find('button[type="submit"]');
-        const originalText = submitBtn.text();
+        const submitBtn = $comp_submitBtn;
+        const originalText = submitBtn.text(); // "Add Company" или "Save Changes"
 
         const data = form.serializeArray();
         data.push({
@@ -90,12 +122,12 @@ jQuery(document).ready(function ($) {
             value: 'wpp_save_company'
         });
 
+        // Показываем лоадер
         submitBtn.text('Saving...').prop('disabled', true);
 
         $.post(trello_vars.ajax_url, data, function (response) {
             if (response.success) {
                 alert('✅ ' + response.data.message);
-                form[0].reset();
                 $comp_modal.fadeOut();
                 window.location.reload();
             } else {
@@ -106,6 +138,7 @@ jQuery(document).ready(function ($) {
                 alert('❌ Connection error. Please try again.');
             })
             .always(function () {
+                // После завершения — возвращаем "Save Changes" или "Add Company"
                 submitBtn.text(originalText).prop('disabled', false);
             });
     });

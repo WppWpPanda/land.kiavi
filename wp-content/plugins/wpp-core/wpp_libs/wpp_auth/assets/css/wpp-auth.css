@@ -89,3 +89,27 @@
 .close-modal:hover {
     color: #e11619;
 }
+
+/* Лоадер на кнопке */
+.wpp-spinner {
+    display: inline-block;
+    width: 16px;
+    height: 16px;
+    border: 2px solid #ffffff;
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: wpp-spin 1s linear infinite;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+@keyframes wpp-spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Стиль кнопки при загрузке */
+button:disabled,
+input[type="submit"]:disabled {
+    opacity: 0.8;
+    cursor: not-allowed;
+}

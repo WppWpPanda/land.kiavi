@@ -1,17 +1,18 @@
 jQuery(document).ready(function ($) {
 
+    // Открытие модального окна "Add Broker"
     $('#wpp-open-brokerage-modal').on('click', function (e) {
         e.preventDefault();
         $('#wpp-brokerage-modal').fadeIn();
     });
 
-
     // === Кэшируем часто используемые элементы с префиксом br_ ===
-    const $br_modal = $('#wpp-brokerage-modal');
+    const $br_modal       = $('#wpp-brokerage-modal');
     const $br_modalHeader = $br_modal.find('.wpp-modal-header h3');
-    const $br_form = $('#wpp-brokerage-form');
-    const $br_overlay = $br_modal.find('.wpp-modal-overlay');
-    const $br_closeBtn = $br_modal.find('.wpp-modal-close');
+    const $br_form        = $('#wpp-brokerage-form');
+    const $br_overlay     = $br_modal.find('.wpp-modal-overlay');
+    const $br_closeBtn    = $br_modal.find('.wpp-modal-close');
+    const $br_submitBtn   = $br_form.find('button[type="submit"]'); // Кнопка отправки
 
     /**
      * Открытие модального окна для редактирования брокера
@@ -27,18 +28,24 @@ jQuery(document).ready(function ($) {
             return;
         }
 
-        // Сохраняем оригинальный заголовок один раз
+        // --- Сохраняем оригинальный текст заголовка (если ещё не сохранён) ---
         if (!$br_modalHeader.attr('data-old')) {
             $br_modalHeader.attr('data-old', $br_modalHeader.text().trim());
         }
 
-        // Меняем заголовок
-        $br_modalHeader.text('Edit Broker');
+        // --- Сохраняем оригинальный текст кнопки (если ещё не сохранён) ---
+        if (!$br_submitBtn.attr('data-old')) {
+            $br_submitBtn.attr('data-old', $br_submitBtn.text().trim());
+        }
 
-        // Удаляем старое hidden-поле (если есть)
+        // --- Меняем текст заголовка и кнопки ---
+        $br_modalHeader.text('Edit Broker');
+        $br_submitBtn.text('Save Changes');
+
+        // Удаляем старый ID
         $br_form.find('input[name="broker_id"]').remove();
 
-        // Заполняем поля формы
+        // Заполняем форму
         $.each(br_rowData, function (key, value) {
             const $br_input = $br_form.find(`[name="${key}"]`);
             if ($br_input.length) {
@@ -46,7 +53,7 @@ jQuery(document).ready(function ($) {
             }
         });
 
-        // Добавляем ID как hidden поле
+        // Добавляем ID брокера
         $br_form.append(`<input type="hidden" name="broker_id" value="${br_rowData.id}" />`);
 
         // Показываем модальное окно
@@ -55,26 +62,33 @@ jQuery(document).ready(function ($) {
 
     /**
      * Закрытие модального окна
-     * Сбрасывает заголовок, очищает форму, удаляет broker_id и data-old
+     * Восстанавливает заголовок и текст кнопки, сбрасывает форму
      */
     function br_closeModal() {
-        // Восстанавливаем заголовок, если есть data-old
-        const br_oldTitle = $br_modalHeader.attr('data-old');
-        if (br_oldTitle) {
-            // Удаляем только hidden поле с ID
-            $br_form.find('input[name="broker_id"]').remove();
-            $br_form[0].reset();
-            $br_modalHeader.text(br_oldTitle);
+        const oldTitle = $br_modalHeader.attr('data-old');
+        const oldBtnText = $br_submitBtn.attr('data-old');
+
+        // Восстанавливаем заголовок
+        if (oldTitle) {
+            $br_modalHeader.text(oldTitle);
             $br_modalHeader.removeAttr('data-old');
         }
 
+        // Восстанавливаем текст кнопки
+        if (oldBtnText) {
+            $br_submitBtn.text(oldBtnText);
+            $br_submitBtn.removeAttr('data-old');
+        }
 
+        // Очищаем форму и удаляем ID
+        $br_form.find('input[name="broker_id"]').remove();
+        $br_form[0].reset();
 
         // Скрываем модальное окно
         $br_modal.fadeOut();
     }
 
-    // Закрытие по клику на крестик или оверлей
+    // Закрытие по крестику или оверлею
     $br_closeBtn.add($br_overlay).on('click', function (e) {
         e.preventDefault();
         br_closeModal();
@@ -87,39 +101,34 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    // Опционально: закрытие при клике вне формы (но не на самой форме)
+    // Закрытие при клике на оверлей (но не на форму)
     $br_overlay.on('click', function (e) {
-        if (e.target === this) { // Клик именно на оверлей, а не на форму
+        if (e.target === this) {
             br_closeModal();
         }
     });
 
-
-    // AJAX form submission
+    // === AJAX-отправка формы ===
     $('#wpp-brokerage-form').on('submit', function (e) {
         e.preventDefault();
 
         const form = $(this);
-        const submitBtn = form.find('button[type="submit"]');
-        const originalText = submitBtn.text();
+        const submitBtn = $br_submitBtn;
+        const originalText = submitBtn.text(); // "Add Broker" или "Save Changes"
 
-        // Collect form data
         const data = form.serializeArray();
         data.push({
             name: 'action',
             value: 'wpp_save_brokerage'
         });
 
-        // Disable submit button
+        // Показываем лоадер
         submitBtn.text('Saving...').prop('disabled', true);
 
         $.post(trello_vars.ajax_url, data, function (response) {
             if (response.success) {
-                alert('✅ ' + response.data.message); // e.g., "Broker has been successfully added."
-                form[0].reset(); // Clear form
-                $('#wpp-brokerage-modal').fadeOut(); // Close modal
-
-                // Reload the page after successful save
+                alert('✅ ' + response.data.message);
+                $br_modal.fadeOut();
                 window.location.reload();
             } else {
                 alert('❌ Error: ' + response.data.message);
@@ -129,6 +138,7 @@ jQuery(document).ready(function ($) {
                 alert('❌ Connection error. Please try again.');
             })
             .always(function () {
+                // После завершения — возвращаем "Save Changes" (или "Add Broker", если форма открыта заново)
                 submitBtn.text(originalText).prop('disabled', false);
             });
     });

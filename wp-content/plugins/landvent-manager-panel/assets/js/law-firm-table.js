@@ -12,6 +12,7 @@ jQuery(document).ready(function ($) {
     const $lf_form        = $('#wpp-law-firm-form');
     const $lf_overlay     = $lf_modal.find('.wpp-modal-overlay');
     const $lf_closeBtn    = $lf_modal.find('.wpp-modal-close');
+    const $lf_submitBtn   = $lf_form.find('button[type="submit"]'); // Кнопка отправки
 
     /**
      * Открытие модального окна для редактирования юридической фирмы
@@ -27,15 +28,21 @@ jQuery(document).ready(function ($) {
             return;
         }
 
-        // Сохраняем оригинальный заголовок один раз
+        // --- Сохраняем оригинальный текст заголовка (если ещё не сохранён) ---
         if (!$lf_modalHeader.attr('data-old')) {
             $lf_modalHeader.attr('data-old', $lf_modalHeader.text().trim());
         }
 
-        // Меняем заголовок
-        $lf_modalHeader.text('Edit Law Firm');
+        // --- Сохраняем оригинальный текст кнопки (если ещё не сохранён) ---
+        if (!$lf_submitBtn.attr('data-old')) {
+            $lf_submitBtn.attr('data-old', $lf_submitBtn.text().trim());
+        }
 
-        // Удаляем старое hidden-поле (если есть)
+        // --- Меняем заголовок и текст кнопки ---
+        $lf_modalHeader.text('Edit Law Firm');
+        $lf_submitBtn.text('Save Changes');
+
+        // Удаляем старый ID
         $lf_form.find('input[name="law_firm_id"]').remove();
 
         // Заполняем поля формы
@@ -46,7 +53,7 @@ jQuery(document).ready(function ($) {
             }
         });
 
-        // Добавляем ID как hidden поле
+        // Добавляем ID юридической фирмы
         $lf_form.append(`<input type="hidden" name="law_firm_id" value="${lf_rowData.id}" />`);
 
         // Показываем модальное окно
@@ -55,23 +62,33 @@ jQuery(document).ready(function ($) {
 
     /**
      * Закрытие модального окна
-     * Сбрасывает заголовок, очищает форму, удаляет law_firm_id и data-old
+     * Восстанавливает заголовок и текст кнопки, сбрасывает форму
      */
     function lf_closeModal() {
-        // Восстанавливаем заголовок, если есть data-old
-        const lf_oldTitle = $lf_modalHeader.attr('data-old');
-        if (lf_oldTitle) {
-            $lf_form.find('input[name="law_firm_id"]').remove();
-            $lf_form[0].reset();
-            $lf_modalHeader.text(lf_oldTitle);
+        const oldTitle = $lf_modalHeader.attr('data-old');
+        const oldBtnText = $lf_submitBtn.attr('data-old');
+
+        // Восстанавливаем заголовок
+        if (oldTitle) {
+            $lf_modalHeader.text(oldTitle);
             $lf_modalHeader.removeAttr('data-old');
         }
+
+        // Восстанавливаем текст кнопки
+        if (oldBtnText) {
+            $lf_submitBtn.text(oldBtnText);
+            $lf_submitBtn.removeAttr('data-old');
+        }
+
+        // Очищаем форму и удаляем ID
+        $lf_form.find('input[name="law_firm_id"]').remove();
+        $lf_form[0].reset();
 
         // Скрываем модальное окно
         $lf_modal.fadeOut();
     }
 
-    // Закрытие по клику на крестик или оверлей
+    // Закрытие по крестику или оверлею
     $lf_closeBtn.add($lf_overlay).on('click', function (e) {
         e.preventDefault();
         lf_closeModal();
@@ -84,7 +101,7 @@ jQuery(document).ready(function ($) {
         }
     });
 
-    // Закрытие при клике вне формы (но не на самой форме)
+    // Закрытие при клике на оверлей (но не на форму)
     $lf_overlay.on('click', function (e) {
         if (e.target === this) {
             lf_closeModal();
@@ -96,26 +113,22 @@ jQuery(document).ready(function ($) {
         e.preventDefault();
 
         const form = $(this);
-        const submitBtn = form.find('button[type="submit"]');
-        const originalText = submitBtn.text();
+        const submitBtn = $lf_submitBtn;
+        const originalText = submitBtn.text(); // "Add Law Firm" или "Save Changes"
 
-        // Собираем данные формы
         const data = form.serializeArray();
         data.push({
             name: 'action',
             value: 'wpp_save_law_firm'
         });
 
-        // Блокируем кнопку
+        // Показываем лоадер
         submitBtn.text('Saving...').prop('disabled', true);
 
         $.post(trello_vars.ajax_url, data, function (response) {
             if (response.success) {
-                alert('✅ ' + response.data.message); // e.g., "Law firm has been successfully added."
-                form[0].reset(); // Очищаем форму
-                $lf_modal.fadeOut(); // Закрываем модальное окно
-
-                // Перезагружаем страницу для обновления таблицы
+                alert('✅ ' + response.data.message);
+                $lf_modal.fadeOut();
                 window.location.reload();
             } else {
                 alert('❌ Error: ' + response.data.message);
@@ -125,6 +138,7 @@ jQuery(document).ready(function ($) {
                 alert('❌ Connection error. Please try again.');
             })
             .always(function () {
+                // После завершения — возвращаем "Save Changes" или "Add Law Firm"
                 submitBtn.text(originalText).prop('disabled', false);
             });
     });

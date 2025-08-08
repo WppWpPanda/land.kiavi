@@ -214,3 +214,48 @@ function wpp_is_manager_dashboard($specific_endpoint = '') {
 	// Default case: return current endpoint
 	return $current_endpoint;
 }
+
+
+/**
+ * Checks if the current user is allowed to access the Manager Dashboard.
+ *
+ * This function returns true if the user has one of the following:
+ * - 'manage_options' capability (typically administrators)
+ * - 'loans_manager' role
+ *
+ * It safely handles cases where the user is not logged in.
+ *
+ * 🔗 References:
+ * - {@see https://developer.wordpress.org/reference/functions/wp_get_current_user/} `wp_get_current_user()`
+ * - {@see https://developer.wordpress.org/reference/functions/current_user_can/} `current_user_can()`
+ * - {@see https://developer.wordpress.org/plugins/users/roles-and-capabilities/} Roles & Capabilities
+ *
+ * 📌 Usage:
+ * ```php
+ * if ( wpp_is_user_dashboard_allowed() ) {
+ *     // Load dashboard content
+ * } else {
+ *     // Show access denied
+ * }
+ * ```
+ *
+ * @since 1.0
+ * @author WP_Panda <panda@wp-panda.pro>
+ *
+ * @return bool True if user is allowed, false otherwise.
+ */
+function wpp_is_user_dashboard_allowed() {
+	// Check for admin capabilities (typical for administrators)
+	if ( current_user_can( 'manage_options' ) ) {
+		return true;
+	}
+
+	// Check if user has the specific role 'loans_manager'
+	$user = wp_get_current_user();
+	if ( in_array( 'loans_manager', (array) $user->roles, true ) ) {
+		return true;
+	}
+
+	// Deny access by default
+	return false;
+}

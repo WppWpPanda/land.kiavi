@@ -103,3 +103,72 @@ add_action( 'plugins_loaded', function () {
 		'allowed_forms' => [ 'login' ], // Only enable login; disable register & forgot-password
 	] );
 } );
+
+/**
+ * Redirect non-admin users away from the WordPress admin dashboard.
+ *
+ * @since 1.0
+ * @author WP_Panda <panda@wp-panda.pro>
+ * @hook admin_init
+ * @return void
+ */
+function wpp_restrict_admin_access() {
+	// Allow access only for users with 'administrator' role
+	if ( ! current_user_can( 'administrator' ) && ! wp_doing_ajax() ) {
+		// Redirect to homepage or custom URL
+		wp_redirect( home_url() );
+		exit;
+	}
+}
+//add_action( 'admin_init', 'wpp_restrict_admin_access', 100 );
+
+
+/**
+ * Hide admin bar for non-admin users.
+ *
+ * @since 1.0
+ * @author WP_Panda <panda@wp-panda.pro>
+ * @hook after_setup_theme
+ * @return void
+ */
+function wpp_hide_admin_bar() {
+	if ( ! current_user_can( 'administrator' ) ) {
+		show_admin_bar( false );
+	}
+}
+add_action( 'after_setup_theme', 'wpp_hide_admin_bar' );
+
+
+/**
+ * Replace "Dashboard" link with custom URL in profile menu.
+ *
+ * @since 1.0
+ * @author WP_Panda <panda@wp-panda.pro>
+ * @hook admin_url
+ * @param string $url
+ * @param string $path
+ * @return string
+ */
+function wpp_replace_dashboard_url( $url, $path ) {
+	if ( ! current_user_can( 'administrator' ) && 'index.php' === $path ) {
+		return home_url( '/my-account/' ); // или другой URL
+	}
+	return $url;
+}
+//add_filter( 'admin_url', 'wpp_replace_dashboard_url', 10, 2 );
+
+
+/**
+ * Restrict wp-login.php access by IP (optional).
+ *
+ * @since 1.0
+ * @author WP_Panda <panda@wp-panda.pro>
+ * @hook login_init
+ * @return void
+ */
+function wpp_restrict_login_page() {
+	wp_die( 'Доступ к админке временно отключён.', 'Доступ запрещён', [ 'response' => 403 ] );
+
+}
+// Раскомментируй, если нужно ограничить доступ к логину
+//add_action( 'login_init', 'wpp_restrict_login_page' );

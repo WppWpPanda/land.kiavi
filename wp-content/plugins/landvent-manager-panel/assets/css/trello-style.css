@@ -412,3 +412,28 @@ a.nav-link.active.current-point {
 a.nav-link.active.current-point:hover {
     color: #198754;
 }
+
+.loan-status-bar__button {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    font-size: 14px;
+    color: #d9534f;
+    background-color: transparent;
+    border: 1px solid #d9534f;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.loan-status-bar__button:hover {
+    background-color: #d9534f;
+    color: white;
+}
+
+.loan-status-bar__button .loan-status-bar__icon,
+.loan-status-bar__button .fas {
+    width: 14px;
+    height: 14px;
+}

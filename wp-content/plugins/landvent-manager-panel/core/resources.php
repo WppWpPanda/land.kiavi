@@ -12,7 +12,7 @@
  */
 
 // Prevent direct access
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Enqueue Frontend Styles and Scripts
@@ -28,9 +28,9 @@ defined('ABSPATH') || exit;
  * Versioning is handled using file modification time (`filemtime`) to bust cache
  * when assets are updated. Falls back to current timestamp if file not found.
  *
- * @since 1.0.0
- *
  * @return void
+ *
+ * @since 1.0.0
  *
  * @uses wp_enqueue_style()     To register CSS files.
  * @uses wp_enqueue_script()    To register JavaScript files.
@@ -47,6 +47,9 @@ defined('ABSPATH') || exit;
  * @link https://developer.wordpress.org/reference/functions/wp_create_nonce/
  */
 function wpp_enqueue_Loan_styles() {
+
+	global $loan_id;
+
 	// -------------------------------
 	// 1. Load Font Awesome from CDN
 	// -------------------------------
@@ -68,8 +71,8 @@ function wpp_enqueue_Loan_styles() {
 		'landvent-manager-panel', // Handle name
 		WPP_LOAN_MANAGER_URL . 'assets/css/landvent-manager-panel.css', // Source URL
 		array(), // No dependencies
-		file_exists(WPP_LOAN_MANAGER_PATH . 'assets/css/landvent-manager-panel.css')
-			? filemtime(WPP_LOAN_MANAGER_PATH . 'assets/css/landvent-manager-panel.css') // Version: file change time
+		file_exists( WPP_LOAN_MANAGER_PATH . 'assets/css/landvent-manager-panel.css' )
+			? filemtime( WPP_LOAN_MANAGER_PATH . 'assets/css/landvent-manager-panel.css' ) // Version: file change time
 			: time() // Fallback: current timestamp
 	);
 
@@ -80,8 +83,8 @@ function wpp_enqueue_Loan_styles() {
 		'trello-style',
 		WPP_LOAN_MANAGER_URL . 'assets/css/trello-style.css',
 		array(), // No dependencies
-		file_exists(WPP_LOAN_MANAGER_PATH . 'assets/css/trello-style.css')
-			? filemtime(WPP_LOAN_MANAGER_PATH . 'assets/css/trello-style.css')
+		file_exists( WPP_LOAN_MANAGER_PATH . 'assets/css/trello-style.css' )
+			? filemtime( WPP_LOAN_MANAGER_PATH . 'assets/css/trello-style.css' )
 			: time()
 	);
 
@@ -94,9 +97,9 @@ function wpp_enqueue_Loan_styles() {
 	wp_enqueue_script(
 		'trello-script',
 		WPP_LOAN_MANAGER_URL . 'assets/js/trello-script.js',
-		array('jquery', 'jquery-ui-sortable'),
-		file_exists(WPP_LOAN_MANAGER_PATH . 'assets/js/trello-script.js')
-			? filemtime(WPP_LOAN_MANAGER_PATH . 'assets/js/trello-script.js')
+		array( 'jquery', 'jquery-ui-sortable' ),
+		file_exists( WPP_LOAN_MANAGER_PATH . 'assets/js/trello-script.js' )
+			? filemtime( WPP_LOAN_MANAGER_PATH . 'assets/js/trello-script.js' )
 			: time(),
 		true // Load in footer
 	);
@@ -108,9 +111,9 @@ function wpp_enqueue_Loan_styles() {
 	wp_enqueue_script(
 		'trello-script-ft',
 		WPP_LOAN_MANAGER_URL . 'assets/js/frontend.js',
-		array('jquery'),
-		file_exists(WPP_LOAN_MANAGER_PATH . 'assets/js/frontend.js')
-			? filemtime(WPP_LOAN_MANAGER_PATH . 'assets/js/frontend.js')
+		array( 'jquery' ),
+		file_exists( WPP_LOAN_MANAGER_PATH . 'assets/js/frontend.js' )
+			? filemtime( WPP_LOAN_MANAGER_PATH . 'assets/js/frontend.js' )
 			: time(),
 		true
 	);
@@ -122,19 +125,29 @@ function wpp_enqueue_Loan_styles() {
 	// Provides:
 	// - ajax_url: Endpoint for admin-ajax.php
 	// - nonce: Security token to verify AJAX requests
-	wp_localize_script('trello-script', 'trello_vars', array(
-		'ajax_url' => admin_url('admin-ajax.php'),
-		'nonce'    => wp_create_nonce('trello_nonce')
-	));
+
+	$array = array(
+		'ajax_url' => admin_url( 'admin-ajax.php' ),
+		'nonce'    => wp_create_nonce( 'trello_nonce' )
+	);
+
+
+
+	if ( ! empty( $loan_id ) ) {
+		$array['loan_id'] = $loan_id;
+	}
+
+	wp_localize_script( 'trello-script', 'trello_vars', $array );
 
 	// Optional: You can also localize for 'trello-script-ft' if needed
 	// wp_localize_script('trello-script-ft', 'frontend_vars', [...]);
 }
+
 // -------------------------------
 // 7. Hook: Register Enqueue Function
 // -------------------------------
 // Loads assets on the frontend
-add_action('wp_enqueue_scripts', 'wpp_enqueue_Loan_styles');
+add_action( 'wp_enqueue_scripts', 'wpp_enqueue_Loan_styles' );
 
 /**
  * Notes:

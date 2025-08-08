@@ -151,12 +151,11 @@
         //*********************************************//
         // Скачивание
         //*********************************************//
-
         $(document).on('click', '.wpp-download-docs', function (e) {
             e.preventDefault();
 
-            let urlParams = new URLSearchParams(window.location.search);
-            let loanId = urlParams.get('loan');
+            //let urlParams = new URLSearchParams(window.location.search);
+            let loanId = trello_vars.loan_id;
 
             if (!loanId) {
                 alert('Loan ID not found in the URL (e.g., ?loan=123).');

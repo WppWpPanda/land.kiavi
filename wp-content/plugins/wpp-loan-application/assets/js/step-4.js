@@ -336,6 +336,7 @@
 
                         // Choose button handlers
                         form.querySelectorAll('.choose-button').forEach(button => {
+
                             button.addEventListener('click', function () {
                                 const chosenRow = this.closest('tr');
                                 const rateType = chosenRow.cells[0].textContent.trim();
