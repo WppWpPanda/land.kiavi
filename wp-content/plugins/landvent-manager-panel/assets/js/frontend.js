@@ -207,6 +207,47 @@
            $('#wpp-sl-form').submit();
         });
 
+        /**
+         * Удаление заявки
+         */
+        $(document).on('click', '.delete-loan-button', function (e) {
+            e.preventDefault();
+
+            const loan_id = trello_vars.loan_id || $(this).data('loan-id');
+
+            if (!loan_id) {
+                alert('Loan ID not found.');
+                return;
+            }
+
+            if (!confirm('Are you sure you want to archive and delete this loan?')) {
+                return;
+            }
+
+            const $btn = $(this);
+            const originalText = $btn.text();
+            $btn.text('Archiving...').prop('disabled', true);
+
+            $.post(trello_vars.ajax_url, {
+                action: 'wpp_move_and_delete_loan',
+                nonce: trello_vars.nonce,
+                loan_id: loan_id
+            }, function (response) {
+                if (response.success) {
+                    alert(response.data.message);
+                    window.location.href = '/manager-dashboard/';
+                } else {
+                    alert('Error: ' + response.data.message);
+                }
+            }, 'json')
+                .fail(function () {
+                    alert('Connection error. Please try again.');
+                })
+                .always(function () {
+                    $btn.text(originalText).prop('disabled', false);
+                });
+        });
+
 
     });
 })(jQuery);

@@ -625,3 +625,151 @@ function wpp_save_appraiser_callback() {
 		'data'    => $saved_row
 	]);
 }
+
+
+/**
+ * AJAX: Move loan to archive (wpp_old_loans) and delete from all source tables
+ *
+ * Steps:
+ * 1. Get loan data from `wpp_loans_full_data` or fallback to `loan_raw_applications`
+ * 2. Insert into `wpp_old_loans` (archival table)
+ * 3. Delete from `wpp_loans_full_data`
+ * 4. Delete from `loan_raw_applications` by `id`
+ * 5. Remove `loan_id` from `card_ids` in `wpp_trello_columns` (JSON array)
+ * 6. Respond with success and trigger redirect via JS
+ *
+ * @since 1.0
+ * @hook wp_ajax_wpp_move_and_delete_loan
+ * @return void
+ */
+function wpp_move_and_delete_loan() {
+	global $wpdb;
+
+	// 1. Проверка безопасности: nonce
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'trello_nonce' ) ) {
+		wp_send_json_error( [ 'message' => 'Security check failed. Invalid or missing nonce.' ] );
+	}
+
+	// 2. Проверка прав доступа
+	if (  ! wpp_is_user_dashboard_allowed() ) {
+		wp_send_json_error( [ 'message' => 'Access denied. You do not have permission to perform this action.' ] );
+	}
+
+	// 3. Получаем и проверяем loan_id
+	$loan_id = sanitize_text_field( $_POST['loan_id'] ?? '' );
+	if ( ! $loan_id ) {
+		wp_send_json_error( [ 'message' => 'Invalid or missing loan ID.' ] );
+	}
+
+	// 4. Определяем имена таблиц с префиксом
+	$table_loans       = $wpdb->prefix . 'wpp_loans_full_data';
+	$table_old_loans   = $wpdb->prefix . 'wpp_old_loans';
+	$table_raw_app     = $wpdb->prefix . 'loan_raw_applications';
+	$table_trello      = $wpdb->prefix . 'wpp_trello_columns';
+
+	// 5. Начинаем транзакцию для атомарности
+	$wpdb->query( 'START TRANSACTION' );
+
+	try {
+		$loan_data = null;
+		$source = '';
+
+		// 6. Пытаемся получить данные из основной таблицы
+		$loan_data = $wpdb->get_row(
+			$wpdb->prepare( "SELECT * FROM $table_loans WHERE loan_id = %s", $loan_id ),
+			ARRAY_A
+		);
+
+		if ( $loan_data ) {
+			$source = 'wpp_loans_full_data';
+		} else {
+			// Если нет — ищем в raw_applications
+			$raw_data = $wpdb->get_row(
+				$wpdb->prepare( "SELECT * FROM $table_raw_app WHERE id = %s", $loan_id ),
+				ARRAY_A
+			);
+
+			if ( ! $raw_data ) {
+				throw new Exception( "Loan not found in 'wpp_loans_full_data' or 'loan_raw_applications'." );
+			}
+
+			// Преобразуем в структуру wpp_loans_full_data
+			$loan_data = [
+				'loan_id'     => $raw_data['id'],
+				'change_time' => $raw_data['created_at'] ?? current_time( 'mysql' ),
+				'loan_data'   => maybe_serialize( [
+					'raw_data' => $raw_data,
+					'source'   => 'loan_raw_applications',
+					'migrated' => true
+				] )
+			];
+			$source = 'loan_raw_applications';
+		}
+
+		// 7. Вставляем в архивную таблицу
+		$insert_result = $wpdb->insert( $table_old_loans, $loan_data );
+		if ( $insert_result === false ) {
+			error_log( "wpp_move_and_delete_loan: Failed to insert into $table_old_loans. DB Error: " . $wpdb->last_error );
+			throw new Exception( "Failed to archive loan in wpp_old_loans." );
+		}
+
+		// 8. Удаляем из wpp_loans_full_data (если был там)
+		if ( $source === 'wpp_loans_full_data' ) {
+			$deleted_loans = $wpdb->delete( $table_loans, [ 'loan_id' => $loan_id ] );
+			if ( $deleted_loans === false ) {
+				error_log( "wpp_move_and_delete_loan: Failed to delete from $table_loans" );
+				throw new Exception( "Failed to delete loan from wpp_loans_full_data." );
+			}
+		}
+
+		// 9. Удаляем из loan_raw_applications
+		$deleted_raw = $wpdb->delete( $table_raw_app, [ 'id' => $loan_id ] );
+		if ( $deleted_raw === false && $wpdb->last_error ) {
+			error_log( "wpp_move_and_delete_loan: Failed to delete from $table_raw_app. Error: " . $wpdb->last_error );
+			// Не кидаем исключение, если строки не было — это нормально
+		}
+
+		// 10. Удаляем loan_id из JSON-массива card_ids в wpp_trello_columns
+		$trello_columns = $wpdb->get_results(
+			$wpdb->prepare( "SELECT id, card_ids FROM $table_trello WHERE JSON_CONTAINS(card_ids, %s)", '["' . $loan_id . '"]' )
+		);
+
+		foreach ( $trello_columns as $column ) {
+			$card_ids = json_decode( $column->card_ids, true );
+			if ( ( $key = array_search( $loan_id, $card_ids ) ) !== false ) {
+				unset( $card_ids[ $key ] );
+				$card_ids = array_values( $card_ids ); // Перестроить индексы
+
+				$updated = $wpdb->update(
+					$table_trello,
+					[ 'card_ids' => json_encode( $card_ids ) ],
+					[ 'id' => $column->id ],
+					[ '%s' ],
+					[ '%d' ]
+				);
+
+				if ( $updated === false ) {
+					error_log( "wpp_move_and_delete_loan: Failed to update card_ids for column ID: " . $column->id );
+					throw new Exception( "Failed to clean card_ids in trello column." );
+				}
+			}
+		}
+
+		// 11. Фиксируем транзакцию
+		$wpdb->query( 'COMMIT' );
+
+		wp_send_json_success( [
+			'message' => "Loan '$loan_id' successfully archived and deleted from all tables."
+		] );
+
+	} catch ( Exception $e ) {
+		// Откатываем транзакцию при ошибке
+		$wpdb->query( 'ROLLBACK' );
+		error_log( "wpp_move_and_delete_loan ERROR: " . $e->getMessage() );
+
+		wp_send_json_error( [ 'message' => $e->getMessage() ] );
+	}
+}
+
+// 🔌 Регистрируем AJAX-хуки
+add_action( 'wp_ajax_wpp_move_and_delete_loan', 'wpp_move_and_delete_loan' );

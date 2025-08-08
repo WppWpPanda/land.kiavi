@@ -167,7 +167,7 @@ require_once WPP_LOAN_MANAGER_PATH . 'core/config/title-company.php';          /
 
 // Инициализируем глобальную переменную $loan
 function my_setup_global_loan() {
-	global $wp_query, $loan;
+	global $wp_query, $loan_id;
 	$loan_id = isset($wp_query->query_vars['loan_id']) ? absint($wp_query->query_vars['loan_id']) : 0;
 }
 add_action('wp', 'my_setup_global_loan');

@@ -53,7 +53,7 @@ $loanDataJson = json_encode( $loanData, JSON_HEX_APOS | JSON_HEX_QUOT );
                         </select>
                         <button class="loan-status-bar__button">Ledger</button>
                         <button class="loan-status-bar__button">Fund</button>-->
-                        <button class="loan-status-bar__button"><i class="fas fa-trash"></i>Delete</button>
+                        <button class="loan-status-bar__button delete-loan-button"><i class="fas fa-trash"></i>Delete</button>
                        <!-- <button class="loan-status-bar__more-actions">
                             <i class="fas fa-ellipsis-h"></i>
                         </button>-->

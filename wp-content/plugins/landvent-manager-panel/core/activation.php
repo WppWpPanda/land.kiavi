@@ -62,6 +62,7 @@ function trello_create_db_tables() {
 	$current_versions = [
 		'trello'      => '1.0',
 		'loans'       => '1.0',
+		'old_loans'   => '1.0',  // ✅ Новая таблица
 		'appraiser'   => '1.1',
 		'companies'   => '1.1',
 		'brokers'     => '1.1',
@@ -75,6 +76,7 @@ function trello_create_db_tables() {
 	$installed_versions = [
 		'trello'      => get_option('trello_db_version', '0'),
 		'loans'       => get_option('loans_db_version', '0'),
+		'old_loans'   => get_option('old_loans_db_version', '0'),  // ✅ Опция для новой таблицы
 		'appraiser'   => get_option('appraiser_db_version', '0'),
 		'companies'   => get_option('companies_db_version', '0'),
 		'brokers'     => get_option('brokers_db_version', '0'),
@@ -86,6 +88,7 @@ function trello_create_db_tables() {
 	// -------------------------------
 	$table_trello      = $wpdb->prefix . 'wpp_trello_columns';
 	$table_loans       = $wpdb->prefix . 'wpp_loans_full_data';
+	$table_old_loans   = $wpdb->prefix . 'wpp_old_loans';  // ✅ Новое имя таблицы
 	$table_appraiser   = $wpdb->prefix . 'wpp_appraiser';
 	$table_companies   = $wpdb->prefix . 'wpp_companies';
 	$table_brokers     = $wpdb->prefix . 'wpp_brokers';
@@ -111,6 +114,14 @@ function trello_create_db_tables() {
     ) $charset_collate;";
 
 	$sql_loans = "CREATE TABLE $table_loans (
+        loan_id VARCHAR(100) NOT NULL,
+        change_time DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
+        loan_data LONGTEXT NOT NULL,
+        PRIMARY KEY (loan_id)
+    ) $charset_collate;";
+
+	// ✅ Копия структуры $sql_loans для старых займов
+	$sql_old_loans = "CREATE TABLE $table_old_loans (
         loan_id VARCHAR(100) NOT NULL,
         change_time DATETIME DEFAULT CURRENT_TIMESTAMP NOT NULL,
         loan_data LONGTEXT NOT NULL,
@@ -214,6 +225,9 @@ function trello_create_db_tables() {
 		LandVent_Manager_Endpoints::get_instance()->add_endpoints();
 	}
 
+	// -------------------------------
+	// 8. Add Custom Role
+	// -------------------------------
 	add_role(
 		'loans_manager',
 		'Loans Manager',
@@ -228,7 +242,7 @@ function trello_create_db_tables() {
 	);
 
 	// -------------------------------
-	// 8. Flush Rewrite Rules
+	// 9. Flush Rewrite Rules
 	// -------------------------------
 	// Only do this on activation (not on every page load)
 	// Consider using a flag to avoid performance impact
