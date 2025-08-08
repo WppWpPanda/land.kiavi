@@ -27,3 +27,5 @@
 /wp-content/plugins/query-monitor/
 /logs/
 /text.txt
+*.pdf
+*.zip
