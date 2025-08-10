@@ -71,30 +71,44 @@ jQuery(document).ready(function ($) {
         const $form = $(this);
         const $submitBtn = $form.find('button[type="submit"], input[type="submit"]');
 
+        const username = $('#wpp-username').val().trim();
+        const password = $('#wpp-password').val().trim();
+
+        // Очистка предыдущих ошибок
+        $('.wpp-error-message').empty();
+
+        // Проверка полей
+        if (!username || !password) {
+            $('.wpp-error-message').html('<p>Please fill in all fields.</p>');
+            return;
+        }
+
         const data = {
             action: 'wpp_auth_login',
             security: wppAuthAjax.nonce,
-            username: $('#wpp-username').val(),
-            password: $('#wpp-password').val()
+            username: username,
+            password: password
         };
 
-        // Показываем лоадер
+        // Блокировка кнопки и показ лоадера
+        $submitBtn.prop('disabled', true);
         showLoader($submitBtn);
 
         $.post(wppAuthAjax.ajaxUrl, data, function (res) {
             if (res.success) {
-                alert(res.data.message);
-                window.location.href = res.data.redirect;
+                console.info(res.data.message);
+                window.location.href = res.data.redirect || '/';
             } else {
-                $('.wpp-error-message').html('<p>' + res.data.message + '</p>');
+                const message = res.data?.message || 'Login failed. Please try again.';
+                $('.wpp-error-message').html('<p>' + message + '</p>');
             }
         })
             .fail(function () {
                 $('.wpp-error-message').html('<p>Network error. Please try again.</p>');
             })
             .always(function () {
-                // Всегда убираем лоадер
                 hideLoader($submitBtn);
+                $submitBtn.prop('disabled', false);
             });
     });
 
@@ -116,7 +130,7 @@ jQuery(document).ready(function ($) {
 
         $.post(wppAuthAjax.ajaxUrl, data, function (res) {
             if (res.success) {
-                alert(res.data.message);
+                console.info(res.data.message);
                 window.location.href = res.data.redirect;
             } else {
                 let errors = res.data.errors ? res.data.errors.join('<br>') : res.data.message;
