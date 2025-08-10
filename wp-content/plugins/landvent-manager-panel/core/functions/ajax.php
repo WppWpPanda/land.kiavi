@@ -730,13 +730,30 @@ function wpp_move_and_delete_loan() {
 		}
 
 		// 10. Удаляем loan_id из JSON-массива card_ids в wpp_trello_columns
+		// 🧩 10. Удаляем loan_id из card_ids в etgfp_wpp_trello_columns
+		error_log("🔍 Поиск loan_id: $loan_id в card_ids");
+
 		$trello_columns = $wpdb->get_results(
-			$wpdb->prepare( "SELECT id, card_ids FROM $table_trello WHERE JSON_CONTAINS(card_ids, %s)", '["' . $loan_id . '"]' )
+			"SELECT id, card_ids FROM {$table_trello} WHERE card_ids LIKE '%$loan_id%'"
 		);
+
+		if ( empty( $trello_columns ) ) {
+			error_log("✅ loan_id $loan_id не найден в card_ids — пропускаем");
+			error_log("SELECT id, card_ids FROM {$table_trello} WHERE card_ids LIKE '%$loan_id%'");
+		} else {
+			error_log("✅ Найдено в " . count($trello_columns) . " колонках");
+		}
 
 		foreach ( $trello_columns as $column ) {
 			$card_ids = json_decode( $column->card_ids, true );
-			if ( ( $key = array_search( $loan_id, $card_ids ) ) !== false ) {
+
+			if ( ! is_array( $card_ids ) ) {
+				error_log("❌ card_ids для id={$column->id} не является массивом: " . $column->card_ids);
+				continue;
+			}
+
+			$key = array_search( $loan_id, $card_ids );
+			if ( $key !== false ) {
 				unset( $card_ids[ $key ] );
 				$card_ids = array_values( $card_ids ); // Перестроить индексы
 
@@ -749,11 +766,14 @@ function wpp_move_and_delete_loan() {
 				);
 
 				if ( $updated === false ) {
-					error_log( "wpp_move_and_delete_loan: Failed to update card_ids for column ID: " . $column->id );
-					throw new Exception( "Failed to clean card_ids in trello column." );
+					error_log("❌ Ошибка обновления card_ids для id={$column->id}");
+					throw new Exception( "Failed to update card_ids for column ID: {$column->id}" );
+				} else {
+					error_log("✅ Успешно удалён $loan_id из card_ids (column ID: {$column->id})");
 				}
 			}
 		}
+
 
 		// 11. Фиксируем транзакцию
 		$wpdb->query( 'COMMIT' );
