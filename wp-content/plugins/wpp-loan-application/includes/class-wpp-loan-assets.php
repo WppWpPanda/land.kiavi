@@ -76,6 +76,7 @@ class WPP_Loan_Assets {
 	 * - Localizes: currentStep=1, nextStepSlug="step-2"
 	 */
 	public static function enqueue_frontend() {
+		$key = 'AIzaSyDJVaxW0jTvEuwO5kyql7XSEUxYH-whH8c';
 		// === 1. Enqueue Shared Frontend Stylesheet ===
 		wp_enqueue_style(
 			'wpp-loan-css', // Handle
@@ -87,6 +88,18 @@ class WPP_Loan_Assets {
 		);
 
 		// === 2. Enqueue Shared Frontend Script ===
+		wp_enqueue_script(
+			'places', // Handle
+			'https://maps.googleapis.com/maps/api/js?key=' . $key . '&libraries=places', // Source
+			[ 'jquery' ], // Depends on jQuery
+			null, // Fallback
+			array(
+				'strategy' => 'async', // асинхронная загрузка
+				'in_footer' => true // загрузка в подвале
+			)
+
+		);
+
 		wp_enqueue_script(
 			'wpp-loan', // Handle
 			WPP_LOAN_URL . 'assets/js/frontend.js', // Source
@@ -123,7 +136,7 @@ class WPP_Loan_Assets {
 			wp_enqueue_script(
 				'step-' . $name, // Handle
 				WPP_LOAN_URL . 'assets/js/step-' . $name . '.js', // Source
-				[ 'wpp-loan' ], // Depends on shared script
+				[ 'wpp-loan', 'places' ], // Depends on shared script
 				file_exists( WPP_LOAN_PATH . 'assets/js/step-' . $name . '.js' )
 					? filemtime( WPP_LOAN_PATH . 'assets/js/step-' . $name . '.js' ) // Version
 					: time(), // Fallback
@@ -172,3 +185,15 @@ class WPP_Loan_Assets {
 // Hook into WordPress frontend asset loading
 // 🔗 https://developer.wordpress.org/reference/hooks/wp_enqueue_scripts/
 add_action( 'wp_enqueue_scripts', [ 'WPP_Loan_Assets', 'enqueue_frontend' ] );
+
+
+// Then add filter
+function modify_script_loading($tag, $handle) {
+	if ('places' === $handle) {
+		//return str_replace(' src', ' defer src', $tag);
+		// Or for async:
+		 return str_replace(' src', 'defer src', $tag);
+	}
+	return $tag;
+}
+//add_filter('script_loader_tag', 'modify_script_loading', 10, 2);
