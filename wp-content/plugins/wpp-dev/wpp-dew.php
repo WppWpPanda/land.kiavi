@@ -33,5 +33,5 @@
 	add_action( 'admin_notices', 'wpp_admin_notice' );
 
 	require_once 'functions/init.php';
-	require_once 'libs/init.php';
+	//require_once 'libs/init.php';
 	require_once 'wpp-log/init.php';

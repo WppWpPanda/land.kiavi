@@ -437,3 +437,24 @@ a.nav-link.active.current-point:hover {
     width: 14px;
     height: 14px;
 }
+
+h1.wpp-sl-h {
+    margin-left: 0;
+    border-bottom: 1px solid #b7b7b7;
+    padding-bottom: 5px;
+    margin-bottom: 20px;
+}
+
+#wpp-brokerage-form .wpp-field{
+    margin-bottom: .7rem;
+}
+
+#wpp-brokerage-form label.form-label {
+    margin-bottom: .1rem;
+    font-weight: 400;
+}
+
+#wpp-brokerage-form .form-control {
+    border-radius: 0!important;
+    padding: .1rem 0.75rem!important;
+}

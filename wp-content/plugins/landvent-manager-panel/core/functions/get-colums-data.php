@@ -18,18 +18,24 @@ defined( 'ABSPATH' ) || exit;
  * и сохраняется вместе с id записи.
  *
  * @return array Ассоциативный массив, где ключ — это ID записи, а значение — массив с полями:
- *               - 'id'        => (int) ID записи
+ *               - 'loan_id'        => (int) ID записи
  *               - 'raw_data'  => (mixed) Десериализованные данные из поля raw_data
  *               An associative array where the key is the record ID and the value is an array containing:
  *               - 'id'        => (int) Record ID
  *               - 'raw_data'  => (mixed) Unserialized data from the raw_data field
  */
-function get_colums_data( $id = null ) {
+function get_colums_data( $loan_id = null ) {
 	$out = [];
+
 	global $wpdb;
+
+	if ( empty( $loan_id ) ) {
+		global $loan_id;
+	}
+
 	$table_name = $wpdb->prefix . 'loan_raw_applications'; // Если таблица имеет префикс WordPress
 
-	$fef = ! empty( $id ) ? ' WHERE id=' . $id : '';
+	$fef = ! empty( $loan_id ) ? ' WHERE id=' . $loan_id : '';
 
 	$results = $wpdb->get_results( "SELECT * FROM $table_name" . $fef );
 
@@ -104,18 +110,18 @@ function get_all_columns_with_cards() {
  * the current loan's data (via `wpp_get_loan_data_r()`). If the key is not found,
  * it returns a specified default value.
  *
+ * @param string $key The field key to retrieve (e.g., 'loan_amount', 'status').
+ * @param array|null $data Optional. Associative array of data. If null, loads loan data.
+ * @param mixed $default Optional. Default value to return if key is not found.
+ *
+ * @return mixed The value if found; otherwise, the default.
+ *
  * @since 1.0.0
  *
  * @author WP_Panda <panda@wp-panda.pro>
  *
  * @link https://developer.wordpress.org/reference/functions/apply_filters/ Consider adding filter hooks for extensibility
  * @link https://www.php.net/manual/en/function.isset.php On usage of `isset()` vs `array_key_exists()`
- *
- * @param string $key     The field key to retrieve (e.g., 'loan_amount', 'status').
- * @param array|null $data Optional. Associative array of data. If null, loads loan data.
- * @param mixed  $default Optional. Default value to return if key is not found.
- *
- * @return mixed The value if found; otherwise, the default.
  *
  * @example
  * $amount = wpp_field_value( 'loan_amount', null, 0 ); // Uses current loan data
@@ -148,17 +154,17 @@ function wpp_field_value( $key, $data = null, $default = null ) {
  * If a loan ID is set and the requested field exists in the loan data,
  * this function returns the saved value instead of the default.
  *
+ * @param mixed $default Default value for the form field.
+ * @param array $args Field arguments, expected to contain 'name' key.
+ *
+ * @return mixed The value from loan data if available; otherwise, the original default.
+ * @link https://developer.wordpress.org/reference/functions/apply_filters/ About `wpp_form_field_default`
+ *
  * @since 1.0.0
  *
  * @author WP_Panda <panda@wp-panda.pro>
  *
  * @link https://developer.wordpress.org/reference/functions/add_filter/ For info on filters
- * @link https://developer.wordpress.org/reference/functions/apply_filters/ About `wpp_form_field_default`
- *
- * @param mixed $default Default value for the form field.
- * @param array $args    Field arguments, expected to contain 'name' key.
- *
- * @return mixed The value from loan data if available; otherwise, the original default.
  */
 function wpp_default_value( $default, $args ) {
 	// Ensure required parameter 'name' is present and valid
@@ -206,102 +212,110 @@ add_filter( 'wpp_form_field_default', 'wpp_default_value', 10, 2 );
 
 function wpp_get_loan_data_purchase_price( $default, $args ) {
 	global $loan_id;
-	if ( ! empty( $loan_id) ) {
-		if ( empty( str_replace('$', '', $default) ) ) {
+	if ( ! empty( $loan_id ) ) {
+		if ( empty( str_replace( '$', '', $default ) ) ) {
 			$data = get_colums_data( $loan_id );
-			return $data[$loan_id ]['raw_data']->s4_purchase_price;
+
+			return $data[ $loan_id ]['raw_data']->s4_purchase_price;
 		}
 	}
 
 	return $default;
 
 }
+
 add_filter( 'wpp_form_field_default_purchase_price', 'wpp_get_loan_data_purchase_price', 10, 2 );
 
 
 function wpp_get_loan_data_total_loan_amount( $default, $args ) {
 	global $loan_id;
 	if ( ! empty( $loan_id ) ) {
-		if ( empty( str_replace('$', '', $default) ) ) {
+		if ( empty( str_replace( '$', '', $default ) ) ) {
 			$data = get_colums_data( $loan_id );
 
-			return $data[$loan_id ]['raw_data']->s4_total_loan_amount_sum;
+			return $data[ $loan_id ]['raw_data']->s4_total_loan_amount_sum;
 		}
 	}
 
 	return $default;
 
 }
+
 add_filter( 'wpp_form_field_default_total_loan_amount', 'wpp_get_loan_data_total_loan_amount', 10, 2 );
 
 function wpp_get_loan_data_after_repair_value( $default, $args ) {
 	global $loan_id;
-	if ( ! empty( $loan_id) ) {
-		if ( empty( str_replace('$', '', $default) ) ) {
+	if ( ! empty( $loan_id ) ) {
+		if ( empty( str_replace( '$', '', $default ) ) ) {
 			$data = get_colums_data( $loan_id );
 
-			return $data[$loan_id ]['raw_data']->s4_after_repair_value;
+			return $data[ $loan_id ]['raw_data']->s4_after_repair_value;
 		}
 	}
 
 	return $default;
 
 }
+
 add_filter( 'wpp_form_field_default_after_repair_value', 'wpp_get_loan_data_after_repair_value', 10, 2 );
 
 function wpp_get_loan_data_total_repair_cost( $default, $args ) {
 	global $loan_id;
-	if ( ! empty( $loan_id) ) {
-		if ( empty( str_replace('$', '', $default) ) ) {
+	if ( ! empty( $loan_id ) ) {
+		if ( empty( str_replace( '$', '', $default ) ) ) {
 			$data = get_colums_data( $loan_id );
 
-			return $data[$loan_id ]['raw_data']->s4_rehab_cost;
+			return $data[ $loan_id ]['raw_data']->s4_rehab_cost;
 		}
 	}
 
 	return $default;
 
 }
+
 add_filter( 'wpp_form_field_default_total_repair_cost', 'wpp_get_loan_data_total_repair_cost', 10, 2 );
 
 function wpp_get_loan_data_term( $default, $args ) {
 	global $loan_id;
-	if ( ! empty( $loan_id) ) {
-		if ( empty( trim(str_replace('Months', '', $default) )) ) {
-			$data = get_colums_data($loan_id );
+	if ( ! empty( $loan_id ) ) {
+		if ( empty( trim( str_replace( 'Months', '', $default ) ) ) ) {
+			$data = get_colums_data( $loan_id );
 
-			return trim(str_replace('Months', '', $data[$loan_id ]['raw_data']->s4_chosen_rate_type));
+			return trim( str_replace( 'Months', '', $data[ $loan_id ]['raw_data']->s4_chosen_rate_type ) );
 		}
 	}
 
 	return $default;
 
 }
+
 add_filter( 'wpp_form_field_default_term', 'wpp_get_loan_data_term', 10, 2 );
 
 function wpp_get_loan_data_interest_rate( $default, $args ) {
 
 	global $loan_id;
-	if ( ! empty( $loan_id) ) {
-		if ( empty(  (float)str_replace(['%'], '', $default) ) ) {
-			$data = get_colums_data($loan_id );
-			return $data[$loan_id ]['raw_data']->s4_chosen_rate;
+	if ( ! empty( $loan_id ) ) {
+		if ( empty( (float) str_replace( [ '%' ], '', $default ) ) ) {
+			$data = get_colums_data( $loan_id );
+
+			return $data[ $loan_id ]['raw_data']->s4_chosen_rate;
 		}
 	}
 
 	return $default;
 
 }
+
 add_filter( 'wpp_form_field_default_interest_rate', 'wpp_get_loan_data_interest_rate', 10, 2 );
 
 
 function wpp_get_loan_data_loan_type( $default, $args ) {
 	global $loan_id;
-	if ( ! empty( $loan_id) ) {
+	if ( ! empty( $loan_id ) ) {
 		if ( ! empty( $default ) ) {
-			$data = get_colums_data($loan_id );
+			$data = get_colums_data( $loan_id );
 
-			if( !empty( $val = $data[$loan_id ]['raw_data']->s4_refinance ) ){
+			if ( ! empty( $val = $data[ $loan_id ]['raw_data']->s4_refinance ) ) {
 				return 'no' ? 'purchase' : 'refinance';
 			}
 

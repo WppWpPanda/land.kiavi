@@ -60,13 +60,14 @@ function trello_create_db_tables() {
 	// Each key corresponds to a table. Increment version to trigger update.
 	// Example: 'appraiser' => '1.1' will run SQL if current version < 1.1
 	$current_versions = [
-		'trello'      => '1.0',
-		'loans'       => '1.0',
-		'old_loans'   => '1.0',  // ✅ Новая таблица
-		'appraiser'   => '1.1',
-		'companies'   => '1.1',
-		'brokers'     => '1.1',
-		'law_firm'    => '1.1'
+		'trello'          => '1.0',
+		'loans'           => '1.0',
+		'old_loans'       => '1.0',  // ✅ Таблица архивных займов
+		'appraiser'       => '1.1',
+		'companies'       => '1.1',
+		'brokers'         => '1.1',
+		'law_firm'        => '1.1',
+		'brokers_staff'   => '1.0'   // ✅ Новая таблица для сотрудников брокеров
 	];
 
 	// -------------------------------
@@ -74,13 +75,14 @@ function trello_create_db_tables() {
 	// -------------------------------
 	// Default to '0' if option doesn't exist
 	$installed_versions = [
-		'trello'      => get_option('trello_db_version', '0'),
-		'loans'       => get_option('loans_db_version', '0'),
-		'old_loans'   => get_option('old_loans_db_version', '0'),  // ✅ Опция для новой таблицы
-		'appraiser'   => get_option('appraiser_db_version', '0'),
-		'companies'   => get_option('companies_db_version', '0'),
-		'brokers'     => get_option('brokers_db_version', '0'),
-		'law_firm'    => get_option('law_firm_db_version', '0')
+		'trello'          => get_option('trello_db_version', '0'),
+		'loans'           => get_option('loans_db_version', '0'),
+		'old_loans'       => get_option('old_loans_db_version', '0'),
+		'appraiser'       => get_option('appraiser_db_version', '0'),
+		'companies'       => get_option('companies_db_version', '0'),
+		'brokers'         => get_option('brokers_db_version', '0'),
+		'law_firm'        => get_option('law_firm_db_version', '0'),
+		'brokers_staff'   => get_option('brokers_staff_db_version', '0') // ✅ Опция версии
 	];
 
 	// -------------------------------
@@ -88,11 +90,12 @@ function trello_create_db_tables() {
 	// -------------------------------
 	$table_trello      = $wpdb->prefix . 'wpp_trello_columns';
 	$table_loans       = $wpdb->prefix . 'wpp_loans_full_data';
-	$table_old_loans   = $wpdb->prefix . 'wpp_old_loans';  // ✅ Новое имя таблицы
+	$table_old_loans   = $wpdb->prefix . 'wpp_old_loans';
 	$table_appraiser   = $wpdb->prefix . 'wpp_appraiser';
 	$table_companies   = $wpdb->prefix . 'wpp_companies';
 	$table_brokers     = $wpdb->prefix . 'wpp_brokers';
 	$table_law_firm    = $wpdb->prefix . 'wpp_law_firm';
+	$table_brokers_staff = $wpdb->prefix . 'wpp_brokers_staff'; // ✅ Новое имя таблицы
 
 	// -------------------------------
 	// 4. Define SQL Schema for Each Table
@@ -193,6 +196,23 @@ function trello_create_db_tables() {
         created_at datetime DEFAULT CURRENT_TIMESTAMP,
         updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         PRIMARY KEY (id)
+    ) $charset_collate;";
+
+	// ✅ Новая таблица: сотрудники брокеров
+	$sql_brokers_staff = "CREATE TABLE $table_brokers_staff (
+        id mediumint(9) NOT NULL AUTO_INCREMENT,
+        parent_broker varchar(255) NOT NULL,
+        first_name varchar(100) NOT NULL,
+        last_name varchar(100) NOT NULL,
+        email varchar(100) NOT NULL,
+        phone varchar(50),
+        position varchar(100),
+        deals longtext,
+        created_at datetime DEFAULT CURRENT_TIMESTAMP,
+        updated_at datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        PRIMARY KEY (id),
+        KEY parent_broker (parent_broker),
+        KEY email (email)
     ) $charset_collate;";
 
 	// -------------------------------

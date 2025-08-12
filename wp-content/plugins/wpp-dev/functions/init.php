@@ -7,7 +7,7 @@
 	 */
 
 
-	$files = [ 'Class_Wpp_Console_Log', 'conditional-tags', 'show-debug', 'helperes', /*'wpp-debug-panel'*/ ];
+	$files = [  'conditional-tags', 'show-debug', 'helperes'];
 
 	foreach ( $files as $file ) {
 		require_once __DIR__ . DIRECTORY_SEPARATOR . $file . '.php';

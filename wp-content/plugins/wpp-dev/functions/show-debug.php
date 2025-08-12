@@ -44,37 +44,24 @@ if ( ! function_exists( 'wpp_d_log' ) ) :
 	}
 endif;
 
-if ( ! function_exists( 'wpp_console' ) ) :
-	/**
-	 * Вывод в консоль
-	 */
-	function wpp_console( $data ) {
-		return new Wpp_Console_Log( $data );
-	}
-endif;
 
-if ( ! function_exists( 'wpp_console' ) ) :
-	/**
-	 * Складывю всякое в глобальне переменную для показать в дебаг баре
-	 */
-	function wpp_d_bar( $data, $desc = '' ) {
 
-		if ( empty( $GLOBALS['wpp_debug'] ) ) {
-			$GLOBALS['wpp_debug'] = [];
+if ( ! function_exists( '_wpp_console_log' ) ) :
+	/**
+	 * Выводит данные в консоль браузера (аналог console.log в JavaScript)
+	 *
+	 * @since 0.0.1
+	 * @param mixed $data Данные для вывода
+	 */
+	function _wpp_console_log( $data ) {
+		if ( ! is_wpp_panda() ) {
+			return; // Проверка окружения (аналогично вашей логике)
 		}
 
-		$GLOBALS['wpp_debug'][ $desc ] = $data;
+		// Преобразуем данные в JSON для передачи в JavaScript
+		$json_data = json_encode( $data, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE );
 
+		// Выводим JavaScript-код, который передаст данные в console.log
+		echo "<script>console.log('PHP Debug:', $json_data);</script>";
 	}
 endif;
-
-function wpp_d_action( $data, $text = '' ) {
-	if ( is_wpp_panda() ) {
-		echo '<pre>';
-		echo !empty($text) ? $text : '';
-		var_dump( $data );
-		echo '</pre>';
-	}
-}
-
-add_action( 'wpp_dump', 'wpp_d_action', 10, 2 );

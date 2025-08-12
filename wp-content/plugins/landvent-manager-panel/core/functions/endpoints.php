@@ -124,6 +124,13 @@ class LandVent_Manager_Endpoints {
 			'top'
 		);
 
+		// === НОВЫЕ ПРАВИЛА: дочерние страницы с ID ===
+		add_rewrite_rule(
+			'^manager-dashboard/(law-firms-clerks|title-companies|brokers|appraisers)/([0-9]+)/?$',
+			'index.php?manager_dashboard=$matches[1]&item_id=$matches[2]',
+			'top'
+		);
+
 		/**
 		 * @todo Flush rewrite rules only once after plugin activation, not on every `init`.
 		 *       Use register_activation_hook() to flush rules during activation.
@@ -151,6 +158,7 @@ class LandVent_Manager_Endpoints {
 	public function add_query_vars( $vars ) {
 		$vars[] = 'manager_dashboard'; // e.g., 'main', 'law-firms-clerks', 'loan'
 		$vars[] = 'loan_id';            // e.g., 123
+		$vars[] = 'item_id'; //  Новая переменная
 
 		return $vars;
 	}
@@ -238,6 +246,7 @@ class LandVent_Manager_Endpoints {
 
 		// Get optional loan ID from query
 		$loan_id = absint( $wp_query->get( 'loan_id', 0 ) );
+		$item_id = absint( $wp_query->get( 'item_id', 0 ) );
 
 		// 1. Try to find template in active theme (child theme first)
 		$theme_templates = array(
@@ -247,6 +256,8 @@ class LandVent_Manager_Endpoints {
 		$theme_template = locate_template( $theme_templates );
 
 		if ( $theme_template ) {
+			set_query_var( 'item_id', $item_id );
+			set_query_var( 'loan_id', $loan_id );
 			include $theme_template;
 			return;
 		}
@@ -256,6 +267,7 @@ class LandVent_Manager_Endpoints {
 
 		if ( file_exists( $plugin_template_path ) ) {
 			// Make variables available in template scope
+			set_query_var( 'item_id', $item_id );
 			set_query_var( 'loan_id', $loan_id );
 			set_query_var( 'dashboard_page', $template_name );
 
@@ -279,43 +291,38 @@ class LandVent_Manager_Endpoints {
 	 * @link https://developer.wordpress.org/reference/functions/get_header/
 	 * @link https://developer.wordpress.org/reference/functions/get_footer/
 	 */
-	public function fallback_template( $template_name ) {
+	public function fallback_template( $template_name, $item_id = 0 ) {
 		get_header();
 
 		echo '<div class="landvent-manager-container">';
 
-		switch ( $template_name ) {
-			case 'main':
-				echo '<h1>Manager Dashboard</h1>';
-				echo '<p>Welcome to the Manager Dashboard</p>';
-				break;
+		if ( $item_id ) {
+			echo "<h1>Editing {$template_name}: #{$item_id}</h1>";
+			echo "<p>You are viewing a single {$template_name} with ID: {$item_id}</p>";
+		} else {
+			switch ( $template_name ) {
+				case 'main':
+					echo '<h1>Manager Dashboard</h1>';
+					echo '<p>Welcome to the Manager Dashboard</p>';
+					break;
 
-			case 'law-firms-clerks':
-				echo '<h1>Law Firms & Clerks</h1>';
-				break;
+				case 'law-firms-clerks':
+				case 'title-companies':
+				case 'brokers':
+				case 'appraisers':
+					echo "<h1>" . ucfirst( str_replace('-', ' ', $template_name) ) . "</h1>";
+					break;
 
-			case 'title-companies':
-				echo '<h1>Title Companies</h1>';
-				break;
+				case 'loan':
+					$loan_id = get_query_var( 'loan_id', 0 );
+					echo '<h1>Loan Details</h1>';
+					echo '<p>Viewing loan ID: ' . intval( $loan_id ) . '</p>';
+					break;
 
-			case 'brokers':
-				echo '<h1>Brokers</h1>';
-				break;
-
-			case 'appraisers':
-				echo '<h1>Appraisers</h1>';
-				break;
-
-			case 'loan':
-				$loan_id = get_query_var( 'loan_id', 0 );
-				echo '<h1>Loan Details</h1>';
-				echo '<p>Viewing loan ID: ' . intval( $loan_id ) . '</p>';
-				break;
-
-			default:
-				echo '<h1>Page Not Found</h1>';
-				echo '<p>The requested page could not be found.</p>';
-				break;
+				default:
+					echo '<h1>Page Not Found</h1>';
+					break;
+			}
 		}
 
 		echo '</div>';

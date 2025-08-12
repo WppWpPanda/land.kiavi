@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 
 global $wp_query, $loan_id;
-
+error_log( print_r( get_colums_data(), true ) );
 $loanData = wpp_get_loan_data_r( $loan_id );
 if ( empty( $loanData ) ) {
 	$loanData = [];
@@ -22,7 +22,7 @@ if ( $total === false ) {
 }
 
 $loanData['baseAmount'] = $total;
-$loanData['LOAN_ID'] = $loan_id;
+$loanData['LOAN_ID']    = $loan_id;
 // Преобразуем в JSON (используем JSON_HEX_APOS и JSON_HEX_QUOT для экранирования)
 $loanDataJson = json_encode( $loanData, JSON_HEX_APOS | JSON_HEX_QUOT );
 ?>
@@ -53,10 +53,11 @@ $loanDataJson = json_encode( $loanData, JSON_HEX_APOS | JSON_HEX_QUOT );
                         </select>
                         <button class="loan-status-bar__button">Ledger</button>
                         <button class="loan-status-bar__button">Fund</button>-->
-                        <button class="loan-status-bar__button delete-loan-button"><i class="fas fa-trash"></i>Delete</button>
-                       <!-- <button class="loan-status-bar__more-actions">
-                            <i class="fas fa-ellipsis-h"></i>
-                        </button>-->
+                        <button class="loan-status-bar__button delete-loan-button"><i class="fas fa-trash"></i>Delete
+                        </button>
+                        <!-- <button class="loan-status-bar__more-actions">
+							 <i class="fas fa-ellipsis-h"></i>
+						 </button>-->
                     </div>
                 </div>
 

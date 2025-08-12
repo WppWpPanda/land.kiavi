@@ -24,16 +24,16 @@
  * - {@see https://developer.wordpress.org/reference/functions/uniqid/}  `uniqid()`
  * - {@see https://developer.wordpress.org/reference/functions/current_time/} `current_time()`
  *
- * 📁 File Location:
+ *  File Location:
  * - Expected: `/wp-content/plugins/wpp-loan-application/includes/class-wpp-loan-session.php`
  *
- * 💡 Example Usage:
+ * Example Usage:
  * ```php
  * WPP_Loan_Session_Handler::save_step_data(1, ['name' => 'John']);
  * $data = WPP_Loan_Session_Handler::get_step_data(1);
  * ```
  *
- * ✅ Best Practices Applied:
+ *  Best Practices Applied:
  * - Cookie-based session ID persistence
  * - Fallback to database when PHP session is empty
  * - Secure data storage with JSON
@@ -43,6 +43,10 @@
  * @since 1.0.0
  * @author WP_Panda <panda@wp-panda.pro>
  */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit; // Exit if accessed directly
+}
 class WPP_Loan_Session_Handler {
 
 	/**
