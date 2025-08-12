@@ -182,7 +182,7 @@ CON;
 			'content' => $content_t,
 			'width'   => 'full'
 		],
-		'download_terms_button'    => [
+		/*'download_terms_button'    => [
 			'type'         => 'button',
 			'element_type' => 'link_button',
 			'name'         => 'download_terms',
@@ -190,7 +190,7 @@ CON;
 			'href'         => esc_url( $pdf_url ),
 			'btn_class'    => 'btn btn-secondary mt-3',
 			'width'        => 'full'
-		],
+		],*/
 		'sub_detail2'              => [
 			'type'    => 'content',
 			'name'    => 'sub_detail2',

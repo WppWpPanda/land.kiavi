@@ -17,26 +17,28 @@ function generate_commitment_pdf() {
 
 	global $loan_id;
 
+	$formData = wpp_get_loan_data_r( $loan_id );
+
 	// Данные (можно подставлять динамически)
 	$data = [
-		'loan_number' => $loan_id ?: '567',
-		'date' => 'July 17, 2024',
+		'loan_number' => $loan_id,
+		'date' => date_i18n('M j, Y'),
 		'expires' => '15 days from date above',
-		'property' => '16720 NW 78 Place, Miami Lakes, FL, 33016',
-		'borrower' => 'Addiel Group Services Corp',
-		'lender' => 'LendVent SPV 1 LLC',
-		'total_loan_amount' => '$1,370,000.00',
-		'initial_loan' => '$1,170,000.00 ($1,463,000.00 Purchase Price)',
-		'construction_reserve' => '$200,000.00 (Total Budget of $200,000.00)',
-		'term' => '12 months',
-		'interest_rate' => '11.95%',
-		'lender_points' => '2.00%',
-		'broker_points' => '2.00%',
-		'diligence_fee' => '$1,995.00',
-		'interest_reserve' => '3 months',
+		'property' =>  $formData['property_street'] . ', ' . $formData['property_city'] . ', ' . $formData['property_state'] . ', ' . $formData['property_zip'],
+		'lender'  => 'LendVent SPV 1 LLC',
+		'borrower'=> $formData['bower_name'],
+		'total_loan_amount' => $formData['total_loan_amount'],
+		'initial_loan' => $formData['total_loan_amount'] . ' ($' . number_format(str_replace(['$', ','], '', $formData['purchase_price']), 0) . ' Purchase Price)',
+		'construction_reserve' =>  $formData['total_repair_cost'] . ' (Total Budget of ' . $formData['total_repair_cost'] . ')',
+		'term' => $formData['term'] . ' months',
+		'interest_rate' => $formData['interest_rate'] . '%',
+		'lender_points' => $formData['fee_origination_fee'] . '%',
+		'broker_points' => $formData['fee_broker_fee'] . '%',
+		'diligence_fee' => '',
+		'interest_reserve' => !empty(str_replace( '$', '', $formData['interest_reserve_amount']) ) ? $formData['interest_reserve_amount'] : ( $formData['interest_reserve_months'] ? $formData['interest_reserve_months'] : 0 ) ,
 		'due_diligence' => 'Borrower to provide all necessary Due Diligence to Lender. Appraisal, borrower credit and background check.',
 		'other_expenses' => 'Lender Legal',
-		'guarantor' => 'Addiel Rodriquez Lopez',
+		'guarantor' =>  $formData['guarantor_name'],
 		'signer_name' => 'Daniel Ifraimov',
 		'signer_title' => 'Managing Member',
 		'company' => 'Lendvent LLC',

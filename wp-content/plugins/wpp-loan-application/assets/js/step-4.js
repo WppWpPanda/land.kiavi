@@ -111,7 +111,7 @@
                 } else if (ficoScore >= 660 && ficoScore <= 719) {
                     return [
                         { months: 12, rate: 9.50 },
-                        { months: 18, rate: 10.25 },
+                        { months: 18, rate: 10.00 },
                         { months: 24, rate: 10.50 }
                     ];
                 } else if (ficoScore >= 720) {

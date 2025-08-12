@@ -15,27 +15,27 @@ function generate_deal_worksheet_pdf() {
 	$dompdf = new Dompdf($options);
 
 	global $loan_id;
-
+	$formData = wpp_get_loan_data_r( $loan_id );
 	// Данные
 	$data = [
 		'loan_number' => $loan_id,
-		'borrower' => 'Darryl Moree',
+		'borrower'=> $formData['bower_name'],
 		'credit_score' => '700',
-		'property' => '1220 Duane St Benbrook TX76126',
+		'property' =>  $formData['property_street'] . ', ' . $formData['property_city'] . ', ' . $formData['property_state'] . ', ' . $formData['property_zip'],
 		'lot_size' => '0',
-		'loan_type' => 'First Mortgage',
+		'loan_type' =>  $formData['loan_type'],
 		'property_value' => '$0.00',
-		'loan_amount' => '$0.00',
-		'term' => '12 Months',
+		'loan_amount' => $formData['total_loan_amount'],
+		'term' => $formData['term'] . ' months',
 		'ltv' => '0.00%',
-		'interest_rate' => '12.00%',
-		'monthly_interest' => '$2,150.00',
+		'interest_rate' => $formData['interest_rate'] . '%',
+		'monthly_interest' => $formData['interest_reserve_months'],
 		'placement_fee' => '$0.00(0%)',
-		'broker_fee' => '$0.00(0%)',
+		'broker_fee' => $formData['fee_broker_fee'],
 		'broker' => 'Mariia Khilko - Mariia<br>Khilko<br>email: mariia@lendvent.com',
 		'prepayment_penalty' => '0.00 Months',
 		'holdback' => '$0.00',
-		'closing_date' => 'September 16, 2024',
+		'closing_date' => $formData['closing_date'],
 		'phone' => '833-352-4100',
 		'website' => 'lendvent.com'
 	];
