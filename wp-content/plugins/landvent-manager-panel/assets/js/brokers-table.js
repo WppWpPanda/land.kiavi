@@ -17,6 +17,7 @@ jQuery(document).ready(function ($) {
     /**
      * Открытие модального окна для редактирования брокера
      */
+    /**
     $(document).on('click', '.broker-edit', function (e) {
         e.preventDefault();
 
@@ -59,7 +60,7 @@ jQuery(document).ready(function ($) {
         // Показываем модальное окно
         $br_modal.fadeIn();
     });
-
+    */
     /**
      * Закрытие модального окна
      * Восстанавливает заголовок и текст кнопки, сбрасывает форму

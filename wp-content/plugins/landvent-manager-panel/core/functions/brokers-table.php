@@ -253,8 +253,9 @@ class Brokers_Table extends Wpp_List_Table {
 
 		// Create Edit button
 		$actions = sprintf(
-			'<a href="%s" class="button button-small broker-edit" style="font-size:12px;padding:4px 8px;">✏️ Edit</a>',
-			esc_url( $edit_url )
+			'<a href="%s/manager-dashboard/brokers/%s" class="button button-small broker-edit" style="font-size:12px;padding:4px 8px;">✏️ Edit</a>',
+			get_home_url(),
+			$item['id']
 		);
 
 		// Create Delete button with confirmation
@@ -338,3 +339,39 @@ class Brokers_Table extends Wpp_List_Table {
 	//     return $query;
 	// }
 }
+
+function wpp_single_broker_assets() {
+	$point = wpp_is_manager_dashboard();
+
+	if (  !empty( $point ) && 'brokers' === $point ) {
+
+		$broker_id = get_query_var( 'item_id' );
+
+		if ( !empty( $broker_id ) ) {
+
+			if(function_exists( '_wpp_console_log' ) ) {
+				_wpp_console_log($point);
+			}
+
+
+			$js_url  = WPP_LOAN_MANAGER_URL . 'assets/js/brokers-table.js';
+			$js_path = str_replace( content_url(), WP_CONTENT_DIR, $js_url );
+
+			// Use file modification time as version for cache busting
+			$version = @filemtime( $js_path ) ?: false;
+
+			wp_enqueue_script(
+				'wpp-brokers-table-js',
+				$js_url,
+				array( 'jquery' ),
+				$version,
+				true
+			);
+
+		}
+
+	}
+
+}
+
+add_action('wp_enqueue_scripts', 'wpp_single_broker_assets');

@@ -36,6 +36,11 @@ $brokerage_form_config = [
 	'form_title'    => 'New Brokerage',
 	'form_id'       => 'wpp-brokerage-form',
 	'fields'        => [
+		'broker_id'             => [
+			'type'        => 'text',
+			'default'     => $broker_id,
+            'classes'       => ['wpp-hidden'],
+		],
 		'brok_brokerage_name'   => [
 			'type'        => 'text',
 			'label'       => 'Brokerage:',
