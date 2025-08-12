@@ -314,3 +314,108 @@ function wpp_get_loan_data_r( $loan_ID = null ) {
 
 	return $loan_data;
 }
+
+
+/**
+ * Retrieve the broker name associated with a given loan ID.
+ *
+ * This function fetches loan data using the helper function `wpp_get_loan_data_r()`,
+ * extracts the 'broker' field (assumed to be the broker ID), and then queries the
+ * `{$wpdb->prefix}wpp_brokers` table to get the corresponding `brok_brokerage_name`.
+ *
+ * If the loan data is not found, the broker ID is missing, or no matching broker exists,
+ * the function returns null.
+ *
+ * @package     WP_Panda
+ * @subpackage  Brokers
+ * @author      WP_Panda <panda@wp-panda.pro>
+ * @copyright   2025 WP_Panda. All rights reserved.
+ * @license     GNU/GPLv3 https://www.gnu.org/licenses/gpl-3.0.html
+ * @version     1.0.0
+ *
+ * @link https://developer.wordpress.org/reference/classes/wpdb/         Official $wpdb documentation
+ * @link https://developer.wordpress.org/reference/functions/wpdb-prepare/ $wpdb::prepare() reference
+ * @link https://developer.wordpress.org/reference/classes/wpdb/get_var/   $wpdb::get_var() reference
+ * @link https://www.php.net/manual/en/function.is-array.php              PHP: is_array()
+ * @link https://www.php.net/manual/en/types.comparisons.php              PHP Type Comparisons
+ *
+ * @uses wpp_get_loan_data_r( int $loan_id ) array Returns loan data as associative array.
+ *       This function must be defined elsewhere in your plugin/theme.
+ *
+ * @param int $loan_id The unique identifier of the loan record.
+ *
+ * @return string|null The name of the broker if found; otherwise, null.
+ *
+ * @example
+ *     $name = get_broker_name_by_loan_id( 123 );
+ *     if ( $name ) {
+ *         echo "Broker: " . esc_html( $name );
+ *     } else {
+ *         echo "Broker not found or invalid loan ID.";
+ *     }
+ *
+ * @example (Debugging)
+ *     $name = get_broker_name_by_loan_id( 999 );
+ *     error_log( 'Broker name for loan 999: ' . ( $name ? $name : 'Not found' ) );
+ */
+function get_broker_name_by_loan_id( $loan_id ) {
+	global $wpdb;
+
+	// Ensure $loan_id is a valid positive integer
+	if ( ! is_numeric( $loan_id ) || $loan_id < 1 ) {
+		error_log( 'Invalid loan_id provided to get_broker_name_by_loan_id: ' . $loan_id );
+		return null;
+	}
+
+	// Convert to integer for safety
+	$loan_id = (int) $loan_id;
+
+	// Step 1: Get loan data using external function wpp_get_loan_data_r()
+	// This function is assumed to return an associative array with at least a 'broker' key.
+	// ⚠️ Make sure this function exists in your codebase.
+	$loan_data = wpp_get_loan_data_r( $loan_id );
+
+	// Check if loan data was returned and is an array
+	if ( ! is_array( $loan_data ) || empty( $loan_data ) ) {
+		error_log( "No loan data found for loan ID: {$loan_id}" );
+		return null;
+	}
+
+	// Step 2: Extract the 'broker' field — assumed to be the broker ID
+	// You may need to adjust the key name (e.g., 'broker_id', 'brok_id') depending on your schema
+	if ( ! isset( $loan_data['broker'] ) ) {
+		error_log( "Loan data missing 'broker' field for loan ID: {$loan_id}" );
+		return null;
+	}
+
+	$broker_id = $loan_data['broker'];
+
+	// Validate that broker_id is numeric and positive
+	if ( ! is_numeric( $broker_id ) || $broker_id < 1 ) {
+		error_log( "Invalid broker ID in loan data for loan ID: {$loan_id}, broker value: " . print_r( $broker_id, true ) );
+		return null;
+	}
+
+	$broker_id = (int) $broker_id;
+
+	// Step 3: Query the brokers table to get brok_brokerage_name by ID
+	$table_name = $wpdb->prefix . 'wpp_brokers';
+
+	// Prepare SQL query to fetch only the brokerage name
+	$sql = $wpdb->prepare(
+		"SELECT brok_brokerage_name FROM {$table_name} WHERE id = %d",
+		$broker_id
+	);
+
+	// Use get_var() since we expect a single value (the name)
+	$broker_name = $wpdb->get_var( $sql );
+
+	// If no matching record found, get_var() returns null
+	if ( $broker_name === null ) {
+		error_log( "No broker found with ID: {$broker_id} (linked from loan ID: {$loan_id})" );
+		return null;
+	}
+
+	// Step 4: Return the broker name as a string
+	return (string) $broker_name;
+}

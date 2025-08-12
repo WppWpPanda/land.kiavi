@@ -9,7 +9,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 get_header();
 
 global $wp_query, $loan_id;
-error_log( print_r( get_colums_data(), true ) );
+if ( function_exists( '_wpp_console_log' ) ) {
+	_wpp_console_log( get_colums_data() );
+	_wpp_console_log(  wpp_get_loan_data_r( $loan_id ) );
+}
 $loanData = wpp_get_loan_data_r( $loan_id );
 if ( empty( $loanData ) ) {
 	$loanData = [];
@@ -67,7 +70,9 @@ $loanDataJson = json_encode( $loanData, JSON_HEX_APOS | JSON_HEX_QUOT );
 
                 <form id="wpp-sl-form" method="post">
                     <div class="info-cards-block">
-                        <div class="wpp-loan-block closing-date-block">Closing Date<span>Sep 16, 2024</span></div>
+                        <div class="wpp-loan-block closing-date-block">Closing Date<span><?php
+								echo get_closing_date_display( $loan_id );
+								?></span></div>
                         <div class="wpp-loan-block total-loan-block">Total Loan<span>-</span></div>
                         <div class="wpp-loan-block advance-at-closing-block">Advance at Closing
                             <span>

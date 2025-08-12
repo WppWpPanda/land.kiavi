@@ -107,15 +107,20 @@ foreach ( $array as $item ) {
                             </div>
                             <div class="wcard-footer">
                                 <div class="agent-info">
+                                    Agent:
 									<?php
-									// Здесь должно быть имя агента, но в данных его нет
-									echo "Agent Name"; // Замените на реальное поле, если оно есть
+									$broker_name = get_broker_name_by_loan_id( $key );
+									if ( $broker_name ) {
+										echo esc_html( $broker_name );
+									} else {
+										echo 'N/A';
+									}
 									?>
                                 </div>
                                 <div class="days-info">
-									<?php
-									echo wpp_time_ago( $value['date'] );
-									?>
+	                                <?php
+	                                echo get_closing_date_display($key);
+	                                ?>
                                 </div>
                             </div>
                         </a>
@@ -194,14 +199,19 @@ foreach ( $array as $item ) {
                             </div>
                             <div class="wcard-footer">
                                 <div class="agent-info">
-									<?php
-									// Здесь должно быть имя агента, но в данных его нет
-									echo "Agent Name"; // Замените на реальное поле, если оно есть
-									?>
+                                    Agent:
+	                                <?php
+	                                $broker_name = get_broker_name_by_loan_id( $key );
+	                                if ( $broker_name ) {
+		                                echo esc_html( $broker_name );
+	                                } else {
+		                                echo 'N/A';
+	                                }
+	                                ?>
                                 </div>
                                 <div class="days-info">
 									<?php
-									echo wpp_time_ago( $value['date'] );
+									echo get_closing_date_display($key);
 									?>
                                 </div>
                             </div>

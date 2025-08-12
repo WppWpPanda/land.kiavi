@@ -53,6 +53,7 @@ require_once 'companies-table.php';
 require_once 'appraisers-table.php';
 require_once 'login.php';
 require_once 'db-helpers/init.php';
+require_once 'loans-helpers.php';
 
 /**
  * Remove Default Loan Content Sections

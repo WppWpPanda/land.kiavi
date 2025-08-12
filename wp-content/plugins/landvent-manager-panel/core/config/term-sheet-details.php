@@ -22,7 +22,7 @@
  * @link              https://www.php.net/manual/en/
  */
 
-defined('ABSPATH') || exit;
+defined( 'ABSPATH' ) || exit;
 
 /**
  * Generates configuration for loan term sheet fields.
@@ -37,9 +37,9 @@ defined('ABSPATH') || exit;
  *
  * This configuration is designed to be rendered within an accordion UI component.
  *
- * @since 1.0.0
- *
  * @return array Form configuration compatible with WPP form renderer.
+ *
+ * @since 1.0.0
  *
  * @see https://developer.wordpress.org/plugins/settings/settings-api/ For field patterns.
  * @see https://www.php.net/manual/en/function.array.php For array handling.
@@ -52,7 +52,7 @@ defined('ABSPATH') || exit;
  */
 function wpp_step_config_u() {
 	$form_fields = [
-		'loan_type'              => [
+		'loan_type'                         => [
 			'type'    => 'select',
 			'name'    => 'loan_type',
 			'label'   => 'Loan Type',
@@ -62,7 +62,7 @@ function wpp_step_config_u() {
 			],
 			'width'   => 'full'
 		],
-		'application_type'       => [
+		'application_type'                  => [
 			'type'    => 'select',
 			'name'    => 'application_type',
 			'label'   => 'Application Type',
@@ -74,20 +74,20 @@ function wpp_step_config_u() {
 			],
 			'width'   => 'full'
 		],
-		'loan_purpose'           => [
+		'loan_purpose'                      => [
 			'type'         => 'text',
 			'element_type' => 'text',
 			'name'         => 'loan_purpose',
 			'label'        => 'Loan Purpose',
 			'width'        => 'full'
 		],
-		'mers_loan'              => [
+		'mers_loan'                         => [
 			'type'  => 'checkbox',
 			'name'  => 'mers_loan',
 			'label' => 'MERS Loan',
 			'width' => 'full'
 		],
-		'purchase_price'         => [
+		'purchase_price'                    => [
 			'type'         => 'text',
 			'element_type' => 'money',
 			'name'         => 'purchase_price',
@@ -96,7 +96,7 @@ function wpp_step_config_u() {
 			'data-type'    => 'money',
 			'width'        => 'full'
 		],
-		'current_value'          => [
+		'current_value'                     => [
 			'type'         => 'text',
 			'element_type' => 'money',
 			'name'         => 'current_value',
@@ -105,7 +105,7 @@ function wpp_step_config_u() {
 			'data-type'    => 'money',
 			'width'        => 'full'
 		],
-		'after_repair_value'     => [
+		'after_repair_value'                => [
 			'type'         => 'text',
 			'element_type' => 'money',
 			'name'         => 'after_repair_value',
@@ -114,7 +114,7 @@ function wpp_step_config_u() {
 			'data-type'    => 'money',
 			'width'        => 'full'
 		],
-		'total_loan_amount'      => [
+		'total_loan_amount'                 => [
 			'type'         => 'text',
 			'element_type' => 'money',
 			'name'         => 'total_loan_amount',
@@ -123,7 +123,7 @@ function wpp_step_config_u() {
 			'data-type'    => 'money',
 			'width'        => 'full'
 		],
-		'total_repair_cost'      => [
+		'total_repair_cost'                 => [
 			'type'         => 'text',
 			'element_type' => 'money',
 			'name'         => 'total_repair_cost',
@@ -132,7 +132,7 @@ function wpp_step_config_u() {
 			'data-type'    => 'money',
 			'width'        => 'full'
 		],
-		'advance_at_closing'     => [
+		'advance_at_closing'                => [
 			'type'         => 'text',
 			'element_type' => 'money',
 			'name'         => 'advance_at_closing',
@@ -141,7 +141,7 @@ function wpp_step_config_u() {
 			'data-type'    => 'money',
 			'width'        => 'full'
 		],
-		'loan_position'          => [
+		'loan_position'                     => [
 			'type'    => 'select',
 			'name'    => 'loan_position',
 			'label'   => 'Loan Position',
@@ -156,7 +156,7 @@ function wpp_step_config_u() {
 			],
 			'width'   => 'full'
 		],
-		'interest_rate'          => [
+		'interest_rate'                     => [
 			'type'         => 'text',
 			'element_type' => 'percentage',
 			'name'         => 'interest_rate',
@@ -164,14 +164,14 @@ function wpp_step_config_u() {
 			'placeholder'  => '0.00%',
 			'width'        => '1/2'
 		],
-		'enable_variable_rate'   => [
-			'classes' => ['wpp-no-label-inverse no-left'],
+		'enable_variable_rate'              => [
+			'classes' => [ 'wpp-no-label-inverse no-left' ],
 			'type'    => 'checkbox',
 			'name'    => 'enable_variable_rate',
 			'label'   => 'enable variable rate',
 			'width'   => '1/2'
 		],
-		'standby_interest'       => [
+		'standby_interest'                  => [
 			'type'         => 'text',
 			'element_type' => 'text',
 			'name'         => 'standby_interest',
@@ -179,7 +179,7 @@ function wpp_step_config_u() {
 			'placeholder'  => 'e.g., 1.00',
 			'width'        => 'full'
 		],
-		'repayment_type'         => [
+		'repayment_type'                    => [
 			'type'    => 'select',
 			'name'    => 'repayment_type',
 			'label'   => 'Repayment Type',
@@ -190,7 +190,7 @@ function wpp_step_config_u() {
 			],
 			'width'   => 'full'
 		],
-		'_monthly_payment'       => [
+		'_monthly_payment'                  => [
 			'type'    => 'content',
 			'name'    => '_monthly_payment',
 			'label'   => 'Monthly Payment',
@@ -201,7 +201,7 @@ function wpp_step_config_u() {
 				</span>
 			',
 		],
-		'interest_adjustment'    => [
+		'interest_adjustment'               => [
 			'type'    => 'content',
 			'name'    => 'interest_adjustment',
 			'label'   => 'Interest Adjustment',
@@ -212,7 +212,7 @@ function wpp_step_config_u() {
 				</span>
 			',
 		],
-		'term'                   => [
+		'term'                              => [
 			'type'         => 'text',
 			'element_type' => 'text',
 			'name'         => 'term',
@@ -220,7 +220,7 @@ function wpp_step_config_u() {
 			'placeholder'  => 'e.g., 12 months',
 			'width'        => 'full'
 		],
-		'interest_schedule'      => [
+		'interest_schedule'                 => [
 			'type'    => 'radio',
 			'name'    => 'interest_schedule',
 			'label'   => 'Interest Schedule',
@@ -293,12 +293,11 @@ function wpp_step_config_u() {
 			'width'        => '1/2'
 		],
 		'broker'                            => [
-			'type'         => 'text',
-			'element_type' => 'email',
-			'name'         => 'broker',
-			'label'        => 'Broker',
-			'placeholder'  => 'broker@example.com',
-			'width'        => 'full'
+			'type'    => 'select',
+			'name'    => 'broker',
+			'label'   => 'Broker',
+			'options' => get_all_brokers_as_array(),
+			'width'   => 'full'
 		],
 		'broker_fee'                        => [
 			'type'         => 'text',
@@ -338,11 +337,12 @@ function wpp_step_config_u() {
 	 *
 	 * Allows third-party code to modify or extend the loan terms form.
 	 *
+	 * @param array $form_fields The form field configuration.
+	 *
 	 * @since 1.0.0
 	 *
-	 * @param array $form_fields The form field configuration.
 	 */
-	return apply_filters('wpp/form/step_config/term_sheet', $form_fields);
+	return apply_filters( 'wpp/form/step_config/term_sheet', $form_fields );
 }
 
 /**
@@ -352,12 +352,12 @@ function wpp_step_config_u() {
  * Hooked to `wpp_lmp_loan_content` with priority 40 to position it logically
  * between other steps like property details and payments.
  *
- * @since 1.0.0
- *
  * @return void Outputs HTML directly.
  *
  * @hooked wpp_lmp_loan_content
  * @priority 40
+ *
+ * @since 1.0.0
  *
  * @see wpp_step_config_u() For form field definitions.
  * @see WPP_Accordion_Field For UI component.
@@ -370,28 +370,29 @@ function wpp_term_sheet_details() {
     <div id="term-sheet-details" class="container">
         <div class="row">
 			<?php
-			$ACC = new WPP_Accordion_Field([
+			$ACC = new WPP_Accordion_Field( [
 				'type'    => 'accordion',
 				'name'    => 'advanced_settings',
 				'title'   => 'Term Sheet Details',
 				'open'    => true,
 				'content' => function () {
-					foreach (wpp_step_config_u() as $name => $config) {
-						$class_name = 'WPP_' . ucfirst($config['type']) . '_Field';
-						if (class_exists($class_name)) {
-							$field = new $class_name(array_merge($config, ['name' => $name]));
+					foreach ( wpp_step_config_u() as $name => $config ) {
+						$class_name = 'WPP_' . ucfirst( $config['type'] ) . '_Field';
+						if ( class_exists( $class_name ) ) {
+							$field = new $class_name( array_merge( $config, [ 'name' => $name ] ) );
 							$field->render();
 						}
 					}
 				}
-			]);
+			] );
 			$ACC->render();
 			?>
         </div>
     </div>
 	<?php
 }
-add_action('wpp_lmp_loan_content', 'wpp_term_sheet_details', 40);
+
+add_action( 'wpp_lmp_loan_content', 'wpp_term_sheet_details', 40 );
 
 /*
  * @todo List
