@@ -28,7 +28,7 @@ function generate_commitment_pdf() {
 		'lender'  => 'LendVent SPV 1 LLC',
 		'borrower'=> $formData['bower_name'],
 		'total_loan_amount' => $formData['total_loan_amount'],
-		'initial_loan' => $formData['total_loan_amount'] . ' ($' . number_format(str_replace(['$', ','], '', $formData['purchase_price']), 0) . ' Purchase Price)',
+		'initial_loan' => $formData['total_loan_amount'] . ' ($' . str_replace(['$', ','], '', $formData['purchase_price']) . ' Purchase Price)',
 		'construction_reserve' =>  $formData['total_repair_cost'] . ' (Total Budget of ' . $formData['total_repair_cost'] . ')',
 		'term' => $formData['term'] . ' months',
 		'interest_rate' => $formData['interest_rate'] . '%',

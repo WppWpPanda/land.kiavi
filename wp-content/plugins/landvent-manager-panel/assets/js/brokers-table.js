@@ -144,4 +144,49 @@ jQuery(document).ready(function ($) {
             });
     });
 
+    $(document).on('click', '.broker-delete', function (e) {
+        e.preventDefault(); // Блокируем переход по ссылке
+
+        const $link = $(this);
+        const href = $link.attr('href');
+
+        // Извлекаем параметры из URL
+        const url = new URL(href);
+        const brokerId = url.searchParams.get('id');
+        const nonce = url.searchParams.get('broker_nonce');
+
+        if (!brokerId || !nonce) {
+            alert('Missing broker ID or security token.');
+            return;
+        }
+
+        // Показываем лоадер
+        const originalText = $link.text();
+        $link.text('Deleting...').prop('disabled', true);
+
+        // AJAX-запрос
+        $.post(trello_vars.ajax_url, {
+            action: 'wpp_delete_broker',
+            nonce: nonce,
+            broker_id: brokerId
+        }, function (response) {
+            if (response.success) {
+                alert('✅ ' + response.data.message);
+
+                // Удаляем строку из таблицы
+                $link.closest('tr').fadeOut(300, function () {
+                    $(this).remove();
+                });
+            } else {
+                alert('❌ Error: ' + response.data.message);
+            }
+        }, 'json')
+            .fail(function () {
+                alert('❌ Connection error. Please try again.');
+            })
+            .always(function () {
+                $link.text(originalText).prop('disabled', false);
+            });
+    });
+
 });

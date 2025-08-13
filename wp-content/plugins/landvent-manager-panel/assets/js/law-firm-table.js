@@ -143,4 +143,50 @@ jQuery(document).ready(function ($) {
             });
     });
 
+
+    $(document).on('click', '.lf-delete', function (e) {
+        e.preventDefault(); // Блокируем переход по ссылке
+
+        const $link = $(this);
+        const href = $link.attr('href');
+
+        // Извлекаем параметры из URL
+        const url = new URL(href);
+        const lawFirmId = url.searchParams.get('id');
+        const nonce = url.searchParams.get('law_firm_nonce');
+
+        if (!lawFirmId || !nonce) {
+            alert('Missing law firm ID or security token.');
+            return;
+        }
+
+        // Показываем лоадер
+        const originalText = $link.text();
+        $link.text('Deleting...').prop('disabled', true);
+
+        // AJAX-запрос
+        $.post(trello_vars.ajax_url, {
+            action: 'wpp_delete_law_firm',
+            nonce: nonce,
+            law_firm_id: lawFirmId
+        }, function (response) {
+            if (response.success) {
+                alert('✅ ' + response.data.message);
+
+                // Удаляем строку из таблицы
+                $link.closest('tr').fadeOut(300, function () {
+                    $(this).remove();
+                });
+            } else {
+                alert('❌ Error: ' + response.data.message);
+            }
+        }, 'json')
+            .fail(function () {
+                alert('❌ Connection error. Please try again.');
+            })
+            .always(function () {
+                $link.text(originalText).prop('disabled', false);
+            });
+    });
+
 });

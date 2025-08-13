@@ -18,12 +18,12 @@ function wpp_term_documents() { ?>
 				'content' =>  function () {
                 ?>
                     <a href="<?php echo esc_url(add_query_arg('download_pdf', 'deal_worksheet_600', home_url())); ?>"
-                       class="button">Скачать Deal Worksheet (PDF)</a>
+                       class="button">Download Deal Worksheet (PDF)</a>
 
                     <a href="<?= esc_url(add_query_arg([
 						'download_commitment_pdf' => '1'
 					], home_url())) ?>">
-                        Скачать Commitment (PDF)
+                        Download Commitment (PDF)
                     </a>
                         <?php
 					/*foreach ( wpp_step_config_documents() as $name => $config ) {

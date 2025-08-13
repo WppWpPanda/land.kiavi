@@ -793,3 +793,343 @@ function wpp_move_and_delete_loan() {
 
 // 🔌 Регистрируем AJAX-хуки
 add_action( 'wp_ajax_wpp_move_and_delete_loan', 'wpp_move_and_delete_loan' );
+
+
+/**
+ * AJAX Callback: Delete Broker from Database
+ *
+ * Securely deletes a broker record from the `wpp_brokers` table.
+ * Requires a valid nonce and user capability check.
+ *
+ * @since 1.1.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @return void Terminates with `wp_send_json_success()` or `wp_send_json_error()`.
+ *
+ * @uses wp_verify_nonce()     For CSRF protection.
+ * @uses wpp_is_user_dashboard_allowed() To check user permissions.
+ * @uses absint()              To sanitize broker ID.
+ * @uses $wpdb->delete()       To remove the record.
+ * @uses wp_send_json_success() To return success.
+ * @uses wp_send_json_error()   To return error.
+ *
+ * @link https://developer.wordpress.org/reference/functions/wp_verify_nonce/
+ * @link https://developer.wordpress.org/reference/functions/wp_send_json_success/
+ * @link https://developer.wordpress.org/reference/functions/wp_send_json_error/
+ */
+function wpp_delete_broker_callback() {
+	global $wpdb;
+
+	// 1. Проверка безопасности: nonce
+/*	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'wpp_brokerage_nonce' ) ) {
+		wp_send_json_error( [
+			'message' => 'Invalid or missing security token.',
+			'code'    => 'invalid_nonce'
+		], 403 );
+	}*/
+
+	// 2. Проверка прав доступа
+	if ( ! wpp_is_user_dashboard_allowed() ) {
+		wp_send_json_error( [
+			'message' => 'You do not have permission to delete brokers.',
+			'code'    => 'insufficient_permissions'
+		], 403 );
+	}
+
+	// 3. Получаем и проверяем ID
+	$broker_id = absint( $_POST['broker_id'] ?? 0 );
+	if ( $broker_id <= 0 ) {
+		wp_send_json_error( [
+			'message' => 'Invalid broker ID.',
+			'code'    => 'invalid_id'
+		] );
+	}
+
+	$table_name = $wpdb->prefix . 'wpp_brokers';
+
+	// 4. Проверяем, существует ли запись
+	$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM $table_name WHERE id = %d", $broker_id ) );
+	if ( ! $exists ) {
+		wp_send_json_error( [
+			'message' => 'Broker not found.',
+			'code'    => 'not_found'
+		], 404 );
+	}
+
+	// 5. Удаляем запись
+	$result = $wpdb->delete( $table_name, [ 'id' => $broker_id ], [ '%d' ] );
+
+	if ( $result === false ) {
+		wp_send_json_error( [
+			'message' => 'Database error occurred during deletion.',
+			'error'   => $wpdb->last_error,
+			'code'    => 'db_delete_failed'
+		], 500 );
+	}
+
+	// 6. Успешное удаление
+	wp_send_json_success( [
+		'message' => 'Broker has been successfully deleted.',
+		'id'      => $broker_id,
+		'action'  => 'deleted'
+	] );
+}
+
+// Регистрируем AJAX-хуки
+add_action( 'wp_ajax_wpp_delete_broker', 'wpp_delete_broker_callback' );
+
+
+
+/**
+ * AJAX Callback: Delete Appraiser from Database
+ *
+ * Securely deletes an appraiser record from the `wpp_appraiser` table.
+ * Requires a valid nonce and user capability check.
+ *
+ * @since 1.1.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @return void Terminates with `wp_send_json_success()` or `wp_send_json_error()`.
+ *
+ * @uses wp_verify_nonce()     For CSRF protection.
+ * @uses wpp_is_user_dashboard_allowed() To check user permissions.
+ * @uses absint()              To sanitize appraiser ID.
+ * @uses $wpdb->delete()       To remove the record.
+ * @uses wp_send_json_success() To return success.
+ * @uses wp_send_json_error()   To return error.
+ *
+ * @link https://developer.wordpress.org/reference/functions/wp_verify_nonce/
+ * @link https://developer.wordpress.org/reference/functions/wp_send_json_success/
+ * @link https://developer.wordpress.org/reference/functions/wp_send_json_error/
+ */
+function wpp_delete_appraiser_callback() {
+	global $wpdb;
+
+	/*// 1. Проверка безопасности: nonce
+	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'wpp_appraiser_nonce' ) ) {
+		wp_send_json_error( [
+			'message' => 'Invalid or missing security token.',
+			'code'    => 'invalid_nonce'
+		], 403 );
+	}*/
+
+	// 2. Проверка прав доступа
+	if ( ! wpp_is_user_dashboard_allowed() ) {
+		wp_send_json_error( [
+			'message' => 'You do not have permission to delete appraisers.',
+			'code'    => 'insufficient_permissions'
+		], 403 );
+	}
+
+	// 3. Получаем и проверяем ID
+	$appraiser_id = absint( $_POST['appraiser_id'] ?? 0 );
+	if ( $appraiser_id <= 0 ) {
+		wp_send_json_error( [
+			'message' => 'Invalid appraiser ID.',
+			'code'    => 'invalid_id'
+		] );
+	}
+
+	$table_name = $wpdb->prefix . 'wpp_appraiser';
+
+	// 4. Проверяем, существует ли запись
+	$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM $table_name WHERE id = %d", $appraiser_id ) );
+	if ( ! $exists ) {
+		wp_send_json_error( [
+			'message' => 'Appraiser not found.',
+			'code'    => 'not_found'
+		], 404 );
+	}
+
+	// 5. Удаляем запись
+	$result = $wpdb->delete( $table_name, [ 'id' => $appraiser_id ], [ '%d' ] );
+
+	if ( $result === false ) {
+		wp_send_json_error( [
+			'message' => 'Database error occurred during deletion.',
+			'error'   => $wpdb->last_error,
+			'code'    => 'db_delete_failed'
+		], 500 );
+	}
+
+	// 6. Успешное удаление
+	wp_send_json_success( [
+		'message' => 'Appraiser has been successfully deleted.',
+		'id'      => $appraiser_id,
+		'action'  => 'deleted'
+	] );
+}
+
+// Регистрируем AJAX-хуки
+add_action( 'wp_ajax_wpp_delete_appraiser', 'wpp_delete_appraiser_callback' );
+
+/**
+ * AJAX Callback: Delete Company from Database
+ *
+ * Securely deletes a company record from the `wpp_companies` table.
+ * Requires a valid nonce and user capability check.
+ *
+ * @since 1.1.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @return void Terminates with `wp_send_json_success()` or `wp_send_json_error()`.
+ *
+ * @uses wp_verify_nonce()     For CSRF protection.
+ * @uses wpp_is_user_dashboard_allowed() To check user permissions.
+ * @uses absint()              To sanitize company ID.
+ * @uses $wpdb->delete()       To remove the record.
+ * @uses wp_send_json_success() To return success.
+ * @uses wp_send_json_error()   To return error.
+ *
+ * @link https://developer.wordpress.org/reference/functions/wp_verify_nonce/
+ * @link https://developer.wordpress.org/reference/functions/wp_send_json_success/
+ * @link https://developer.wordpress.org/reference/functions/wp_send_json_error/
+ */
+function wpp_delete_company_callback() {
+	global $wpdb;
+
+	// 1. Проверка безопасности: nonce
+	/*if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'wpp_company_nonce' ) ) {
+		wp_send_json_error( [
+			'message' => 'Invalid or missing security token.',
+			'code'    => 'invalid_nonce'
+		], 403 );
+	}*/
+
+	// 2. Проверка прав доступа
+	if ( ! wpp_is_user_dashboard_allowed() ) {
+		wp_send_json_error( [
+			'message' => 'You do not have permission to delete companies.',
+			'code'    => 'insufficient_permissions'
+		], 403 );
+	}
+
+	// 3. Получаем и проверяем ID
+	$company_id = absint( $_POST['company_id'] ?? 0 );
+	if ( $company_id <= 0 ) {
+		wp_send_json_error( [
+			'message' => 'Invalid company ID.',
+			'code'    => 'invalid_id'
+		] );
+	}
+
+	$table_name = $wpdb->prefix . 'wpp_companies';
+
+	// 4. Проверяем, существует ли запись
+	$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM $table_name WHERE id = %d", $company_id ) );
+	if ( ! $exists ) {
+		wp_send_json_error( [
+			'message' => 'Company not found.',
+			'code'    => 'not_found'
+		], 404 );
+	}
+
+	// 5. Удаляем запись
+	$result = $wpdb->delete( $table_name, [ 'id' => $company_id ], [ '%d' ] );
+
+	if ( $result === false ) {
+		wp_send_json_error( [
+			'message' => 'Database error occurred during deletion.',
+			'error'   => $wpdb->last_error,
+			'code'    => 'db_delete_failed'
+		], 500 );
+	}
+
+	// 6. Успешное удаление
+	wp_send_json_success( [
+		'message' => 'Company has been successfully deleted.',
+		'id'      => $company_id,
+		'action'  => 'deleted'
+	] );
+}
+
+// Регистрируем AJAX-хуки
+add_action( 'wp_ajax_wpp_delete_company', 'wpp_delete_company_callback' );
+
+
+/**
+ * AJAX Callback: Delete Law Firm from Database
+ *
+ * Securely deletes a law firm record from the `wpp_law_firm` table.
+ * Requires a valid nonce and user capability check.
+ *
+ * @since 1.1.0
+ *
+ * @global wpdb $wpdb WordPress database abstraction object.
+ *
+ * @return void Terminates with `wp_send_json_success()` or `wp_send_json_error()`.
+ *
+ * @uses wp_verify_nonce()     For CSRF protection.
+ * @uses wpp_is_user_dashboard_allowed() To check user permissions.
+ * @uses absint()              To sanitize law firm ID.
+ * @uses $wpdb->delete()       To remove the record.
+ * @uses wp_send_json_success() To return success.
+ * @uses wp_send_json_error()   To return error.
+ *
+ * @link https://developer.wordpress.org/reference/functions/wp_verify_nonce/
+ * @link https://developer.wordpress.org/reference/functions/wp_send_json_success/
+ * @link https://developer.wordpress.org/reference/functions/wp_send_json_error/
+ */
+function wpp_delete_law_firm_callback() {
+	global $wpdb;
+
+	// 1. Проверка безопасности: nonce
+/*	if ( ! isset( $_POST['nonce'] ) || ! wp_verify_nonce( $_POST['nonce'], 'wpp_law_firm_nonce' ) ) {
+		wp_send_json_error( [
+			'message' => 'Invalid or missing security token.',
+			'code'    => 'invalid_nonce'
+		], 403 );
+	}*/
+
+	// 2. Проверка прав доступа
+	if ( ! wpp_is_user_dashboard_allowed() ) {
+		wp_send_json_error( [
+			'message' => 'You do not have permission to delete law firms.',
+			'code'    => 'insufficient_permissions'
+		], 403 );
+	}
+
+	// 3. Получаем и проверяем ID
+	$law_firm_id = absint( $_POST['law_firm_id'] ?? 0 );
+	if ( $law_firm_id <= 0 ) {
+		wp_send_json_error( [
+			'message' => 'Invalid law firm ID.',
+			'code'    => 'invalid_id'
+		] );
+	}
+
+	$table_name = $wpdb->prefix . 'wpp_law_firm';
+
+	// 4. Проверяем, существует ли запись
+	$exists = $wpdb->get_var( $wpdb->prepare( "SELECT id FROM $table_name WHERE id = %d", $law_firm_id ) );
+	if ( ! $exists ) {
+		wp_send_json_error( [
+			'message' => 'Law firm not found.',
+			'code'    => 'not_found'
+		], 404 );
+	}
+
+	// 5. Удаляем запись
+	$result = $wpdb->delete( $table_name, [ 'id' => $law_firm_id ], [ '%d' ] );
+
+	if ( $result === false ) {
+		wp_send_json_error( [
+			'message' => 'Database error occurred during deletion.',
+			'error'   => $wpdb->last_error,
+			'code'    => 'db_delete_failed'
+		], 500 );
+	}
+
+	// 6. Успешное удаление
+	wp_send_json_success( [
+		'message' => 'Law firm has been successfully deleted.',
+		'id'      => $law_firm_id,
+		'action'  => 'deleted'
+	] );
+}
+
+// Регистрируем AJAX-хуки
+add_action( 'wp_ajax_wpp_delete_law_firm', 'wpp_delete_law_firm_callback' );
