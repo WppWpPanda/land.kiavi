@@ -124,20 +124,6 @@ jQuery(document).ready(function($) {
         });
     }
 
-    // Обработчик добавления новой карточки
-   /** $('.trello-board').on('click', '.add-card-btn', function() {
-        var column = $(this).closest('.column');
-        var card_id = 'new_' + Date.now();
-        var card_html = `
-            <div class="card" data-card-id="${card_id}">
-                <div class="card-content" contenteditable="true">New</div>
-            </div>
-        `;
-
-        column.find('.cards-container').append(card_html);
-        $(".cards-container").sortable("refresh");
-    });*/
-
     // Обработчик добавления новой колонки с диалоговым окном
     $('#add-column-btn').on('click', function() {
         // Создаем модальное окно
@@ -227,7 +213,7 @@ jQuery(document).ready(function($) {
     }
 
 
-    $('.delete-column').on('click', function(e) {
+    $(document).on('click', '.delete-column', function(e) {
         e.preventDefault();
         if (!confirm('Are you sure you want to delete this column?')) return;
 
@@ -244,25 +230,42 @@ jQuery(document).ready(function($) {
         }, function(response) {
             if (response.success) {
                 column.remove();
+                // Обновляем общие суммы после удаления колонки
+                totalSum();
             } else {
-                alert('Ошибка: ' + response.data);
+                column.show(); // Показываем колонку обратно при ошибке
+                alert('Error: ' + response.data);
             }
+        }).fail(function() {
+            column.show(); // Показываем колонку обратно при ошибке AJAX
+            alert('Error Deleted');
         });
     });
 
 
     // Функция создания новой колонки
     function createNewColumn(data) {
-        var column_id = 'new_col_' + Date.now();
         var column_html = ` 
-            <div class="column" data-column-id="${data.id}">
-                <div class="column-header">
-                    <h3 contenteditable="true">${data.title}</h3>
-                    <button class="delete-column" title="Remove Column"></button>
+        <div class="column" data-column-id="${data.id}">
+            <div class="column-header ui-sortable-handle">
+                <div class="colum-header-wrap">
+                    <div class="column-header-left">
+                        <h3 contenteditable="true">${data.title}</h3>
+                        <div class="wpp-loan-count">
+                            <span>loans</span>
+                            <b>0</b>
+                        </div>
+                    </div>
+                    <div class="column-header-right">
+                        <div class="wpp-nit"><span>nit. Adv.:</span><b>$0.00</b></div>
+                        <div class="wpp-total"><span>Total:</span><b>$0.00</b></div>
+                    </div>
                 </div>
-                <div class="cards-container"></div>
+                <button class="delete-column" title="Remove Column"></button>
             </div>
-        `;
+            <div class="cards-container ui-sortable"></div>
+        </div>
+    `;
 
         var $newColumn = $(column_html);
         $('.trello-board .columns-container').append($newColumn);
@@ -271,16 +274,24 @@ jQuery(document).ready(function($) {
         $newColumn.find('.cards-container').sortable({
             connectWith: ".cards-container",
             placeholder: "card-placeholder",
-            receive: function(event, ui) {// updateCardPosition(ui.item);
-                 },
+            receive: function(event, ui) {
+                // updateCardPosition(ui.item);
+            },
             update: function(event, ui) {
                 if(ui.item.hasClass('ui-sortable-helper')) return;
                 updateCardPosition(ui.item);
+                // Обновляем статистику колонки после перемещения карточки
+                $('.column').each(function() {
+                    updateColumnStats(this);
+                });
+                totalSum();
             }
         }).disableSelection();
 
         // Обновляем connectWith для всех существующих контейнеров
         $(".cards-container").sortable("option", "connectWith", ".cards-container");
+
+        return $newColumn;
     }
 
     // Обработчик удаления карточки

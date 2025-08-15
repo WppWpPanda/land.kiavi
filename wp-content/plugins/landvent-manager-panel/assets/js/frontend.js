@@ -142,9 +142,12 @@
 
         // === 7. Защита от пустых значений ===
         $(document).on('blur', '.custom-fee-item input', function () {
-            if ($(this).val() === '' || isNaN($(this).val())) {
-                $(this).val('0.00');
-                $(this).trigger('input');
+
+           if( ! $(this).hasClass('fee-label')) {
+                if ($(this).val() === '' || isNaN($(this).val())) {
+                    $(this).val('0.00');
+                    $(this).trigger('input');
+                }
             }
         });
 

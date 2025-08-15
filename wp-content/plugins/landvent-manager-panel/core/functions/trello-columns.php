@@ -67,9 +67,9 @@ add_action('wp_ajax_delete_trello_column', 'handle_delete_trello_column');
 function handle_delete_trello_column() {
 	//check_ajax_referer('delete-column-nonce', 'security');
 
-	if (!current_user_can('manage_options')) {
+	/*if (!current_user_can('manage_options')) {
 		wp_send_json_error('Доступ запрещен');
-	}
+	}*/
 
 	global $wpdb;
 	$table_name = $wpdb->prefix . 'wpp_trello_columns';

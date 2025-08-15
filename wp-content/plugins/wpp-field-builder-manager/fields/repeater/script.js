@@ -61,6 +61,14 @@ jQuery(document).ready(function ($) {
 
             innerContainer.append(html);
 
+            // 🔁 Реинициализируем datepicker для нового поля
+            innerContainer.find('.wpp-repeater-block:last input[data-type="date"]').datepicker({
+                dateFormat: 'yy-mm-dd',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-100:+10'
+            });
+
             // Перезапускаем автозаполнение адреса, если есть
             if (typeof initGoogleAutocompleteFields === 'function') {
                 initGoogleAutocompleteFields();

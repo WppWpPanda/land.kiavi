@@ -474,3 +474,18 @@ a.wpp-manager-link {
 a.wpp-manager-link:hover {
     color: #0d6efd;
 }
+
+.wpp-lmd-point-loan #main_property-collapse .wpp-field {
+    display: block;
+}
+
+div#other_properties-collapse label {
+    width: auto;
+    min-width: fit-content;
+    text-align: right;
+    padding-right: 10px;
+}
+
+label.wpp-fields-block-label {
+    min-width: 200px;
+}
