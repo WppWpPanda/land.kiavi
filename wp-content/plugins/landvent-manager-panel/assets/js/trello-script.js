@@ -215,12 +215,26 @@ jQuery(document).ready(function($) {
 
     $(document).on('click', '.delete-column', function(e) {
         e.preventDefault();
-        if (!confirm('Are you sure you want to delete this column?')) return;
+        if (!confirm('Are you sure you want to delete this column? All cards will be moved to the first available column.')) return;
 
-        const column = $(this).closest('.column');
-        const columnId = column.data('column-id');
+        const $column = $(this).closest('.column');
+        const columnId = $column.data('column-id');
+        const $cards = $column.find('.card');
+        const $firstAvailableColumn = $('.column').not($column).first();
 
-        column.hide();
+        // Если есть карточки и найдена колонка для переноса
+        if ($cards.length > 0 && $firstAvailableColumn.length > 0) {
+            // Переносим все карточки в первую доступную колонку
+            $cards.each(function() {
+                const $card = $(this);
+                $firstAvailableColumn.find('.cards-container').append($card);
+
+                // Обновляем позицию карточки на сервере
+                updateCardPosition($card);
+            });
+        }
+
+        $column.hide();
 
         // AJAX запрос для удаления
         $.post(trello_vars.ajax_url, {
@@ -229,16 +243,19 @@ jQuery(document).ready(function($) {
             security: trello_vars._nonce
         }, function(response) {
             if (response.success) {
-                column.remove();
-                // Обновляем общие суммы после удаления колонки
+                $column.remove();
+                // Обновляем статистику всех колонок
+                $('.column').each(function() {
+                    updateColumnStats(this);
+                });
                 totalSum();
             } else {
-                column.show(); // Показываем колонку обратно при ошибке
+                $column.show();
                 alert('Error: ' + response.data);
             }
         }).fail(function() {
-            column.show(); // Показываем колонку обратно при ошибке AJAX
-            alert('Error Deleted');
+            $column.show();
+            alert('Error occurred while deleting column');
         });
     });
 
