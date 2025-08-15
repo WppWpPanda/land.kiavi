@@ -1,6 +1,14 @@
 (function ($) {
     'use strict';
 
+    console.log('loanData')
+    console.log(loanData)
+
+    if (typeof loanData === 'undefined') {
+        console.log('loanData is not defined');
+        const loanData = { baseAmount: 0, custom_fees: [] };
+    }
+
     // === Утилита: Экранирование HTML (теперь в начале) ===
     $.escapeHtml = function (text) {
         if (!text) return '';
@@ -12,12 +20,6 @@
     let customFeeIndex = 0;
 
     $(document).ready(function () {
-        // Проверка наличия loanData
-        if (typeof loanData === 'undefined') {
-            //console.warn('loanData is not defined');
-            var loanData = { baseAmount: 0, custom_fees: [] };
-        }
-
         //*********************************************//
         // FEE
         //*********************************************//
@@ -121,9 +123,8 @@
             const $input = $(this);
             const index = $input.data('index');
             const $percentInput = $(`.custom-fee-item[data-index="${index}"] .percent`);
-            const baseAmount = parseFloat($input.data('base-amount'));
+            const baseAmount = parseFloat($input.attr('data-base-amount'));
             const moneyValue = Math.max(0, parseFloat($input.val()) || 0);
-
             const percentValue = baseAmount > 0 ? (moneyValue / baseAmount) * 100 : 0;
             $percentInput.val(percentValue.toFixed(2));
         });
@@ -133,9 +134,8 @@
             const $input = $(this);
             const index = $input.data('index');
             const $moneyInput = $(`.custom-fee-item[data-index="${index}"] .money`);
-            const baseAmount = parseFloat($input.data('base-amount'));
+            const baseAmount = parseFloat($input.attr('data-base-amount'));
             const percentValue = Math.max(0, Math.min(100, parseFloat($input.val()) || 0));
-
             const moneyValue = baseAmount > 0 ? (percentValue / 100) * baseAmount : 0;
             $moneyInput.val(parseFloat(moneyValue.toFixed(2)));
         });
@@ -143,7 +143,7 @@
         // === 7. Защита от пустых значений ===
         $(document).on('blur', '.custom-fee-item input', function () {
 
-           if( ! $(this).hasClass('fee-label')) {
+            if( ! $(this).hasClass('fee-label')) {
                 if ($(this).val() === '' || isNaN($(this).val())) {
                     $(this).val('0.00');
                     $(this).trigger('input');
@@ -207,7 +207,7 @@
 
         $(document).on( 'click','.wpp-save-loan',function (e) {
             e.preventDefault();
-           $('#wpp-sl-form').submit();
+            $('#wpp-sl-form').submit();
         });
 
         /**
